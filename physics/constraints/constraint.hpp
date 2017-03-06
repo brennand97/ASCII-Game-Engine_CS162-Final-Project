@@ -24,12 +24,12 @@ public:
     void removeParticle(unsigned int id);
 
     void fix();
-    virtual void fix(Particle &p1, Particle &p2) = 0;
+    virtual void fix(Particle *p1, Particle *p2) = 0;
 
-    static double sqr_dist(Particle &p1, Particle &p2) {
-        return ((p1[0] - p2[0]) * (p1[0] - p2[0])) + ((p1[1] - p2[1]) * (p1[1] - p2[1]));
+    static double sqr_dist(Particle *p1, Particle *p2) {
+        return (((*p1)[0] - (*p2)[0]) * ((*p1)[0] - (*p2)[0])) + (((*p1)[1] - (*p2)[1]) * ((*p1)[1] - (*p2)[1]));
     }
-    static double dist(Particle &p1, Particle &p2) {
+    static double dist(Particle *p1, Particle *p2) {
         return std::sqrt(sqr_dist(p1, p2));
     }
 };

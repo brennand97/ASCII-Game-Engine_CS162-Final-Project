@@ -19,7 +19,7 @@ public:
     void setLength(double length) { this->length = length; }
     Constraint::Equality getEquality() { return eq; }
     void setEquality(Constraint::Equality eq) { this->eq = eq; }
-    void fix(Particle&, Particle&);
+    void fix(Particle*, Particle*);
 };
 
 #endif //FINAL_PROJECT_LINE_CONSTRAINT_HPP

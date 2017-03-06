@@ -15,7 +15,7 @@ public:
     DragConstraint(double);
     double getDrag() { return drag; }
     void setDrag(double drag) { this->drag = drag; }
-    void fix(Particle&, Particle&);
+    void fix(Particle*, Particle*);
 };
 
 #endif //FINAL_PROJECT_DRAG_CONSTRAINT_HPP

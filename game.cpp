@@ -40,14 +40,14 @@ int main (int argc, char** argv) {
         std::cout << "DT: " << dt << std::endl;
         std::cout << "Particle 1: (" << (*p1)[0] << ", " << (*p1)[1] << ")" << std::endl;
         std::cout << "Particle 2: (" << (*p2)[0] << ", " << (*p2)[1] << ")" << std::endl;
-        std::cout << "Dist: " << Constraint::dist(*p1, *p2) << std::endl;
+        std::cout << "Dist: " << Constraint::dist(p1, p2) << std::endl;
 
         p1->step(dt);
         p2->step(dt);
-        dc.fix(*p1, *p2);
+        dc.fix(p1, p2);
 
         for(int i = 0; i < 5; i++) {
-            lc.fix(*p1, *p2);
+            lc.fix(p1, p2);
         }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(200));

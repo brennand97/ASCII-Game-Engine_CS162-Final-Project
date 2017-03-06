@@ -88,17 +88,27 @@ GameObject::~GameObject() {
 
 const double* GameObject::getAbsPosition() {
     double * abs = new double[2];
-    const double * ap_pos = parent->getAbsPosition();
-    abs[0] = ap_pos[0] + pos[0];
-    abs[1] = ap_pos[1] + pos[1];
+    if(parent != nullptr) {
+        const double *ap_pos = parent->getAbsPosition();
+        abs[0] = ap_pos[0] + pos[0];
+        abs[1] = ap_pos[1] + pos[1];
+    } else {
+        abs[0] = pos[0];
+        abs[1] = pos[1];
+    }
     return abs;
 }
 
 const double* GameObject::getAbsPPosition() {
     double * pabs = new double[2];
-    const double * ap_ppos = parent->getAbsPPosition();
-    pabs[0] = ap_ppos[0] + ppos[0];
-    pabs[1] = ap_ppos[1] + ppos[1];
+    if(parent != nullptr) {
+        const double *ap_ppos = parent->getAbsPosition();
+        pabs[0] = ap_ppos[0] + ppos[0];
+        pabs[1] = ap_ppos[1] + ppos[1];
+    } else {
+        pabs[0] = ppos[0];
+        pabs[1] = ppos[1];
+    }
     return pabs;
 }
 
