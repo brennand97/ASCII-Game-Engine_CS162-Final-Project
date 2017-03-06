@@ -18,6 +18,10 @@ Particle::Particle(double *pos, double *vel) : GameObject(pos, vel, nullptr) {
 
 Particle::~Particle() {}
 
-void Particle::step(double dt, double p_dt) {
+void Particle::step(double dt) {
+    GameObject::step(dt);
+}
+
+void Particle::render() {
 
 }

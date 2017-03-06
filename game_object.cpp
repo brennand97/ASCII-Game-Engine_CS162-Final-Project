@@ -10,6 +10,8 @@
 #include <algorithm>
 #include <stdexcept>
 
+unsigned int GameObject::n_obj_id = 0;
+
 GameObject::GameObject() {
     pos = new double[2];
     pos[0] = 0;
@@ -20,6 +22,7 @@ GameObject::GameObject() {
     hit = new double[2];
     hit[0] = 0;
     hit[1] = 0;
+    obj_id = n_obj_id++;
 }
 
 GameObject::GameObject(double *pos, double *hit) {
@@ -37,6 +40,7 @@ GameObject::GameObject(double *pos, double *hit) {
         hit[0] = 0;
         hit[1] = 0;
     }
+    obj_id = n_obj_id++;
 }
 
 GameObject::GameObject(double *pos, double *vel, double *hit) {
@@ -62,6 +66,7 @@ GameObject::GameObject(double *pos, double *vel, double *hit) {
         hit[0] = 0;
         hit[1] = 0;
     }
+    obj_id = n_obj_id++;
 }
 
 GameObject::GameObject(const GameObject &obj) : GameObject() {
@@ -69,6 +74,7 @@ GameObject::GameObject(const GameObject &obj) : GameObject() {
     pos[1] = obj.pos[1];
     ppos[0] = obj.ppos[0];
     ppos[1] = obj.ppos[1];
+    obj_id = n_obj_id++;
 }
 
 GameObject::~GameObject() {
@@ -145,13 +151,26 @@ GameObject* GameObject::getWorld() {
     }
 }
 
-void GameObject::step(double dt, double p_dt) {
+void GameObject::stepChildren(double dt) {
+
+    std::vector<GameObject*>::iterator it;
+    for(it = children.begin(); it != children.end(); it++) {
+        (*it)->step(dt);
+    }
+
+}
+
+void GameObject::step(double dt) {
+
+    if(previous_dt < 0) {
+        previous_dt = dt;
+    }
 
     double *n_pos = new double[2];
     double *vel = new double[2];
 
-    vel[0] = (pos[0] - ppos[0]) / p_dt;
-    vel[1] = (pos[1] - ppos[1]) / p_dt;
+    vel[0] = (pos[0] - ppos[0]) / previous_dt;
+    vel[1] = (pos[1] - ppos[1]) / previous_dt;
 
     n_pos[0] = pos[0] + (vel[0] * dt);
     n_pos[1] = pos[1] + (vel[1] * dt);
@@ -161,5 +180,9 @@ void GameObject::step(double dt, double p_dt) {
     pos = n_pos;
 
     delete [] vel;
+
+    stepChildren(dt);
+
+    previous_dt = dt;
 
 }

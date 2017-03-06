@@ -16,11 +16,18 @@ protected:
     double *pos;
     double *hit;
     double mass;
+    double previous_dt = -1;
     GameObject* parent = nullptr;
     GameObject* world = nullptr;
     std::vector<GameObject*> children;
     unsigned int getChildIndex(unsigned int c_obj_id);
+    void stepChildren(double dt);
 public:
+
+    static unsigned int n_obj_id;
+
+    // Gravitation Constant
+    constexpr static double g_accl = 10;
 
     // Constructors
     GameObject();
@@ -30,7 +37,6 @@ public:
     virtual ~GameObject();
 
     // Id system
-    static unsigned int n_obj_id;
     unsigned int getId() { return obj_id; }
     void setId(unsigned int id) { this->obj_id = id; }
 
@@ -38,15 +44,15 @@ public:
     double getMass() { return mass; }
     void setMass(double mass) { this->mass = mass; }
     const double * getHitBox() { return hit; }
-    void setHitBox(double * hit) { this->hit = hit; }
+    void setHitBox(double * hit) { delete [] hit; this->hit = hit; }
 
     // Position Data
     const double * getPosition() { return pos; }
     const double * getAbsPosition();
-    void setPosition(double * pos) { this->pos = pos; }
+    void setPosition(double * pos) { delete [] pos; this->pos = pos; }
     const double * getPPosition() { return ppos; }
     const double * getAbsPPosition();
-    void setPPosition(double * ppos) { this->ppos = ppos; }
+    void setPPosition(double * ppos) { delete [] ppos; this->ppos = ppos; }
 
     // GameObject Parent
     GameObject* getParent() { return parent; }
@@ -63,14 +69,16 @@ public:
     GameObject* getWorld();
 
     // Time Step
-    virtual void step(double dt, double p_dt);
+    virtual void step(double dt);
+    double getPreviousStepTime() { return previous_dt; }
+
+    // Virtual Render function
+    virtual void render() = 0;
 
     // Operators
     bool operator ==(const GameObject &obj) { return this->obj_id == obj.obj_id; }
     bool operator !=(const GameObject &obj) { return !((*this) == obj); }
-    double &operator [](int i) { return pos[i]; }
+    double &operator [](const int i) { return pos[i]; }
 };
-
-
 
 #endif //FINAL_PROJECT_GAME_OBJECT_HPP
