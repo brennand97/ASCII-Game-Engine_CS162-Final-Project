@@ -12,7 +12,7 @@ SRCS := $(shell find ./ -type f -name "*.cpp")
 HEADERS := $(shell find ./ -type f -name "*.hpp*")
 OBJS := $(SRCS:.cpp=.o)
 
-EXECUTABLE = main
+EXECUTABLE = game
 
 main: $(OBJS) $(HEADERS)
 	$(CXX) $(LDFLAGS) $(OBJS) -o $(EXECUTABLE)
