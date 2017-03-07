@@ -15,10 +15,13 @@ private:
     Constraint::Equality  eq;
 public:
     LineConstraint(double, Constraint::Equality);
+
     double getLength() { return length; }
     void setLength(double length) { this->length = length; }
     Constraint::Equality getEquality() { return eq; }
     void setEquality(Constraint::Equality eq) { this->eq = eq; }
+
+    void fix();
     void fix(Particle*, Particle*);
 };
 

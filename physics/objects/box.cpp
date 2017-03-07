@@ -13,6 +13,8 @@
 std::string Box::TYPE = "box";
 
 Box::Box(double *pos, double width, double height) : ParticleContainer() {
+    types.push_back(Box::TYPE);
+
     this->width = width;
     this->height = height;
 
@@ -34,37 +36,39 @@ Box::Box(double *pos, double width, double height) : ParticleContainer() {
     Particle* p3 = new Particle(pos3);
     Particle* p4 = new Particle(pos4);
 
-    top_constraint = new LineConstraint(width, Constraint::Equality::EQUAL);
-    top_constraint->addParticle(p1);
-    top_constraint->addParticle(p2);
+    addChild(p1);
+    addChild(p2);
+    addChild(p3);
+    addChild(p4);
 
-    bottom_constraint = new LineConstraint(width, Constraint::Equality::EQUAL);
-    bottom_constraint->addParticle(p3);
-    bottom_constraint->addParticle(p4);
+    width_constraint = new LineConstraint(width, Constraint::Equality::EQUAL);
+    width_constraint->addParticle(p1);
+    width_constraint->addParticle(p2);
+    width_constraint->addParticle(p3);
+    width_constraint->addParticle(p4);
 
-    left_constraint = new LineConstraint(height, Constraint::Equality::EQUAL);
-    left_constraint->addParticle(p1);
-    left_constraint->addParticle(p4);
-
-    right_constraint = new LineConstraint(height, Constraint::Equality::EQUAL);
-    right_constraint->addParticle(p2);
-    right_constraint->addParticle(p3);
+    height_constraint = new LineConstraint(height, Constraint::Equality::EQUAL);
+    height_constraint->addParticle(p1);
+    height_constraint->addParticle(p4);
+    height_constraint->addParticle(p2);
+    height_constraint->addParticle(p3);
 
     double diag = std::sqrt((width*width) + (height*height));
-    diagonal_tl_br_constraint = new LineConstraint(diag, Constraint::Equality::EQUAL);
-    diagonal_tl_br_constraint->addParticle(p1);
-    diagonal_tl_br_constraint->addParticle(p3);
+    diagonal_constraint = new LineConstraint(diag, Constraint::Equality::EQUAL);
+    diagonal_constraint->addParticle(p1);
+    diagonal_constraint->addParticle(p3);
+    diagonal_constraint->addParticle(p2);
+    diagonal_constraint->addParticle(p4);
 
-    diagonal_bl_tr_constraint = new LineConstraint(diag, Constraint::Equality::EQUAL);
-    diagonal_bl_tr_constraint->addParticle(p2);
-    diagonal_bl_tr_constraint->addParticle(p4);
+    specific_constraints.push_back(width_constraint);
+    specific_constraints.push_back(height_constraint);
+    specific_constraints.push_back(diagonal_constraint);
+}
 
-    specific_constraints.push_back(top_constraint);
-    specific_constraints.push_back(bottom_constraint);
-    specific_constraints.push_back(left_constraint);
-    specific_constraints.push_back(right_constraint);
-    specific_constraints.push_back(diagonal_tl_br_constraint);
-    specific_constraints.push_back(diagonal_bl_tr_constraint);
+Box::~Box() {
+    delete width_constraint;
+    delete height_constraint;
+    delete diagonal_constraint;
 }
 
 void Box::render() {

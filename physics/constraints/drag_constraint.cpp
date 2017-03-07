@@ -26,6 +26,17 @@ void DragConstraint::applyDrag(Particle &p) {
     p[1] -= ay * (p_dt * p_dt);
 }
 
+void DragConstraint::fix() {
+    for(unsigned int i = 0; i < particles.size(); i++) {
+        while (i < particles.size() && particles[i] == nullptr) {
+            particles.erase(particles.begin() + i, particles.begin() + i + 1);
+        }
+        if(i < particles.size()) {
+            applyDrag(*particles[i]);
+        }
+    }
+}
+
 void DragConstraint::fix(Particle *p1, Particle *p2) {
     if(p1 != nullptr) {
         applyDrag(*p1);

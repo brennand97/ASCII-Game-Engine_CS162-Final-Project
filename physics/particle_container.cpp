@@ -42,7 +42,7 @@ void ParticleContainer::handleConstraints() {
     for(it = specific_constraints.begin(); it != specific_constraints.end(); it++) {
         (*it)->fix();
     }
-    //std::vector<Constraint*> global_constraints;
+    std::vector<Constraint*> global_constraints;
     getGlobalConstraints(&global_constraints);
     for(it = global_constraints.begin(); it != global_constraints.end(); it++) {
         // TODO implement global constraints

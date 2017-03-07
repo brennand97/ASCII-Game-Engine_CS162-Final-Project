@@ -17,13 +17,15 @@ protected:
     Constraint::LINK link;
     std::vector<Particle*> particles;
 public:
+
     Constraint(Constraint::LINK l) : link(l) {}
+    virtual ~Constraint() {}
 
     std::vector<Particle*> getParticles() { return particles; }
     void addParticle(Particle* p) { particles.push_back(p); }
     void removeParticle(unsigned int id);
 
-    void fix();
+    virtual void fix() = 0;
     virtual void fix(Particle *p1, Particle *p2) = 0;
 
     static double sqr_dist(Particle *p1, Particle *p2) {

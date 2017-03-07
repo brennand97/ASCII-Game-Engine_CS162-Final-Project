@@ -12,9 +12,13 @@ private:
     double drag;
     void applyDrag(Particle&);
 public:
+
     DragConstraint(double);
+
     double getDrag() { return drag; }
     void setDrag(double drag) { this->drag = drag; }
+
+    void fix();
     void fix(Particle*, Particle*);
 };
 
