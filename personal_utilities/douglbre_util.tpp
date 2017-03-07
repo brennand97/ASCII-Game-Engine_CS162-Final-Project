@@ -8,6 +8,7 @@
 #ifdef DOUGLBRE_UTIL_HPP
 
 #include <iostream>
+#include <vector>
 #include <string>
 #include <functional>
 #include <algorithm>
@@ -35,6 +36,10 @@ namespace douglbre {
 
             } while (!noneNull || !valid(*input));
         }
+    }
+
+    namespace util {
+
     }
 }
 

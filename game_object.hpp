@@ -9,10 +9,11 @@
 
 #include <string>
 #include <vector>
+#include <algorithm>
 
 class GameObject {
 protected:
-    std::string type;
+    std::vector<std::string> types;
     unsigned int obj_id;
     double previous_dt = -1;
     GameObject* parent = nullptr;
@@ -23,6 +24,7 @@ protected:
 public:
 
     static unsigned int n_obj_id;
+    static std::string TYPE;
 
     // Constructors
     GameObject();
@@ -34,7 +36,8 @@ public:
     void setId(unsigned int id) { this->obj_id = id; }
 
     // Type operations
-    std::string getType() { return type; }
+    std::string getType() { return types[types.size()]; }
+    bool isType(std::string type) { return std::find(types.begin(), types.end(), type) != types.end(); }
 
     // GameObject Parent
     GameObject* getParent() { return parent; }

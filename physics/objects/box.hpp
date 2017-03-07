@@ -7,12 +7,16 @@
 
 #include "../particle_container.hpp"
 #include "../constraints/constraint.hpp"
+#include <string>
 
 class Box : public ParticleContainer {
 private:
     double width;
     double height;
 public:
+
+    static std::string TYPE;
+
     Box(double * pos, double width, double height);
     double getWidth() { return width; }
     void setWidth(double w) { this->width = w; }

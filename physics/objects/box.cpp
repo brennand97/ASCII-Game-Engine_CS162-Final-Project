@@ -3,6 +3,9 @@
 //
 
 #include "box.hpp"
+#include <string>
+
+std::string Box::TYPE = "box";
 
 Box::Box(double *pos, double width, double height) : ParticleContainer() {
     this->width = width;

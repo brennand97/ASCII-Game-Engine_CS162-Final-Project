@@ -11,10 +11,10 @@
 std::string ParticleContainer::TYPE = "particle_container";
 
 ParticleContainer::ParticleContainer() : GameObject() {
-    type = ParticleContainer::TYPE;
+    types.push_back(ParticleContainer::TYPE);
 }
 
-void ParticleContainer::getGlobalConstraints(std::vector<Constraint*> * vec) {
+void ParticleContainer::getGlobalConstraints(std::vector < Constraint * > * vec) {
     for(unsigned int i = 0; i < sub_global_constraints.size(); i++) {
         vec->push_back(sub_global_constraints[i]);
     }
@@ -25,10 +25,14 @@ void ParticleContainer::getGlobalConstraints(std::vector<Constraint*> * vec) {
     }
 }
 
-void ParticleContainer::step(double dt) {
-
+void ParticleContainer::getSubGlobalConstraints(std::vector < Constraint * > * vec) {
+    for(unsigned int i = 0; i < sub_global_constraints.size(); i++) {
+        vec->push_back(sub_global_constraints[i]);
+    }
 }
 
-void ParticleContainer::render() {
-
+void ParticleContainer::getSpecificConstraints(std::vector < Constraint * > * vec) {
+    for(unsigned int i = 0; i < specific_constraints.size(); i++) {
+        vec->push_back(specific_constraints[i]);
+    }
 }

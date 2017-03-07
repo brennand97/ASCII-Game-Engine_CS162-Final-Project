@@ -11,6 +11,7 @@
 #include "douglbre_util.hpp"
 
 #include <string>
+#include <vector>
 #include <functional>
 
 namespace douglbre {

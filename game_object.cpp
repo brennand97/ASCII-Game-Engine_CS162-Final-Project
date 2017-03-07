@@ -11,12 +11,15 @@
 #include <stdexcept>
 
 unsigned int GameObject::n_obj_id = 0;
+std::string GameObject::TYPE = "game_object";
 
 GameObject::GameObject() {
+    types.push_back(GameObject::TYPE);
     obj_id = n_obj_id++;
 }
 
 GameObject::GameObject(const GameObject &obj) : GameObject() {
+    types.push_back(GameObject::TYPE);
     children = obj.children;
     obj_id = n_obj_id++;
 }
@@ -77,7 +80,7 @@ GameObject* GameObject::getWorld() {
 }
 
 void GameObject::getParentsOfType(std::string type, std::vector<GameObject*>* vec) {
-    if(this->type == type) {
+    if(this->isType(type)) {
         vec->push_back(this);
     }
     if(parent != nullptr) {
@@ -86,7 +89,7 @@ void GameObject::getParentsOfType(std::string type, std::vector<GameObject*>* ve
 }
 
 void GameObject::getChildrenOfType(std::string type, std::vector < GameObject * > * vec) {
-    if(this->type == type) {
+    if(this->isType(type)) {
         vec->push_back(this);
     }
     if(children.size() > 0) {

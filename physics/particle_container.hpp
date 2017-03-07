@@ -23,9 +23,9 @@ public:
 
     void getGlobalConstraints(std::vector<Constraint*>*);
     std::vector<Constraint*> getSubGlobalConstraints() { return sub_global_constraints; }
-
-    void step(double dt);
-    void render();
+    void getSubGlobalConstraints(std::vector<Constraint*>*);
+    std::vector<Constraint*> getSpecificConstraints() { return specific_constraints; }
+    void getSpecificConstraints(std::vector<Constraint*>*);
 
 };
 

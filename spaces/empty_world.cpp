@@ -8,7 +8,7 @@
 std::string EmptyWorld::TYPE = "empty_world";
 
 EmptyWorld::EmptyWorld(int p_w, int p_h, double u_w, double u_h) : Space(p_w, p_h, u_w, u_h) {
-    type = EmptyWorld::TYPE;
+    types.push_back(EmptyWorld::TYPE);
     setup();
 }
 
