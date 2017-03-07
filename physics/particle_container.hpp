@@ -11,7 +11,7 @@
 #include <vector>
 
 class ParticleContainer : public GameObject {
-private:
+protected:
     std::vector<Constraint*> specific_constraints;
     std::vector<Constraint*> sub_global_constraints;
 public:
@@ -26,6 +26,10 @@ public:
     void getSubGlobalConstraints(std::vector<Constraint*>*);
     std::vector<Constraint*> getSpecificConstraints() { return specific_constraints; }
     void getSpecificConstraints(std::vector<Constraint*>*);
+
+    void handleConstraints();
+
+    virtual void render() {}
 
 };
 

@@ -36,3 +36,15 @@ void ParticleContainer::getSpecificConstraints(std::vector < Constraint * > * ve
         vec->push_back(specific_constraints[i]);
     }
 }
+
+void ParticleContainer::handleConstraints() {
+    std::vector<Constraint*>::iterator it;
+    for(it = specific_constraints.begin(); it != specific_constraints.end(); it++) {
+        (*it)->fix();
+    }
+    //std::vector<Constraint*> global_constraints;
+    getGlobalConstraints(&global_constraints);
+    for(it = global_constraints.begin(); it != global_constraints.end(); it++) {
+        // TODO implement global constraints
+    }
+}

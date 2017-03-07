@@ -6,13 +6,19 @@
 #define FINAL_PROJECT_BOX_HPP
 
 #include "../particle_container.hpp"
-#include "../constraints/constraint.hpp"
+#include "../constraints/line_constraint.hpp"
 #include <string>
 
 class Box : public ParticleContainer {
 private:
     double width;
     double height;
+    LineConstraint* top_constraint;
+    LineConstraint* bottom_constraint;
+    LineConstraint* left_constraint;
+    LineConstraint* right_constraint;
+    LineConstraint* diagonal_tl_br_constraint;
+    LineConstraint* diagonal_bl_tr_constraint;
 public:
 
     static std::string TYPE;

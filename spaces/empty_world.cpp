@@ -21,11 +21,11 @@ void EmptyWorld::setup() {
 }
 
 void EmptyWorld::step(double dt) {
+    GameObject::step(dt);
 
+    for(int i = 0; i < EmptyWorld::RELAXATION_ROUNDS; i++) {
 
-
-    stepChildren(dt);
-    previous_dt = dt;
+    }
 
 }
 

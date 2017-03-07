@@ -6,8 +6,7 @@
 #define FINAL_PROJECT_SPACE_HPP
 
 #include "../game_object.hpp"
-#include "../physics/constraints/constraint.hpp"
-#include <unordered_map>
+#include "../physics/particle_container.hpp"
 #include <string>
 
 class Space : public GameObject {
@@ -16,27 +15,15 @@ protected:
     double unit_height;
     int pixel_width;
     int pixel_height;
+    ParticleContainer* physics;
 public:
 
     static std::string TYPE;
 
-    Space(int p_w, int p_h) : GameObject() {
-        types.push_back(Space::TYPE);
-        pixel_width = p_w;
-        pixel_height = p_h;
-        unit_width = p_w;
-        unit_height = p_h;
-    }
-    Space(int p_w, int p_h, double u_w, double u_h) : GameObject() {
-        types.push_back(Space::TYPE);
-        pixel_width = p_w;
-        pixel_height = p_h;
-        unit_width = u_w;
-        unit_height = u_h;
-    }
+    Space(int p_w, int p_h);
+    Space(int p_w, int p_h, double u_w, double u_h);
+
     virtual void setup() = 0;
 };
-
-std::string Space::TYPE = "space";
 
 #endif //FINAL_PROJECT_SPACE_HPP
