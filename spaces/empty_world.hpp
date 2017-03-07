@@ -6,11 +6,16 @@
 #define FINAL_PROJECT_EMPTY_WORLD_HPP
 
 #include "space.hpp"
+#include <string>
 
 class EmptyWorld : public Space {
 public:
+
+    static std::string TYPE;
+
     EmptyWorld(int p_w, int p_h);
     EmptyWorld(int p_w, int p_h, double u_w, double u_h);
+    void setup();
     void render();
     void step(double);
 };

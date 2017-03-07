@@ -7,15 +7,13 @@
 #ifndef FINAL_PROJECT_GAME_OBJECT_HPP
 #define FINAL_PROJECT_GAME_OBJECT_HPP
 
+#include <string>
 #include <vector>
 
 class GameObject {
 protected:
+    std::string type;
     unsigned int obj_id;
-    double *ppos;
-    double *pos;
-    double *hit;
-    double mass;
     double previous_dt = -1;
     GameObject* parent = nullptr;
     GameObject* world = nullptr;
@@ -26,13 +24,8 @@ public:
 
     static unsigned int n_obj_id;
 
-    // Gravitation Constant
-    constexpr static double g_accl = 10;
-
     // Constructors
     GameObject();
-    GameObject(double * pos, double * hit);
-    GameObject(double * pos, double * vel, double * hit);
     GameObject(const GameObject &obj);
     virtual ~GameObject();
 
@@ -40,19 +33,8 @@ public:
     unsigned int getId() { return obj_id; }
     void setId(unsigned int id) { this->obj_id = id; }
 
-    // Physics Data
-    double getMass() { return mass; }
-    void setMass(double mass) { this->mass = mass; }
-    const double * getHitBox() { return hit; }
-    void setHitBox(double * hit) { delete [] hit; this->hit = hit; }
-
-    // Position Data
-    const double * getPosition() { return pos; }
-    const double * getAbsPosition();
-    void setPosition(double * pos) { delete [] pos; this->pos = pos; }
-    const double * getPPosition() { return ppos; }
-    const double * getAbsPPosition();
-    void setPPosition(double * ppos) { delete [] ppos; this->ppos = ppos; }
+    // Type operations
+    std::string getType() { return type; }
 
     // GameObject Parent
     GameObject* getParent() { return parent; }
@@ -65,8 +47,10 @@ public:
     void removeChild(GameObject * obj);
     void removeChild(unsigned int c_obj_id);
 
-    // Recursive function to get base GameObject
+    // Recursive functions
     GameObject* getWorld();
+    void getParentsOfType(std::string, std::vector<GameObject*>*);
+    void getChildrenOfType(std::string, std::vector<GameObject*>*);
 
     // Time Step
     virtual void step(double dt);
@@ -78,7 +62,7 @@ public:
     // Operators
     bool operator ==(const GameObject &obj) { return this->obj_id == obj.obj_id; }
     bool operator !=(const GameObject &obj) { return !((*this) == obj); }
-    double &operator [](const int i) { return pos[i]; }
+
 };
 
 #endif //FINAL_PROJECT_GAME_OBJECT_HPP

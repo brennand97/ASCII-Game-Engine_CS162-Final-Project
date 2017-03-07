@@ -4,9 +4,9 @@
 
 #include "box.hpp"
 
-Box::Box(double *pos, double width, double height) : GameObject(pos, nullptr) {
-    hit[0] = width;
-    hit[1] = height;
+Box::Box(double *pos, double width, double height) : ParticleContainer() {
+    this->width = width;
+    this->height = height;
 
     double h_w = width / 2;
     double h_h = height / 2;

@@ -13,103 +13,18 @@
 unsigned int GameObject::n_obj_id = 0;
 
 GameObject::GameObject() {
-    pos = new double[2];
-    pos[0] = 0;
-    pos[1] = 0;
-    ppos = new double[2];
-    ppos[0] = 0;
-    ppos[1] = 0;
-    hit = new double[2];
-    hit[0] = 0;
-    hit[1] = 0;
-    obj_id = n_obj_id++;
-}
-
-GameObject::GameObject(double *pos, double *hit) {
-    if(pos != nullptr) {
-        this->pos = pos;
-    } else {
-        pos = new double[2];
-        pos[0] = 0;
-        pos[1] = 0;
-    }
-    if(hit != nullptr) {
-        this->hit = hit;
-    } else {
-        hit = new double[2];
-        hit[0] = 0;
-        hit[1] = 0;
-    }
-    obj_id = n_obj_id++;
-}
-
-GameObject::GameObject(double *pos, double *vel, double *hit) {
-    if(pos != nullptr) {
-        this->pos = pos;
-    } else {
-        pos = new double[2];
-        pos[0] = 0;
-        pos[1] = 0;
-    }
-    this->ppos = new double[2];
-    if(vel != nullptr) {
-        ppos[0] = pos[0] - vel[0];
-        ppos[1] = pos[1] - vel[1];
-    } else {
-        ppos[0] = pos[0];
-        ppos[1] = pos[1];
-    }
-    if(hit != nullptr) {
-        this->hit = hit;
-    } else {
-        hit = new double[2];
-        hit[0] = 0;
-        hit[1] = 0;
-    }
     obj_id = n_obj_id++;
 }
 
 GameObject::GameObject(const GameObject &obj) : GameObject() {
-    pos[0] = obj.pos[0];
-    pos[1] = obj.pos[1];
-    ppos[0] = obj.ppos[0];
-    ppos[1] = obj.ppos[1];
+    children = obj.children;
     obj_id = n_obj_id++;
 }
 
 GameObject::~GameObject() {
-    delete [] pos;
-    delete [] ppos;
-    delete [] hit;
     for(std::vector<GameObject*>::iterator it = children.begin(); it != children.end(); it++) {
         delete (*it);
     }
-}
-
-const double* GameObject::getAbsPosition() {
-    double * abs = new double[2];
-    if(parent != nullptr) {
-        const double *ap_pos = parent->getAbsPosition();
-        abs[0] = ap_pos[0] + pos[0];
-        abs[1] = ap_pos[1] + pos[1];
-    } else {
-        abs[0] = pos[0];
-        abs[1] = pos[1];
-    }
-    return abs;
-}
-
-const double* GameObject::getAbsPPosition() {
-    double * pabs = new double[2];
-    if(parent != nullptr) {
-        const double *ap_ppos = parent->getAbsPosition();
-        pabs[0] = ap_ppos[0] + ppos[0];
-        pabs[1] = ap_ppos[1] + ppos[1];
-    } else {
-        pabs[0] = ppos[0];
-        pabs[1] = ppos[1];
-    }
-    return pabs;
 }
 
 unsigned int GameObject::getChildIndex(unsigned int c_obj_id) {
@@ -161,6 +76,27 @@ GameObject* GameObject::getWorld() {
     }
 }
 
+void GameObject::getParentsOfType(std::string type, std::vector<GameObject*>* vec) {
+    if(this->type == type) {
+        vec->push_back(this);
+    }
+    if(parent != nullptr) {
+        parent->getParentsOfType(type, vec);
+    }
+}
+
+void GameObject::getChildrenOfType(std::string type, std::vector < GameObject * > * vec) {
+    if(this->type == type) {
+        vec->push_back(this);
+    }
+    if(children.size() > 0) {
+        std::vector<GameObject*>::iterator it;
+        for(it = children.begin(); it != children.end(); it++) {
+            (*it)->getChildrenOfType(type, vec);
+        }
+    }
+}
+
 void GameObject::stepChildren(double dt) {
 
     std::vector<GameObject*>::iterator it;
@@ -175,21 +111,6 @@ void GameObject::step(double dt) {
     if(previous_dt < 0) {
         previous_dt = dt;
     }
-
-    double *n_pos = new double[2];
-    double *vel = new double[2];
-
-    vel[0] = (pos[0] - ppos[0]) / previous_dt;
-    vel[1] = (pos[1] - ppos[1]) / previous_dt;
-
-    n_pos[0] = pos[0] + (vel[0] * dt);
-    n_pos[1] = pos[1] + (vel[1] * dt);
-
-    delete [] ppos;
-    ppos = pos;
-    pos = n_pos;
-
-    delete [] vel;
 
     stepChildren(dt);
 

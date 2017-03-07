@@ -5,25 +5,19 @@
 #ifndef FINAL_PROJECT_BOX_HPP
 #define FINAL_PROJECT_BOX_HPP
 
-#include "../game_object.hpp"
-#include "../physics/constraints/constraint.hpp"
+#include "../particle_container.hpp"
+#include "../constraints/constraint.hpp"
 
-class Box : public GameObject {
+class Box : public ParticleContainer {
 private:
     double width;
     double height;
 public:
     Box(double * pos, double width, double height);
     double getWidth() { return width; }
-    void setWidth(double w) {
-        this->width = w;
-        hit[0] = w;
-    }
+    void setWidth(double w) { this->width = w; }
     double getHeight() { return height; }
-    void setHeight(double h) {
-        this->height = h;
-        hit[1] = h;
-    }
+    void setHeight(double h) { this->height = h; }
     void render();
 };
 
