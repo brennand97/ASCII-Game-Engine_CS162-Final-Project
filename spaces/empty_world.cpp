@@ -35,8 +35,8 @@ void EmptyWorld::setup() {
     pos2[0] = (unit_width / 2) + 2;
     pos2[1] = (unit_height / 2) - 3;
     vel2[0] = 0;
-    vel2[1] = -160;
-    Particle* p2 = new Particle(pos2);
+    vel2[1] = -20;
+    Particle* p2 = new Particle(pos2, vel2);
     delete vel2;
 
     LineConstraint* lc = new LineConstraint(10, Constraint::Equality::EQUAL);
@@ -72,21 +72,14 @@ void EmptyWorld::render() {
     int p2_j = std::floor((*((Particle*) physics->getChildren()[1]))[1]) / getYUnitsPerPixel();
     p2_j = std::max(std::min(p2_j, pixel_height - 1), 0);
 
-    frame[p1_i][p1_j] = '*';
-    frame[p2_i][p2_j] = '*';
+    Pixel f_p1(p1_i, p1_j, '#');
+    Pixel f_p2(p2_i, p2_j, '#');
 
-    for(int j = pixel_height - 1; j >= 0; j--) {
-        for(int i = 0; i < pixel_width; i++) {
-            if(frame[i][j] != ' ') {
-                std::cout << frame[i][j];
-            } else {
-                std::cout << ' ';
-            }
-        }
-        std::cout << std::endl;
-    }
+    std::vector<Pixel> line;
+    line.push_back(f_p1);
+    line.push_back(f_p2);
 
-    frame[p1_i][p1_j] = ' ';
-    frame[p2_i][p2_j] = ' ';
+    screen->addToFrame(line);
+    screen->displayFrame();
 
 }

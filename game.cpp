@@ -8,6 +8,7 @@
 #include <string>
 #include <chrono>
 #include <thread>
+#include "display/screen.hpp"
 #include "game_object.hpp"
 #include "spaces/empty_world.hpp"
 #include "input.hpp"
@@ -16,7 +17,7 @@ int main (int argc, char** argv) {
 
     GameObject::n_obj_id = 0;
 
-    EmptyWorld* emptyWorld = new EmptyWorld(50,25,30,15);
+    EmptyWorld* emptyWorld = new EmptyWorld(150,50,50,25);
     emptyWorld->setup();
 
     double dt = 0.5;
@@ -27,7 +28,6 @@ int main (int argc, char** argv) {
 
         std::vector<GameObject*> children;
         emptyWorld->getChildrenOfType(Particle::TYPE, &children);
-        std::cout << children.size() << std::endl;
 
 //        i++;
 //        std::cout << std::endl;

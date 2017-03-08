@@ -19,13 +19,7 @@ Space::Space(int p_w, int p_h, double u_w, double u_h) : GameObject() {
     unit_width = u_w;
     unit_height = u_h;
 
-    frame = new char*[pixel_width];
-    for(int i = 0; i < pixel_width; i++) {
-        frame[i] = new char[pixel_height];
-        for(int j = 0; j < pixel_height; j++) {
-            frame[i][j] = ' ';
-        }
-    }
+    screen = new Screen(pixel_width, pixel_height);
 
     physics = new ParticleContainer();
     physics->setParent(this);
@@ -36,10 +30,7 @@ Space::Space(int p_w, int p_h, double u_w, double u_h) : GameObject() {
 }
 
 Space::~Space() {
-    for(int i = 0; i < pixel_width; i++) {
-        delete [] frame[i];
-    }
-    delete [] frame;
+    delete screen;
 }
 
 void Space::handlePhysics(int t_iter) {

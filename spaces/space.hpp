@@ -8,6 +8,7 @@
 #include "../game_object.hpp"
 #include "../physics/particle_container.hpp"
 #include "../physics/constraints/box_constraint.hpp"
+#include "../display/screen.hpp"
 #include <string>
 #include <vector>
 
@@ -17,10 +18,11 @@ protected:
     double unit_height;
     int pixel_width;
     int pixel_height;
-    char** frame;
+    Screen* screen;
     ParticleContainer* physics;
     BoxConstraint* boundary;
     void handlePhysics(int);
+
 public:
 
     static std::string TYPE;

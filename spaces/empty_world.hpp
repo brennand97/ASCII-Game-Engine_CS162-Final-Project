@@ -12,7 +12,7 @@ class EmptyWorld : public Space {
 public:
 
     static std::string TYPE;
-    constexpr static int RELAXATION_ROUNDS = 2;
+    constexpr static int RELAXATION_ROUNDS = 5;
 
     EmptyWorld(int p_w, int p_h);
     EmptyWorld(int p_w, int p_h, double u_w, double u_h);
