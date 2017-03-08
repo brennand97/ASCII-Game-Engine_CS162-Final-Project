@@ -4,16 +4,15 @@
 
 #include "box.hpp"
 #include "../particle.hpp"
-#include "../constraints/constraint.hpp"
-#include "../constraints/line_constraint.hpp"
 #include "../../spaces/space.hpp"
 #include <string>
 #include <cmath>
+#include <algorithm>
 
 std::string Box::TYPE = "box";
 
 Box::Box(double *pos, double width, double height) : ParticleContainer() {
-    types.push_back(Box::TYPE);
+    addType(Box::TYPE);
 
     this->width = width;
     this->height = height;
@@ -73,4 +72,10 @@ Box::~Box() {
 
 void Box::render() {
     Space* world = (Space*) getWorld();
+
+    double rasterization_tolerence = 0.01;
+    double u_p_p = world->getUnitsPerPixel();
+
+
+
 }

@@ -7,13 +7,13 @@
 #ifndef FINAL_PROJECT_GAME_OBJECT_HPP
 #define FINAL_PROJECT_GAME_OBJECT_HPP
 
+#include "typed.hpp"
 #include <string>
 #include <vector>
 #include <algorithm>
 
-class GameObject {
+class GameObject : public Typed {
 protected:
-    std::vector<std::string> types;
     unsigned int obj_id;
     double previous_dt = -1;
     GameObject* parent = nullptr;
@@ -34,10 +34,6 @@ public:
     // Id system
     unsigned int getId() { return obj_id; }
     void setId(unsigned int id) { this->obj_id = id; }
-
-    // Type operations
-    std::string getType() { return types[types.size()]; }
-    bool isType(std::string type) { return std::find(types.begin(), types.end(), type) != types.end(); }
 
     // GameObject Parent
     GameObject* getParent() { return parent; }

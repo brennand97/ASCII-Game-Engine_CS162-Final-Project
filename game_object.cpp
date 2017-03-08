@@ -13,12 +13,11 @@
 unsigned int GameObject::n_obj_id = 0;
 std::string GameObject::TYPE = "game_object";
 
-GameObject::GameObject() {
-    types.push_back(GameObject::TYPE);
+GameObject::GameObject() : Typed(GameObject::TYPE) {
     obj_id = n_obj_id++;
 }
 
-GameObject::GameObject(const GameObject &obj) : GameObject() {
+GameObject::GameObject(const GameObject &obj) : Typed(GameObject::TYPE) {
     types.push_back(GameObject::TYPE);
     children = obj.children;
     obj_id = n_obj_id++;

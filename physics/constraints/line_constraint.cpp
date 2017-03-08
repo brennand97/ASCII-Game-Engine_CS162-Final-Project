@@ -4,30 +4,17 @@
 
 #include "line_constraint.hpp"
 #include <stdexcept>
+#include <string>
 
-LineConstraint::LineConstraint(double length, Constraint::Equality eq) : Constraint(Constraint::LINK::PAIR) {
+std::string LineConstraint::TYPE = "line_constraint";
+
+LineConstraint::LineConstraint(double length, Constraint::Equality eq) : PairConstraint() {
+    addType(LineConstraint::TYPE);
     this->length = length;
     this->eq = eq;
 }
 
-void LineConstraint::fix() {
-    if(particles.size() % 2 != 0) {
-        throw std::invalid_argument("There are not an even number of particles, there is an incomplete particle pair.");
-    } else {
-        for(unsigned int i = 0; i < particles.size(); i+=2) {
-            for(int j = 0; j < 2; j++) {
-                while ((i + j) < particles.size() && particles[i + j] == nullptr) {
-                    particles.erase(particles.begin() + i + j, particles.begin() + i + j + 1);
-                }
-            }
-            if(i + 1 < particles.size()) {
-                fix(particles[i], particles[i+1]);
-            }
-        }
-    }
-}
-
-void LineConstraint::fix(Particle *p1, Particle *p2) {
+void LineConstraint::fix(int iter, Particle *p1, Particle *p2) {
     double s_d = Constraint::sqr_dist(p1, p2);
     double delta = length - std::sqrt(s_d);
     switch (eq) {

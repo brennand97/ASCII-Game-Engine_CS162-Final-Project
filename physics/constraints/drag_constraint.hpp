@@ -5,21 +5,23 @@
 #ifndef FINAL_PROJECT_DRAG_CONSTRAINT_HPP
 #define FINAL_PROJECT_DRAG_CONSTRAINT_HPP
 
-#include "constraint.hpp"
+#include "single_constraint.hpp"
+#include <string>
 
-class DragConstraint : public Constraint {
+class DragConstraint : public SingleConstraint {
 private:
     double drag;
-    void applyDrag(Particle&);
+
 public:
+
+    static std::string TYPE;
 
     DragConstraint(double);
 
     double getDrag() { return drag; }
     void setDrag(double drag) { this->drag = drag; }
 
-    void fix();
-    void fix(Particle*, Particle*);
+    void fix(int, Particle*);
 };
 
 #endif //FINAL_PROJECT_DRAG_CONSTRAINT_HPP

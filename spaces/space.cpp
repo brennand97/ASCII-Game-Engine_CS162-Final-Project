@@ -3,26 +3,68 @@
 //
 
 #include "space.hpp"
+#include "../physics/constraints/box_constraint.hpp"
+#include <iostream>
 #include <string>
+#include <algorithm>
 
 std::string Space::TYPE = "space";
 
-Space::Space(int p_w, int p_h) : GameObject() {
-    types.push_back(Space::TYPE);
-    pixel_width = p_w;
-    pixel_height = p_h;
-    unit_width = p_w;
-    unit_height = p_h;
-    physics = new ParticleContainer();
-    physics->setParent(this);
-}
+Space::Space(int p_w, int p_h) : Space(p_w, p_h, p_w, p_h) {}
 
 Space::Space(int p_w, int p_h, double u_w, double u_h) : GameObject() {
-    types.push_back(Space::TYPE);
+    addType(Space::TYPE);
     pixel_width = p_w;
     pixel_height = p_h;
     unit_width = u_w;
     unit_height = u_h;
+
+    frame = new char*[pixel_width];
+    for(int i = 0; i < pixel_width; i++) {
+        frame[i] = new char[pixel_height];
+        for(int j = 0; j < pixel_height; j++) {
+            frame[i][j] = ' ';
+        }
+    }
+
     physics = new ParticleContainer();
     physics->setParent(this);
+    addChild(physics);
+
+    boundary = new BoxConstraint(0, 0, unit_width - 1, unit_height - 1);
+    physics->addSubGlobalConstraint(boundary);
+}
+
+Space::~Space() {
+    for(int i = 0; i < pixel_width; i++) {
+        delete [] frame[i];
+    }
+    delete [] frame;
+}
+
+void Space::handlePhysics(int t_iter) {
+
+    for(int i = 0; i < t_iter; i++) {
+
+        std::vector<GameObject*> c_pcs;
+        getChildrenOfType(ParticleContainer::TYPE, &c_pcs);
+        std::vector<GameObject*>::iterator it;
+        for(it = c_pcs.begin(); it != c_pcs.end(); it++) {
+            ((ParticleContainer*) *it)->handleConstraints( i + 1 );
+        }
+
+    }
+
+}
+
+double Space::getXUnitsPerPixel() {
+    return unit_width/pixel_width;
+}
+
+double Space::getYUnitsPerPixel() {
+    return unit_height/pixel_height;
+}
+
+double Space::getUnitsPerPixel() {
+    return std::min(getXUnitsPerPixel(), getYUnitsPerPixel());
 }

@@ -11,10 +11,18 @@
 std::string ParticleContainer::TYPE = "particle_container";
 
 ParticleContainer::ParticleContainer() : GameObject() {
-    types.push_back(ParticleContainer::TYPE);
+    addType(ParticleContainer::TYPE);
 }
 
-void ParticleContainer::getGlobalConstraints(std::vector < Constraint * > * vec) {
+void ParticleContainer::addSpecificConstraint(Constraint * p) {
+    specific_constraints.push_back(p);
+}
+
+void ParticleContainer::addSubGlobalConstraint(SingleConstraint * p) {
+    sub_global_constraints.push_back(p);
+}
+
+void ParticleContainer::getGlobalConstraints(std::vector < SingleConstraint * > * vec) {
     for(unsigned int i = 0; i < sub_global_constraints.size(); i++) {
         vec->push_back(sub_global_constraints[i]);
     }
@@ -25,7 +33,7 @@ void ParticleContainer::getGlobalConstraints(std::vector < Constraint * > * vec)
     }
 }
 
-void ParticleContainer::getSubGlobalConstraints(std::vector < Constraint * > * vec) {
+void ParticleContainer::getSubGlobalConstraints(std::vector < SingleConstraint * > * vec) {
     for(unsigned int i = 0; i < sub_global_constraints.size(); i++) {
         vec->push_back(sub_global_constraints[i]);
     }
@@ -37,14 +45,24 @@ void ParticleContainer::getSpecificConstraints(std::vector < Constraint * > * ve
     }
 }
 
-void ParticleContainer::handleConstraints() {
+void ParticleContainer::handleConstraints(int iter) {
     std::vector<Constraint*>::iterator it;
     for(it = specific_constraints.begin(); it != specific_constraints.end(); it++) {
-        (*it)->fix();
+        (*it)->fix(iter);
     }
-    std::vector<Constraint*> global_constraints;
+
+    // Get particles
+    std::vector<GameObject*>::iterator g_it;
+    std::vector<GameObject*> particles;
+    getChildrenOfType(Particle::TYPE, &particles);
+
+    // Get global constraints
+    std::vector<SingleConstraint*>::iterator s_it;
+    std::vector<SingleConstraint*> global_constraints;
     getGlobalConstraints(&global_constraints);
-    for(it = global_constraints.begin(); it != global_constraints.end(); it++) {
-        // TODO implement global constraints
+    for(s_it = global_constraints.begin(); s_it != global_constraints.end(); s_it++) {
+        for(g_it = particles.begin(); g_it != particles.end(); g_it++) {
+            (*s_it)->fix(iter, (Particle*) *g_it);
+        }
     }
 }

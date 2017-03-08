@@ -8,7 +8,7 @@
 std::string Particle::TYPE = "particle";
 
 Particle::Particle() : GameObject() {
-    types.push_back(Particle::TYPE);
+    addType(Particle::TYPE);
     mass = 1;
     pos = new double[2];
     pos[0] = 0;
@@ -19,7 +19,7 @@ Particle::Particle() : GameObject() {
 }
 
 Particle::Particle(double *pos) : GameObject() {
-    types.push_back(Particle::TYPE);
+    addType(Particle::TYPE);
     mass = 1;
     if(pos != nullptr) {
         this->pos = pos;
@@ -28,10 +28,13 @@ Particle::Particle(double *pos) : GameObject() {
         pos[0] = 0;
         pos[1] = 0;
     }
+    this->ppos = new double[2];
+    ppos[0] = pos[0];
+    ppos[1] = pos[1];
 }
 
 Particle::Particle(double *pos, double *vel) : GameObject() {
-    types.push_back(Particle::TYPE);
+    addType(Particle::TYPE);
     mass = 1;
     if(pos != nullptr) {
         this->pos = pos;

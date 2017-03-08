@@ -5,28 +5,29 @@
 #ifndef FINAL_PROJECT_CONSTRAINT_HPP
 #define FINAL_PROJECT_CONSTRAINT_HPP
 
+#include "../../typed.hpp"
 #include "../particle.hpp"
 #include <vector>
+#include <string>
 #include <cmath>
 
-class Constraint {
-public:
-    enum Equality { EQUAL, LESS_THAN, LESS_THAN_EQUAL, GREATER_THAN, GREATER_THAN_EQUAL};
-    enum LINK { PAIR, SINGLE };
+class Constraint : public Typed {
 protected:
-    Constraint::LINK link;
     std::vector<Particle*> particles;
 public:
 
-    Constraint(Constraint::LINK l) : link(l) {}
+    enum Equality { EQUAL, LESS_THAN, LESS_THAN_EQUAL, GREATER_THAN, GREATER_THAN_EQUAL};
+
+    static std::string TYPE;
+
+    Constraint() : Typed(Constraint::TYPE) {}
     virtual ~Constraint() {}
 
     std::vector<Particle*> getParticles() { return particles; }
     void addParticle(Particle* p) { particles.push_back(p); }
     void removeParticle(unsigned int id);
 
-    virtual void fix() = 0;
-    virtual void fix(Particle *p1, Particle *p2) = 0;
+    virtual void fix(int iter) = 0;
 
     static double sqr_dist(Particle *p1, Particle *p2) {
         return (((*p1)[0] - (*p2)[0]) * ((*p1)[0] - (*p2)[0])) + (((*p1)[1] - (*p2)[1]) * ((*p1)[1] - (*p2)[1]));
