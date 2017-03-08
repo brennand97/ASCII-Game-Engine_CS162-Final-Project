@@ -25,7 +25,7 @@ void EmptyWorld::setup() {
     double * vel1 = new double[2];
     pos1[0] = (unit_width / 2) - 3;
     pos1[1] = (unit_height / 2) - 2;
-    vel1[0] = 80;
+    vel1[0] = 20;
     vel1[1] = 0;
     Particle* p1 = new Particle(pos1, vel1);
     delete vel1;

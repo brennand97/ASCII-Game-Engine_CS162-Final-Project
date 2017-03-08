@@ -17,7 +17,7 @@ int main (int argc, char** argv) {
 
     GameObject::n_obj_id = 0;
 
-    EmptyWorld* emptyWorld = new EmptyWorld(150,50,50,25);
+    EmptyWorld* emptyWorld = new EmptyWorld(50,25,50,25);
     emptyWorld->setup();
 
     double dt = 0.5;
@@ -29,7 +29,7 @@ int main (int argc, char** argv) {
         std::vector<GameObject*> children;
         emptyWorld->getChildrenOfType(Particle::TYPE, &children);
 
-//        i++;
+        i++;
 //        std::cout << std::endl;
 //        std::cout << "i: " << i << std::endl;
 //        std::cout << "Particle 1: (" << (*((Particle*) children[0]))[0] << ", " << (*((Particle*) children[0]))[1] << ")" << std::endl;

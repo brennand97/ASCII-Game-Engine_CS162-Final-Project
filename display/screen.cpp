@@ -21,17 +21,17 @@ Screen::~Screen() {
 
 void Screen::moveCursorVertically(int j) {
     if(j > 0) {
-        std::cout << "\033[" << j << "A";
+        std::cout << "\033[" << j << "A" << std::flush;
     } else if(j < 0) {
-        std::cout << "\033[" << j << "B";
+        std::cout << "\033[" << -j << "B" << std::flush;
     }
 }
 
 void Screen::moveCursorHorizontally(int i) {
     if(i > 0) {
-        std::cout << "\033[" << i << "C";
+        std::cout << "\033[" << i << "C" << std::flush;
     } else if (i < 0) {
-        std::cout << "\033[" << i << "D";
+        std::cout << "\033[" << -i << "D" << std::flush;
     }
 }
 
@@ -52,7 +52,7 @@ std::vector<Pixel> Screen::pullDeltaFrame() {
     for(int j = 0; j < height; j++) {
         for(int i = 0; i < width; i++) {
             int index = i + (j * width);
-            if((*frame)[index] != (*previous_frame)[index]) {
+            if((*frame)[index].getChar() != (*previous_frame)[index].getChar()) {
                 delta.push_back((*frame)[index]);
             }
         }
@@ -69,9 +69,9 @@ void Screen::addToFrame(std::vector <Pixel> add) {
 
 void Screen::displayFrame() {
     std::vector<Pixel> v_frame;
-//    if(first_frame) {
+    if(first_frame) {
         first_frame = false;
-        v_frame = *frame;
+        v_frame = *previous_frame;
         for(int j = 0; j < height; j++) {
             for(int i = 0; i < width; i++) {
                 int index = i + (j * width);
@@ -79,28 +79,24 @@ void Screen::displayFrame() {
             }
             std::cout << std::endl;
         }
-        moveCursorVertically(height);
-//    } else {
-//
-//        int p_i = 0;
-//        int p_j = height - 1;
-//        moveCursorVertically(p_j + 1);
-//        v_frame = pullDeltaFrame();
-//        std::vector<Pixel>::iterator it;
-//        for(it = v_frame.begin(); it != v_frame.end(); it++) {
-//            //TODO this could use some optimizing
-//            Pixel p = (*it);
-//            int d_i = p.getI() - p_i;
-//            int d_j = p.getJ() - p_j;
-//            moveCursorHorizontally(d_i);
-//            moveCursorVertically(d_j);
-//            std::cout << p.getChar();
-//            p_i = p.getI();
-//            p_j = p.getJ();
-//        }
-//        moveCursorHorizontally( -p_i );
-//        moveCursorVertically( -p_j - 1 );
-//
-//    }
+    }
+
+    int p_i = 0;
+    int p_j = -1;
+    v_frame = pullDeltaFrame();
+    for(unsigned int i = 0; i < v_frame.size(); i++) {
+        //TODO this could use some optimizing
+        Pixel p = v_frame[i];
+        int d_i = p.getI() - p_i;
+        int d_j = p.getJ() - p_j;
+        moveCursorHorizontally(d_i);
+        moveCursorVertically(d_j);
+        std::cout << p.getChar() << std::flush;
+        p_i = p.getI() + 1;
+        p_j = p.getJ();
+    }
+    moveCursorHorizontally( -p_i );
+    moveCursorVertically( -p_j - 1 );
+
     newFrame();
 }
