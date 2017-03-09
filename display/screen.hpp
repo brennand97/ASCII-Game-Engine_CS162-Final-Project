@@ -39,7 +39,9 @@ public:
 
     void printValue(int j, std::string value);
 
-    std::vector<Pixel> getLine(double * p1, double * p2, char c);
+    void getLine(double * p1, double * p2, char c, std::vector<Pixel>* vec);
+    void fillTriangle(double * p1, double * p2, double * p3, char c, std::vector<Pixel>* vec);
+    void outlineTriangle(double * p1, double * p2, double * p3, char c, std::vector<Pixel>* vec);
 
 };
 

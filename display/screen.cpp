@@ -140,21 +140,66 @@ void Screen::printValue(int j, std::string value) {
     moveCursorVertically(-height + j);
 }
 
-std::vector<Pixel> Screen::getLine(double *p1, double *p2, char c) {
-    std::vector<Pixel> line;
+void Screen::getLine(double *p1, double *p2, char c, std::vector<Pixel>* vec) {
     double l = std::sqrt(((p2[0] - p1[0])*(p2[0] - p1[0])) + ((p2[1] - p1[1])*(p2[1] - p1[1])));
     double m = (p2[1] - p1[1]) / (p2[0] - p1[0]);
+    bool vert = (p2[0] - p1[0]) == 0;
     double s = 0;
-    double t_sign = std::abs(p2[0] - p1[0]) / (p2[0] - p1[0]);
+    double t_sign = (p2[0] - p1[0]) > 0 ? 1.0 : -1.0;
     while (s < l) {
-        double t = t_sign * s / std::sqrt(1+(m*m));
+        double t;
+        if(vert) {
+            t = t_sign * s;
+        } else {
+            t = t_sign * s / std::sqrt(1+(m*m));
+        }
         s += 1;
-        int i = std::floor(t + p1[0]);
-        int j = std::floor((m * t) + p1[1]);
+        double x, y;
+        if(vert) {
+            x = p1[0];
+            y = t + p1[1];
+        } else {
+            x = t + p1[0];
+            y = (m * t) + p1[1];
+        }
+        int i = x;
+        int j = y;
         Pixel p(i, j, c);
-        if(line.size() == 0 || line[line.size() - 1] != p) {
-            line.push_back(p);
+        if (vec->size() == 0 || (*vec)[vec->size() - 1] != p) {
+            vec->push_back(p);
         }
     }
-    return line;
+}
+
+void Screen::fillTriangle(double *p1, double *p2, double *p3, char c, std::vector <Pixel> *vec) {
+    double l = std::sqrt(((p2[0] - p1[0])*(p2[0] - p1[0])) + ((p2[1] - p1[1])*(p2[1] - p1[1])));
+    double m = (p2[1] - p1[1]) / (p2[0] - p1[0]);
+    bool vert = (p2[0] - p1[0]) == 0;
+    double s = 0;
+    double t_sign = (p2[0] - p1[0]) > 0 ? 1.0 : -1.0;
+    while (s < l) {
+        double t;
+        if(vert) {
+            t = t_sign * s;
+        } else {
+            t = t_sign * s / std::sqrt(1+(m*m));
+        }
+        s += 0.8;
+        double * p4 = new double[2];
+        if(vert) {
+            p4[0] = p1[0];
+            p4[1] = t + p1[1];
+        } else {
+            p4[0] = t + p1[0];
+            p4[1] = (m * t) + p1[1];
+        }
+        getLine(p3, p4, c, vec);
+        delete [] p4;
+    }
+}
+
+void Screen::outlineTriangle(double *p1, double *p2, double *p3, char c, std::vector <Pixel> *vec) {
+    getLine(p1, p2, c, vec);
+    getLine(p2, p3, c, vec);
+    getLine(p3, p1, c, vec);
 }
