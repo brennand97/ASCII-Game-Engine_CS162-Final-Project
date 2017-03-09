@@ -17,7 +17,8 @@ int main (int argc, char** argv) {
 
     GameObject::n_obj_id = 0;
 
-    EmptyWorld* emptyWorld = new EmptyWorld(50,25,50,25);
+    Screen* screen = new Screen(100, 50);
+    EmptyWorld* emptyWorld = new EmptyWorld(50.0,50.0);
     emptyWorld->setup();
 
     double dt = 0.5;
@@ -38,7 +39,18 @@ int main (int argc, char** argv) {
 
         emptyWorld->step(dt);
 
-        emptyWorld->render();
+        emptyWorld->render(screen);
+        screen->displayFrame();
+        screen->printValue(1, (" Particle 1: (" + std::to_string((*((Particle*) children[0]))[0]) +
+                ", " + std::to_string((*((Particle*) children[0]))[1]) + ")"));
+        screen->printValue(2, (" Particle 1 (Vel): (" +
+                std::to_string(((*((Particle*) children[0]))[0] - (*((Particle*) children[0])).getPPosition()[0]) / dt) +
+                ", " + std::to_string(((*((Particle*) children[0]))[1] - (*((Particle*) children[0])).getPPosition()[1]) / dt) + ")"));
+        screen->printValue(3, (" Particle 2: (" + std::to_string((*((Particle*) children[1]))[0]) +
+                ", " + std::to_string((*((Particle*) children[2]))[1]) + ")"));
+        screen->printValue(4, (" Particle 2 (Vel): (" +
+                               std::to_string(((*((Particle*) children[1]))[0] - (*((Particle*) children[1])).getPPosition()[0]) / dt) +
+                               ", " + std::to_string(((*((Particle*) children[1]))[1] - (*((Particle*) children[1])).getPPosition()[1]) / dt) + ")"));
 
         std::this_thread::sleep_for(std::chrono::milliseconds(30));
         std::chrono::high_resolution_clock::time_point nt = std::chrono::high_resolution_clock::now();

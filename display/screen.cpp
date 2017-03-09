@@ -4,6 +4,7 @@
 
 #include "screen.hpp"
 #include <algorithm>
+#include <cmath>
 
 Screen::Screen(int width, int height) {
     this->width = width;
@@ -63,7 +64,9 @@ std::vector<Pixel> Screen::pullDeltaFrame() {
 void Screen::addToFrame(std::vector <Pixel> add) {
     std::vector<Pixel>::iterator it;
     for(it = add.begin(); it != add.end(); it++) {
-        (*std::find(frame->begin(), frame->end(), *it)).setChar((*it).getChar());
+        if((*it).getI() >= 0 && (*it).getI() < width && (*it).getJ() >= 0 && (*it).getJ() < height) {
+            (*std::find(frame->begin(), frame->end(), *it)).setChar((*it).getChar());
+        }
     }
 }
 
@@ -72,17 +75,45 @@ void Screen::displayFrame() {
     if(first_frame) {
         first_frame = false;
         v_frame = *previous_frame;
-        for(int j = 0; j < height; j++) {
-            for(int i = 0; i < width; i++) {
-                int index = i + (j * width);
-                std::cout << v_frame[index].getChar();
+        for(int j = height; j >= -1; j--) {
+            for(int i = -1; i <= width; i++) {
+                if(i >= 0 && i < width && j >= 0 && j < height) {
+                    int index = i + (j * width);
+                    std::cout << v_frame[index].getChar();
+                } else {
+                    if(i == -1 || i == width) {
+                        if(j == -1) {
+                            if( i == -1) {
+                                std::cout << '\\';
+                            } else {
+                                std::cout << '/';
+                            }
+                        } else if(j == height) {
+                            if( i == -1) {
+                                std::cout << '/';
+                            } else {
+                                std::cout << '\\';
+                            }
+                        } else {
+                            std::cout << '|';
+                        }
+                    } else {
+                        std::cout << '-';
+                    }
+                }
             }
-            std::cout << std::endl;
+            if(j != -1) {
+                std::cout << std::endl;
+            } else {
+                std::cout << std::flush;
+                moveCursorVertically(1);
+                moveCursorHorizontally(-width - 1);
+            }
         }
     }
 
     int p_i = 0;
-    int p_j = -1;
+    int p_j = 0;
     v_frame = pullDeltaFrame();
     for(unsigned int i = 0; i < v_frame.size(); i++) {
         //TODO this could use some optimizing
@@ -96,7 +127,34 @@ void Screen::displayFrame() {
         p_j = p.getJ();
     }
     moveCursorHorizontally( -p_i );
-    moveCursorVertically( -p_j - 1 );
+    moveCursorVertically( -p_j );
 
     newFrame();
+}
+
+void Screen::printValue(int j, std::string value) {
+    moveCursorVertically(height - j);
+    moveCursorHorizontally(width + 1);
+    std::cout << value << std::flush;
+    moveCursorHorizontally( -width - 1 - value.length() );
+    moveCursorVertically(-height + j);
+}
+
+std::vector<Pixel> Screen::getLine(double *p1, double *p2, char c) {
+    std::vector<Pixel> line;
+    double l = std::sqrt(((p2[0] - p1[0])*(p2[0] - p1[0])) + ((p2[1] - p1[1])*(p2[1] - p1[1])));
+    double m = (p2[1] - p1[1]) / (p2[0] - p1[0]);
+    double s = 0;
+    double t_sign = std::abs(p2[0] - p1[0]) / (p2[0] - p1[0]);
+    while (s < l) {
+        double t = t_sign * s / std::sqrt(1+(m*m));
+        s += 1;
+        int i = std::floor(t + p1[0]);
+        int j = std::floor((m * t) + p1[1]);
+        Pixel p(i, j, c);
+        if(line.size() == 0 || line[line.size() - 1] != p) {
+            line.push_back(p);
+        }
+    }
+    return line;
 }

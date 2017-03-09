@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 #include "pixel.hpp"
 
 class Screen {
@@ -30,8 +31,15 @@ public:
     Screen(int width, int height);
     ~Screen();
 
+    int getWidth() { return width; }
+    int getHeight() { return height; }
+
     void addToFrame(std::vector<Pixel>);
     void displayFrame();
+
+    void printValue(int j, std::string value);
+
+    std::vector<Pixel> getLine(double * p1, double * p2, char c);
 
 };
 

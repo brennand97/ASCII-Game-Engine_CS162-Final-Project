@@ -8,6 +8,7 @@
 #define FINAL_PROJECT_GAME_OBJECT_HPP
 
 #include "typed.hpp"
+#include "display/screen.hpp"
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -56,7 +57,7 @@ public:
     double getPreviousStepTime() { return previous_dt; }
 
     // Virtual Render function
-    virtual void render() = 0;
+    virtual void render(Screen* screen) = 0;
 
     // Operators
     bool operator ==(const GameObject &obj) { return this->obj_id == obj.obj_id; }

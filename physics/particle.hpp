@@ -38,7 +38,7 @@ public:
     void setPPosition(double * ppos) { delete [] ppos; this->ppos = ppos; }
 
     void step(double dt);
-    void render();
+    void render(Screen*);
 
     double &operator [](const int i) { return pos[i]; }
 };

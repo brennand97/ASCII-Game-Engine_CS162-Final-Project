@@ -14,11 +14,10 @@ public:
     static std::string TYPE;
     constexpr static int RELAXATION_ROUNDS = 5;
 
-    EmptyWorld(int p_w, int p_h);
-    EmptyWorld(int p_w, int p_h, double u_w, double u_h);
+    EmptyWorld(double u_w, double u_h);
 
     void setup();
-    void render();
+    void render(Screen*);
     void step(double);
 
 };

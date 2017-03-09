@@ -70,12 +70,6 @@ Box::~Box() {
     delete diagonal_constraint;
 }
 
-void Box::render() {
-    Space* world = (Space*) getWorld();
-
-    double rasterization_tolerence = 0.01;
-    double u_p_p = world->getUnitsPerPixel();
-
-
+void Box::render(Screen* screen) {
 
 }

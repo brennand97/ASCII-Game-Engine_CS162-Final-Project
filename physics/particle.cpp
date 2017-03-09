@@ -85,6 +85,6 @@ void Particle::step(double dt) {
 
 }
 
-void Particle::render() {
+void Particle::render(Screen* screen) {
 
 }

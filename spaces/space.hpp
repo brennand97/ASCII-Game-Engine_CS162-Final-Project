@@ -16,9 +16,6 @@ class Space : public GameObject {
 protected:
     double unit_width;
     double unit_height;
-    int pixel_width;
-    int pixel_height;
-    Screen* screen;
     ParticleContainer* physics;
     BoxConstraint* boundary;
     void handlePhysics(int);
@@ -27,20 +24,13 @@ public:
 
     static std::string TYPE;
 
-    Space(int p_w, int p_h);
-    Space(int p_w, int p_h, double u_w, double u_h);
+    Space(double u_w, double u_h);
     ~Space();
 
     virtual void setup() = 0;
 
-    int getPixelWidth() { return pixel_width; }
-    int getPixelHeight() { return pixel_height; }
-    double getUnitWidth() { return unit_width; }
-    double getUnitHeight() { return unit_height; }
-
-    double getXUnitsPerPixel();
-    double getYUnitsPerPixel();
-    double getUnitsPerPixel();
+    double getWidth() { return unit_width; }
+    double getHeight() { return unit_height; }
 };
 
 #endif //FINAL_PROJECT_SPACE_HPP

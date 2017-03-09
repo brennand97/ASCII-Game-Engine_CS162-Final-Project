@@ -33,7 +33,7 @@ public:
 
     void handleConstraints(int);
 
-    virtual void render() {}
+    virtual void render(Screen*) {}
 
 };
 

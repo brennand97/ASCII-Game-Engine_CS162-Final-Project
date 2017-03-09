@@ -10,16 +10,10 @@
 
 std::string Space::TYPE = "space";
 
-Space::Space(int p_w, int p_h) : Space(p_w, p_h, p_w, p_h) {}
-
-Space::Space(int p_w, int p_h, double u_w, double u_h) : GameObject() {
+Space::Space(double u_w, double u_h) : GameObject() {
     addType(Space::TYPE);
-    pixel_width = p_w;
-    pixel_height = p_h;
     unit_width = u_w;
     unit_height = u_h;
-
-    screen = new Screen(pixel_width, pixel_height);
 
     physics = new ParticleContainer();
     physics->setParent(this);
@@ -29,9 +23,7 @@ Space::Space(int p_w, int p_h, double u_w, double u_h) : GameObject() {
     physics->addSubGlobalConstraint(boundary);
 }
 
-Space::~Space() {
-    delete screen;
-}
+Space::~Space() {}
 
 void Space::handlePhysics(int t_iter) {
 
@@ -46,16 +38,4 @@ void Space::handlePhysics(int t_iter) {
 
     }
 
-}
-
-double Space::getXUnitsPerPixel() {
-    return unit_width/pixel_width;
-}
-
-double Space::getYUnitsPerPixel() {
-    return unit_height/pixel_height;
-}
-
-double Space::getUnitsPerPixel() {
-    return std::min(getXUnitsPerPixel(), getYUnitsPerPixel());
 }

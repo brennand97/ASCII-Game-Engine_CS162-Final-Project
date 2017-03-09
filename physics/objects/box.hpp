@@ -28,7 +28,7 @@ public:
     double getHeight() { return height; }
     void setHeight(double h) { this->height = h; }
 
-    void render();
+    void render(Screen*);
 };
 
 #endif //FINAL_PROJECT_BOX_HPP
