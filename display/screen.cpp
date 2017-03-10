@@ -140,35 +140,62 @@ void Screen::printValue(int j, std::string value) {
     moveCursorVertically(-height + j);
 }
 
-void Screen::getLine(double *p1, double *p2, char c, std::vector<Pixel>* vec) {
-    double l = std::sqrt(((p2[0] - p1[0])*(p2[0] - p1[0])) + ((p2[1] - p1[1])*(p2[1] - p1[1])));
-    double m = (p2[1] - p1[1]) / (p2[0] - p1[0]);
-    bool vert = (p2[0] - p1[0]) == 0;
-    double s = 0;
-    double t_sign = (p2[0] - p1[0]) > 0 ? 1.0 : -1.0;
-    while (s < l) {
-        double t;
-        if(vert) {
-            t = t_sign * s;
-        } else {
-            t = t_sign * s / std::sqrt(1+(m*m));
-        }
-        s += 1;
-        double x, y;
-        if(vert) {
-            x = p1[0];
-            y = t + p1[1];
-        } else {
-            x = t + p1[0];
-            y = (m * t) + p1[1];
-        }
-        int i = x;
-        int j = y;
-        Pixel p(i, j, c);
-        if (vec->size() == 0 || (*vec)[vec->size() - 1] != p) {
+void Screen::line(double *p1, double *p2, char c, std::vector<Pixel>* vec) {
+    bresenhamLine(p1, p2, c, vec);
+}
+
+void Screen::bresenhamLine(double *p1, double *p2, char c, std::vector <Pixel> *vec) {
+
+    float x1 = p1[0];
+    float y1 = p1[1];
+    float x2 = p2[0];
+    float y2 = p2[1];
+
+    // Code from https://rosettacode.org/wiki/Bitmap/Bresenham%27s_line_algorithm#C.2B.2B
+
+    const bool steep = (fabs(y2 - y1) > fabs(x2 - x1));
+    if(steep)
+    {
+        std::swap(x1, y1);
+        std::swap(x2, y2);
+    }
+
+    if(x1 > x2)
+    {
+        std::swap(x1, x2);
+        std::swap(y1, y2);
+    }
+
+    const float dx = x2 - x1;
+    const float dy = fabs(y2 - y1);
+
+    float error = dx / 2.0f;
+    const int ystep = (y1 < y2) ? 1 : -1;
+    int y = (int)y1;
+
+    const int maxX = (int)x2;
+
+    for(int x=(int)x1; x<maxX; x++)
+    {
+        if(steep)
+        {
+            Pixel p(y, x, c);
             vec->push_back(p);
         }
+        else
+        {
+            Pixel p(x, y, c);
+            vec->push_back(p);
+        }
+
+        error -= dy;
+        if(error < 0)
+        {
+            y += ystep;
+            error += dx;
+        }
     }
+
 }
 
 void Screen::fillTriangle(double *p1, double *p2, double *p3, char c, std::vector <Pixel> *vec) {
@@ -193,13 +220,13 @@ void Screen::fillTriangle(double *p1, double *p2, double *p3, char c, std::vecto
             p4[0] = t + p1[0];
             p4[1] = (m * t) + p1[1];
         }
-        getLine(p3, p4, c, vec);
+        bresenhamLine(p3, p4, c, vec);
         delete [] p4;
     }
 }
 
 void Screen::outlineTriangle(double *p1, double *p2, double *p3, char c, std::vector <Pixel> *vec) {
-    getLine(p1, p2, c, vec);
-    getLine(p2, p3, c, vec);
-    getLine(p3, p1, c, vec);
+    bresenhamLine(p1, p2, c, vec);
+    bresenhamLine(p2, p3, c, vec);
+    bresenhamLine(p3, p1, c, vec);
 }

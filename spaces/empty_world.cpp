@@ -25,7 +25,7 @@ void EmptyWorld::setup() {
     pos1[0] = (unit_width / 2) - 3;
     pos1[1] = (unit_height / 2) - 2;
     vel1[0] = 20;
-    vel1[1] = 0;
+    vel1[1] = 10;
     Particle* p1 = new Particle(pos1, vel1);
     delete vel1;
 
@@ -34,9 +34,9 @@ void EmptyWorld::setup() {
     double * pos2 = new double[2];
     double * vel2 = new double[2];
     pos2[0] = (unit_width / 2) + 2;
-    pos2[1] = (unit_height / 2) - 3;
-    vel2[0] = 0;
-    vel2[1] = 2;
+    pos2[1] = (unit_height / 2) + 3;
+    vel2[0] = -20;
+    vel2[1] = 10;
     Particle* p2 = new Particle(pos2, vel2);
     delete vel2;
 
@@ -79,7 +79,8 @@ void EmptyWorld::render(Screen* screen) {
 
     double x_upp = unit_width / screen->getWidth();
     double y_upp = unit_height / screen->getHeight();
-
+	
+	/*
     double *p4 = new double[2];
     p4[0] = (*((Particle *) physics->getChildren()[3]))[0] / x_upp;
     p4[1] = (*((Particle *) physics->getChildren()[3]))[1] / y_upp;
@@ -97,6 +98,8 @@ void EmptyWorld::render(Screen* screen) {
     delete [] p4;
     delete [] p5;
     delete [] p6;
+
+	*/
 
     std::vector<Pixel> particles;
     for(int i = 0; i < 10; i++) {
@@ -118,7 +121,7 @@ void EmptyWorld::render(Screen* screen) {
     p2[1] = (*((Particle*) physics->getChildren()[1]))[1] / y_upp;
 
     std::vector<Pixel> line;
-    screen->getLine(p1, p2, '#', &line);
+    screen->bresenhamLine(p1, p2, '#', &line);
     screen->addToFrame(line);
 
     delete [] p1;

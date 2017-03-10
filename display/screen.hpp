@@ -26,6 +26,34 @@ protected:
     void moveCursorVertically(int j);
     void moveCursorHorizontally(int i);
 
+    int signum(int a, bool zero = true) {
+        if (a > 0) {
+            return 1;
+        } else if (a < 0) {
+            return -1;
+        } else if (zero) {
+            return 0;
+        } else {
+            return 1;
+        }
+    };
+
+    double fabs(double d) {
+        if ( d < 0 ) {
+            return -d;
+        } else {
+            return d;
+        }
+    }
+
+    int fabs(int d) {
+        if ( d < 0 ) {
+            return -d;
+        } else {
+            return d;
+        }
+    }
+
 public:
 
     Screen(int width, int height);
@@ -39,7 +67,8 @@ public:
 
     void printValue(int j, std::string value);
 
-    void getLine(double * p1, double * p2, char c, std::vector<Pixel>* vec);
+    void line(double * p1, double * p2, char c, std::vector<Pixel>* vec);
+    void bresenhamLine(double * p1, double * p2, char c, std::vector<Pixel>* vec);
     void fillTriangle(double * p1, double * p2, double * p3, char c, std::vector<Pixel>* vec);
     void outlineTriangle(double * p1, double * p2, double * p3, char c, std::vector<Pixel>* vec);
 
