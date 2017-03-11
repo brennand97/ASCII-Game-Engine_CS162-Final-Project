@@ -27,7 +27,7 @@ void EmptyWorld::setup() {
     vel1[0] = 20;
     vel1[1] = 10;
     Particle* p1 = new Particle(pos1, vel1);
-    delete vel1;
+    delete [] vel1;
 
     physics->addChild(p1);
 
@@ -38,7 +38,7 @@ void EmptyWorld::setup() {
     vel2[0] = -20;
     vel2[1] = 10;
     Particle* p2 = new Particle(pos2, vel2);
-    delete vel2;
+    delete [] vel2;
 
     physics->addChild(p2);
 
@@ -50,7 +50,7 @@ void EmptyWorld::setup() {
         vel3[0] = 10 * std::sin((2*3.14) * i / 10);
         vel3[1] = 10 * std::cos((2*3.14) * i / 10);
         Particle *p3 = new Particle(pos3, vel3);
-        delete vel3;
+        delete [] vel3;
 
         physics->addChild(p3);
     }
