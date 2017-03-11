@@ -14,12 +14,13 @@ protected:
     double y;
     double width;
     double height;
+    double rigid;
 public:
 
     static std::string TYPE;
 
-    BoxConstraint(double x, double y, double width, double height);
-    BoxConstraint(int* pos, double width, double height);
+    BoxConstraint(double x, double y, double width, double height, double rigid);
+    BoxConstraint(int* pos, double width, double height, double rigid);
 
     double getX() { return x; }
     void setX(double x) { this->x = x; }
@@ -29,6 +30,8 @@ public:
     void setWidth(double width) { this->width = width; }
     double getHeight() { return height; }
     void setHeight(double height) { this->height = height; }
+    double getRigid() { return rigid; }
+    void setRigid(double rigid) { this->rigid = rigid; }
 
     void fix(int, Particle*);
 

@@ -63,6 +63,16 @@ void ParticleContainer::getSpecificConstraints(std::vector < Constraint * > * ve
     }
 }
 
+void ParticleContainer::addVelocity(double *vel) {
+    std::vector<GameObject*> particles;
+    getChildrenOfType(Particle::TYPE, &particles);
+    std::vector<GameObject*>::iterator it;
+    for(it = particles.begin(); it != particles.end(); it++) {
+        (*((Particle*) (*it)))[0] += vel[0];
+        (*((Particle*) (*it)))[1] += vel[1];
+    }
+}
+
 void ParticleContainer::handleConstraints(int iter) {
     std::vector<Constraint*>::iterator it;
     for(it = specific_constraints.begin(); it != specific_constraints.end(); it++) {

@@ -3,9 +3,9 @@
 //
 
 #include "empty_world.hpp"
-#include "../physics/constraints/bouncy_box_constraint.hpp"
 #include "../physics/constraints/line_constraint.hpp"
 #include "../physics/constraints/drag_constraint.hpp"
+#include "../physics/objects/box.hpp"
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -21,10 +21,7 @@ EmptyWorld::EmptyWorld(double u_w, double u_h) : Space(u_w, u_h) {
 
 void EmptyWorld::setup() {
 
-    physics->removeSubGlobalConstraint(0);
-    delete boundary;
-    this->boundary = new BouncyBoxConstraint(0, 0, unit_width - 1, unit_height - 1, 0.001);
-    physics->addSubGlobalConstraint(boundary);
+    boundary->setRigid(0.01);
 
     double * pos1 = new double[2];
     double * vel1 = new double[2];
@@ -41,8 +38,8 @@ void EmptyWorld::setup() {
     double * vel2 = new double[2];
     pos2[0] = (unit_width / 2) + 2;
     pos2[1] = (unit_height / 2) + 3;
-    vel2[0] = -20;
-    vel2[1] = 10;
+    vel2[0] = 0;
+    vel2[1] = 5;
     Particle* p2 = new Particle(pos2, vel2);
     delete [] vel2;
 
@@ -60,6 +57,21 @@ void EmptyWorld::setup() {
 
         physics->addChild(p3);
     }
+
+    double * b_box = new double[2];
+    b_box[0] = 10.0;
+    b_box[1] = 20.0;
+    Box* box = new Box(b_box, 10, 10);
+    box->setParent(physics);
+    double * b_vel = new double[2];
+    b_vel[0] = 5;
+    b_vel[1] = 5;
+    box->addVelocity(b_vel);
+    (*((Particle*)box->getChildren()[0]))[0] += 4;
+    physics->addChild(box);
+
+    delete [] b_box;
+    delete [] b_vel;
 
     LineConstraint* lc = new LineConstraint(10, Constraint::Equality::EQUAL);
     lc->addParticle(p1);
@@ -108,8 +120,6 @@ void EmptyWorld::render(Screen* screen) {
     delete [] p5;
     delete [] p6;
 
-
-
     std::vector<Pixel> particles;
     for(int i = 0; i < 10; i++) {
         int *p3 = new int[2];
@@ -130,10 +140,12 @@ void EmptyWorld::render(Screen* screen) {
     p2[1] = (*((Particle*) physics->getChildren()[1]))[1] / y_upp;
 
     std::vector<Pixel> line;
-    screen->bresenhamLine(p1, p2, '#', &line);
+    screen->line(p1, p2, '#', &line);
     screen->addToFrame(line);
 
     delete [] p1;
     delete [] p2;
+
+    renderChildren(screen);
 
 }

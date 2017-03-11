@@ -7,15 +7,16 @@
 
 std::string BoxConstraint::TYPE = "box_constraint";
 
-BoxConstraint::BoxConstraint(double x, double y, double width, double height) : SingleConstraint() {
+BoxConstraint::BoxConstraint(double x, double y, double width, double height, double rigid) : SingleConstraint() {
     addType(BoxConstraint::TYPE);
     this->x = x;
     this->y = y;
     this->width = width;
     this->height = height;
+    this->rigid = rigid;
 }
 
-BoxConstraint::BoxConstraint(int *pos, double width, double height) : SingleConstraint() {
+BoxConstraint::BoxConstraint(int *pos, double width, double height, double rigid) : SingleConstraint() {
     addType(BoxConstraint::TYPE);
     if(pos != nullptr) {
         x = pos[0];
@@ -26,17 +27,18 @@ BoxConstraint::BoxConstraint(int *pos, double width, double height) : SingleCons
     }
     this->width = width;
     this->height = height;
+    this->rigid = rigid;
 }
 
 void BoxConstraint::fix(int iter, Particle * p) {
     if((*p)[0] < x) {
-        (*p)[0] -= (*p)[0] - x;
+        (*p)[0] -= ((*p)[0] - x) * rigid;
     } else if((*p)[0] > x + width) {
-        (*p)[0] -= (*p)[0] - (x + width);
+        (*p)[0] -= ((*p)[0] - (x + width)) * rigid;
     }
     if((*p)[1] < y) {
-        (*p)[1] -= (*p)[1] - y;
+        (*p)[1] -= ((*p)[1] - y) * rigid;
     } else if((*p)[1] > y + height) {
-        (*p)[1] -= (*p)[1] - (y + height);
+        (*p)[1] -= ((*p)[1] - (y + height)) * rigid;
     }
 }

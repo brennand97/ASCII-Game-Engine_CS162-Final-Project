@@ -22,6 +22,7 @@ protected:
     std::vector<GameObject*> children;
     unsigned int getChildIndex(unsigned int c_obj_id);
     void stepChildren(double dt);
+    void renderChildren(Screen* screen);
 public:
 
     static unsigned int n_obj_id;

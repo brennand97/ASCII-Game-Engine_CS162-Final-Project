@@ -33,9 +33,13 @@ public:
     std::vector<Constraint*> getSpecificConstraints() { return specific_constraints; }
     void getSpecificConstraints(std::vector<Constraint*>*);
 
+    void addVelocity(double* vel);
+
     void handleConstraints(int);
 
-    virtual void render(Screen*) {}
+    virtual void render(Screen* screen) {
+        renderChildren(screen);
+    }
 
 };
 

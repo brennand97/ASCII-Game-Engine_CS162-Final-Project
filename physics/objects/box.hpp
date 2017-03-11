@@ -13,6 +13,7 @@ class Box : public ParticleContainer {
 private:
     double width;
     double height;
+    char draw_char = '#';
     LineConstraint* width_constraint;
     LineConstraint* height_constraint;
     LineConstraint* diagonal_constraint;
@@ -27,6 +28,8 @@ public:
     void setWidth(double w) { this->width = w; }
     double getHeight() { return height; }
     void setHeight(double h) { this->height = h; }
+    char getDrawChar() { return draw_char; }
+    void setDrawChar(char c) { this->draw_char = c; }
 
     void render(Screen*);
 };

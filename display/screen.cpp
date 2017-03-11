@@ -144,6 +144,14 @@ void Screen::line(double *p1, double *p2, char c, std::vector<Pixel>* vec) {
     bresenhamLine(p1, p2, c, vec);
 }
 
+void Screen::line(const double *p1, const double *p2, char c, std::vector <Pixel> *vec) {
+    bresenhamLine(p1[0], p1[1], p2[0], p2[1], c, vec);
+}
+
+void Screen::line(double x1, double y1, double x2, double y2, char c, std::vector <Pixel> *vec) {
+    bresenhamLine(x1, y1, x2, y2, c, vec);
+}
+
 void Screen::bresenhamLine(double *p1, double *p2, char c, std::vector <Pixel> *vec) {
 
     double x1 = p1[0];

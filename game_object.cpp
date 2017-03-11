@@ -108,6 +108,15 @@ void GameObject::stepChildren(double dt) {
 
 }
 
+void GameObject::renderChildren(Screen *screen) {
+
+    std::vector<GameObject*>::iterator it;
+    for(it = children.begin(); it != children.end(); it++) {
+        (*it)->render(screen);
+    }
+
+}
+
 void GameObject::step(double dt) {
 
     if(previous_dt < 0) {

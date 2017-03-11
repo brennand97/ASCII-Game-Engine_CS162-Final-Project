@@ -19,7 +19,7 @@ Space::Space(double u_w, double u_h) : GameObject() {
     physics->setParent(this);
     addChild(physics);
 
-    boundary = new BoxConstraint(0, 0, unit_width - 1, unit_height - 1);
+    boundary = new BoxConstraint(0, 0, unit_width - 1, unit_height - 1, 1);
     physics->addSubGlobalConstraint(boundary);
 }
 
@@ -38,4 +38,25 @@ void Space::handlePhysics(int t_iter) {
 
     }
 
+}
+
+double* Space::convertToPixels(double x, double y, Screen* screen) {
+    double x_ppu = screen->getWidth() / unit_width;
+    double y_ppu = screen->getHeight() / unit_height;
+    double* output = new double[2];
+    output[0] = x * x_ppu;
+    output[1] = y * y_ppu;
+    return output;
+}
+
+double* Space::convertToPixels(double *pos, Screen *screen) {
+    return convertToPixels(pos[0], pos[1], screen);
+}
+
+double* Space::convertToPixels(const double *pos, Screen *screen) {
+    return convertToPixels(pos[0], pos[1], screen);
+}
+
+double* Space::convertToPixels(Particle *p, Screen *screen) {
+    return convertToPixels((*p)[0], (*p)[1], screen);
 }

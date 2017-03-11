@@ -17,7 +17,7 @@ protected:
     double unit_width;
     double unit_height;
     ParticleContainer* physics;
-    SingleConstraint* boundary;
+    BoxConstraint* boundary;
     void handlePhysics(int);
 
 public:
@@ -31,6 +31,11 @@ public:
 
     double getWidth() { return unit_width; }
     double getHeight() { return unit_height; }
+
+    double * convertToPixels(double * pos, Screen* screen);
+    double * convertToPixels(const double * pos, Screen* screen);
+    double * convertToPixels(double x, double y, Screen* screen);
+    double * convertToPixels(Particle * p, Screen* screen);
 };
 
 #endif //FINAL_PROJECT_SPACE_HPP
