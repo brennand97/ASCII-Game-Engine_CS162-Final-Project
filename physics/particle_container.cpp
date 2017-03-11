@@ -14,6 +14,20 @@ ParticleContainer::ParticleContainer() : GameObject() {
     addType(ParticleContainer::TYPE);
 }
 
+ParticleContainer::~ParticleContainer() {
+
+    std::vector<Constraint*>::iterator c_it;
+    for( c_it = specific_constraints.begin(); c_it != specific_constraints.end(); c_it++ ) {
+        delete (*c_it);
+    }
+
+    std::vector<SingleConstraint*>::iterator sc_it;
+    for( sc_it = specific_constraints.begin(); sc_it != specific_constraints.end(); sc_it++ ) {
+        delete (*sc_it);
+    }
+
+}
+
 void ParticleContainer::addSpecificConstraint(Constraint * p) {
     specific_constraints.push_back(p);
 }

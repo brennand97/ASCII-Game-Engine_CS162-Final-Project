@@ -21,6 +21,7 @@ public:
 
     // Constructors
     ParticleContainer();
+    virtual ~ParticleContainer();
 
     void addSpecificConstraint(Constraint*);
     void addSubGlobalConstraint(SingleConstraint*);

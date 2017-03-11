@@ -146,10 +146,10 @@ void Screen::line(double *p1, double *p2, char c, std::vector<Pixel>* vec) {
 
 void Screen::bresenhamLine(double *p1, double *p2, char c, std::vector <Pixel> *vec) {
 
-    float x1 = p1[0];
-    float y1 = p1[1];
-    float x2 = p2[0];
-    float y2 = p2[1];
+    double x1 = p1[0];
+    double y1 = p1[1];
+    double x2 = p2[0];
+    double y2 = p2[1];
 
     // Code from https://rosettacode.org/wiki/Bitmap/Bresenham%27s_line_algorithm#C.2B.2B
 
@@ -166,10 +166,10 @@ void Screen::bresenhamLine(double *p1, double *p2, char c, std::vector <Pixel> *
         std::swap(y1, y2);
     }
 
-    const float dx = x2 - x1;
-    const float dy = fabs(y2 - y1);
+    const double dx = x2 - x1;
+    const double dy = fabs(y2 - y1);
 
-    float error = dx / 2.0f;
+    double error = dx / 2.0f;
     const int ystep = (y1 < y2) ? 1 : -1;
     int y = (int)y1;
 
@@ -194,6 +194,153 @@ void Screen::bresenhamLine(double *p1, double *p2, char c, std::vector <Pixel> *
             y += ystep;
             error += dx;
         }
+    }
+
+}
+
+void Screen::bresenhamLine(double x1, double y1, double x2, double y2, char c, std::vector <Pixel> *vec) {
+    double * p1 = new double[2];
+    p1[0] = x1;
+    p1[1] = y1;
+    double * p2 = new double[2];
+    p2[0] = x2;
+    p2[1] = y2;
+    bresenhamLine(p1, p2, c, vec);
+    delete [] p1;
+    delete [] p2;
+}
+
+void Screen::bresenhamNextY(double x1, double y1, double x2, double y2, int &x, int &y, double &error, bool first) {
+
+    // Code edited from https://rosettacode.org/wiki/Bitmap/Bresenham%27s_line_algorithm#C.2B.2B
+
+    const bool steep = (fabs(y2 - y1) > fabs(x2 - x1));
+    if(steep)
+    {
+        std::swap(x1, y1);
+        std::swap(x2, y2);
+    }
+
+    if(x1 > x2)
+    {
+        std::swap(x1, x2);
+        std::swap(y1, y2);
+    }
+
+    const double dx = x2 - x1;
+    const double dy = fabs(y2 - y1);
+
+    error = first ? dx / 2.0f : error;
+    const int ystep = (y1 < y2) ? 1 : -1;
+    y = first ? (int) y1 : y;
+
+    const int maxX = (int) x2;
+
+    for(x = first ? (int) x1 : x; x < maxX; x++)
+    {
+//        if(steep)
+//        {
+//            Pixel p(y, x, c);
+//            vec->push_back(p);
+//        }
+//        else
+//        {
+//            Pixel p(x, y, c);
+//            vec->push_back(p);
+//        }
+
+        error -= dy;
+        if(error < 0)
+        {
+            y += ystep;
+            error += dx;
+            return;
+        }
+    }
+
+}
+
+}
+
+void Screen::bresenhamTriangle(double *p1, double *p2, double *p3, char c, std::vector <Pixel> *vec) {
+
+    double x1 = p1[0];
+    double y1 = p1[1];
+    double x2 = p2[0];
+    double y2 = p2[1];
+    double x3 = p3[0];
+    double y3 = p3[1];
+
+    if(fabs(y2 - y1) < fabs(y2 - y3)) {
+        // y1 is in the middle
+        std::swap(y2, y1);
+        std::swap(x2, x1);
+    } else if (fabs(y1 - y3) < fabs(y1 - y2)) {
+        // y3 is in the middle
+        std::swap(y2, y3);
+        std::swap(x2, x3);
+    }
+    if (y1 < y3) {
+        // flip so y1 is the highest point
+        std::swap(y1, y3);
+        std::swap(x1, x3);
+    }
+
+    x4 = x1 + ((y2 - y1) / (y3 - y1)) * (x3 - x1);
+    y4 = y2;
+
+    // We know can be sure that y1 >= y2 >= y3.
+
+    if ( y3 < y2 && y1 > y2 ) {
+
+        double x4 = x1 + ((y2 - y1) / (y3 - y1)) * (x3 - x1);
+        double y4 = y2;
+
+        double * n_p1 = new double[2];
+        n_p1[0] = x1;
+        n_p1[1] = y1;
+        double * n_p2 = new double[2];
+        n_p2[0] = x2;
+        n_p2[1] = y2;
+        double * n_p3 = new double[2];
+        n_p2[0] = x4;
+        n_p2[1] = y4;
+
+        bresenhamTriangle(n_p1, n_p2, n_p3, c, vec);
+
+        n_p1[0] = x3;
+        n_p1[1] = y3;
+
+        bresenhamTriangle(n_p3, n_p2, n_p1, c, vec);
+
+        delete [] n_p1;
+        delete [] n_p2;
+        delete [] n_p3;
+
+    } else {
+
+        int l_x = 0;
+        int l_y = 0;
+        double l_error = 0;
+        int r_x = 0;
+        int r_y = 0;
+        double r_error = 0;
+
+        bool first = true;
+        while (l_y != y3 && r_y != y3) {
+            if ( y2 ==  y1 ) {
+                bresenhamNextY(x3, y3, x2, y2, &l_x, &l_y, &l_error, first);
+                bresenhamNextY(x3, y3, x1, y1, &r_x, &r_y, &r_error, first);
+            } else if ( y2 == y3 ) {
+                bresenhamNextY(x1, y1, x2, y2, &l_x, &l_y, &l_error, first);
+                bresenhamNextY(x1, y1, x3, y3, &r_x, &r_y, &r_error, first);
+            }
+
+            bresenhamLine(l_x, l_y, r_x, r_y, c, vec);
+
+            first = false;
+        }
+
     }
 
 }
