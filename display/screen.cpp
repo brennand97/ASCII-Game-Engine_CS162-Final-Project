@@ -284,9 +284,6 @@ void Screen::bresenhamTriangle(double *p1, double *p2, double *p3, char c, std::
         std::swap(x1, x3);
     }
 
-    x4 = x1 + ((y2 - y1) / (y3 - y1)) * (x3 - x1);
-    y4 = y2;
-
     // We know can be sure that y1 >= y2 >= y3.
 
     if ( y3 < y2 && y1 > y2 ) {
