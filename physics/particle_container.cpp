@@ -22,7 +22,7 @@ ParticleContainer::~ParticleContainer() {
     }
 
     std::vector<SingleConstraint*>::iterator sc_it;
-    for( sc_it = specific_constraints.begin(); sc_it != specific_constraints.end(); sc_it++ ) {
+    for( sc_it = sub_global_constraints.begin(); sc_it != sub_global_constraints.end(); sc_it++ ) {
         delete (*sc_it);
     }
 

@@ -324,11 +324,11 @@ void Screen::bresenhamTriangle(double *p1, double *p2, double *p3, char c, std::
         bool first = true;
         while (l_y != y3 && r_y != y3) {
             if ( y2 ==  y1 ) {
-                bresenhamNextY(x3, y3, x2, y2, &l_x, &l_y, &l_error, first);
-                bresenhamNextY(x3, y3, x1, y1, &r_x, &r_y, &r_error, first);
+                bresenhamNextY(x3, y3, x2, y2, l_x, l_y, l_error, first);
+                bresenhamNextY(x3, y3, x1, y1, r_x, r_y, r_error, first);
             } else if ( y2 == y3 ) {
-                bresenhamNextY(x1, y1, x2, y2, &l_x, &l_y, &l_error, first);
-                bresenhamNextY(x1, y1, x3, y3, &r_x, &r_y, &r_error, first);
+                bresenhamNextY(x1, y1, x2, y2, l_x, l_y, l_error, first);
+                bresenhamNextY(x1, y1, x3, y3, r_x, r_y, r_error, first);
             }
 
             bresenhamLine(l_x, l_y, r_x, r_y, c, vec);

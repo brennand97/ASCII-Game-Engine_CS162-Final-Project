@@ -14,7 +14,7 @@ protected:
     std::vector<std::string> types;
 public:
     Typed(std::string type) { types.push_back(type); }
-    ~Typed() {};
+    virtual ~Typed() {};
 
     void addType(std::string type) { types.push_back(type); }
     std::string getType() { return types[types.size() - 1]; }
