@@ -17,12 +17,13 @@ int main (int argc, char** argv) {
 
     GameObject::n_obj_id = 0;
 
-    Screen* screen = new Screen(190, 70);
+    Screen* screen = new Screen(190, 60);
     EmptyWorld* emptyWorld = new EmptyWorld(100.0,100.0);
     emptyWorld->setup();
 
     double dt = 0.5;
     std::chrono::high_resolution_clock::time_point t = std::chrono::high_resolution_clock::now();
+	std::chrono::high_resolution_clock::time_point start_time = t;	
 
     while (true) {
 
@@ -45,7 +46,14 @@ int main (int argc, char** argv) {
         std::chrono::high_resolution_clock::time_point nt = std::chrono::high_resolution_clock::now();
         dt = (nt - t).count() / 1000000000.0;
         t = nt;
+
+		if ((t - start_time).count() / 1000000000 > 30) {
+			break;
+		}
     }
+
+	delete screen;
+	delete emptyWorld;
 
     /*
     Particle* p1 = new Particle();
