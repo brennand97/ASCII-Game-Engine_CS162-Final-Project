@@ -260,8 +260,6 @@ void Screen::bresenhamNextY(double x1, double y1, double x2, double y2, int &x, 
 
 }
 
-}
-
 void Screen::bresenhamTriangle(double *p1, double *p2, double *p3, char c, std::vector <Pixel> *vec) {
 
     double x1 = p1[0];
