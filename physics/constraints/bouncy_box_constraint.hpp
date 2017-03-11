@@ -14,12 +14,13 @@ protected:
     double y;
     double width;
     double height;
+    double loose;
 public:
 
     static std::string TYPE;
 
-    BouncyBoxConstraint(double x, double y, double width, double height);
-    BouncyBoxConstraint(int* pos, double width, double height);
+    BouncyBoxConstraint(double x, double y, double width, double height, double loose);
+    BouncyBoxConstraint(int* pos, double width, double height, double loose);
 
     double getX() { return x; }
     void setX(double x) { this->x = x; }

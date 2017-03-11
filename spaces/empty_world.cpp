@@ -23,7 +23,7 @@ void EmptyWorld::setup() {
 
     physics->removeSubGlobalConstraint(0);
     delete boundary;
-    this->boundary = new BouncyBoxConstraint(0, 0, unit_width - 1, unit_height - 1);
+    this->boundary = new BouncyBoxConstraint(0, 0, unit_width - 1, unit_height - 1, 0.001);
     physics->addSubGlobalConstraint(boundary);
 
     double * pos1 = new double[2];
@@ -64,12 +64,15 @@ void EmptyWorld::setup() {
     LineConstraint* lc = new LineConstraint(10, Constraint::Equality::EQUAL);
     lc->addParticle(p1);
     lc->addParticle(p2);
-    DragConstraint* dc = new DragConstraint(0.01);
+    DragConstraint*  ldc = new DragConstraint(0.01);
+    ldc->addParticle(p1);
+    ldc->addParticle(p2);
+    //DragConstraint* dc = new DragConstraint(0.01);
 //    dc->addParticle(p1);
 //    dc->addParticle(p2);
 
     physics->addSpecificConstraint(lc);
-    physics->addSubGlobalConstraint(dc);
+    //physics->addSubGlobalConstraint(dc);
 
 }
 

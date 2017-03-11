@@ -18,8 +18,11 @@ int main (int argc, char** argv) {
     GameObject::n_obj_id = 0;
 
     Screen* screen = new Screen(190, 60);
-    EmptyWorld* emptyWorld = new EmptyWorld(100.0,100.0);
+    EmptyWorld* emptyWorld = new EmptyWorld(100.0,50.0);
     emptyWorld->setup();
+
+    emptyWorld->render(screen);
+    screen->displayFrame();
 
     double dt = 0.5;
     std::chrono::high_resolution_clock::time_point t = std::chrono::high_resolution_clock::now();
@@ -48,7 +51,7 @@ int main (int argc, char** argv) {
         t = nt;
 
 		if ((t - start_time).count() / 1000000000 > 30) {
-			break;
+			//break;
 		}
     }
 
