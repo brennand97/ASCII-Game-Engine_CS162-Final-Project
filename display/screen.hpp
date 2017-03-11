@@ -54,8 +54,6 @@ protected:
         }
     }
 
-    void bresenhamNextY(double x1, double y1, double x2, double y2, int &x, int &y, double &e, bool first);
-
 public:
 
     Screen(int width, int height);
@@ -72,8 +70,6 @@ public:
     void line(double * p1, double * p2, char c, std::vector<Pixel>* vec);
     void bresenhamLine(double * p1, double * p2, char c, std::vector<Pixel>* vec);
     void bresenhamLine(double x1, double y1, double x2, double y2, char c, std::vector<Pixel>* vec);
-    void bresenhamTriangle(double *p1, double *p2, double *p3, char c, std::vector <Pixel> *ve);
-    void fillTriangle(double * p1, double * p2, double * p3, char c, std::vector<Pixel>* vec);
     void outlineTriangle(double * p1, double * p2, double * p3, char c, std::vector<Pixel>* vec);
 
 };

@@ -29,6 +29,7 @@ public:
     void getGlobalConstraints(std::vector<SingleConstraint*>*);
     std::vector<SingleConstraint*> getSubGlobalConstraints() { return sub_global_constraints; }
     void getSubGlobalConstraints(std::vector<SingleConstraint*>*);
+    void removeSubGlobalConstraint(int index);
     std::vector<Constraint*> getSpecificConstraints() { return specific_constraints; }
     void getSpecificConstraints(std::vector<Constraint*>*);
 

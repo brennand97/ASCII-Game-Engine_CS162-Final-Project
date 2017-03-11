@@ -17,7 +17,7 @@ protected:
     double unit_width;
     double unit_height;
     ParticleContainer* physics;
-    BoxConstraint* boundary;
+    SingleConstraint* boundary;
     void handlePhysics(int);
 
 public:

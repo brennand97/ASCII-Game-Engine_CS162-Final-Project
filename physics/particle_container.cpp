@@ -53,6 +53,10 @@ void ParticleContainer::getSubGlobalConstraints(std::vector < SingleConstraint *
     }
 }
 
+void ParticleContainer::removeSubGlobalConstraint(int index) {
+    sub_global_constraints.erase(sub_global_constraints.begin() + index, sub_global_constraints.begin() + index + 1);
+}
+
 void ParticleContainer::getSpecificConstraints(std::vector < Constraint * > * vec) {
     for(unsigned int i = 0; i < specific_constraints.size(); i++) {
         vec->push_back(specific_constraints[i]);

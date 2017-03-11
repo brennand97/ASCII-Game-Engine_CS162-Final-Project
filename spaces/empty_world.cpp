@@ -3,6 +3,7 @@
 //
 
 #include "empty_world.hpp"
+#include "../physics/constraints/bouncy_box_constraint.hpp"
 #include "../physics/constraints/line_constraint.hpp"
 #include "../physics/constraints/drag_constraint.hpp"
 #include <iostream>
@@ -19,6 +20,11 @@ EmptyWorld::EmptyWorld(double u_w, double u_h) : Space(u_w, u_h) {
 }
 
 void EmptyWorld::setup() {
+
+    physics->removeSubGlobalConstraint(0);
+    delete boundary;
+    this->boundary = new BouncyBoxConstraint(0, 0, unit_width - 1, unit_height - 1);
+    physics->addSubGlobalConstraint(boundary);
 
     double * pos1 = new double[2];
     double * vel1 = new double[2];
@@ -80,7 +86,7 @@ void EmptyWorld::render(Screen* screen) {
     double x_upp = unit_width / screen->getWidth();
     double y_upp = unit_height / screen->getHeight();
 	
-	/*
+
     double *p4 = new double[2];
     p4[0] = (*((Particle *) physics->getChildren()[3]))[0] / x_upp;
     p4[1] = (*((Particle *) physics->getChildren()[3]))[1] / y_upp;
@@ -99,7 +105,7 @@ void EmptyWorld::render(Screen* screen) {
     delete [] p5;
     delete [] p6;
 
-	*/
+
 
     std::vector<Pixel> particles;
     for(int i = 0; i < 10; i++) {
