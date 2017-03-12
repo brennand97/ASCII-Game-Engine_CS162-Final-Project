@@ -29,6 +29,8 @@ void Input::stop() {
 void Input::end() {
     if(multi_threading && thread->joinable()) {
         thread->join();
+    } else {
+        resetTermios();
     }
 }
 
@@ -39,6 +41,7 @@ bool Input::listen() {
     } catch ( std::exception e ) {
         // OSU ENGR Flip server doesn't have multi-threading :( such a shame
         multi_threading = false;
+        initTermios(0);
     }
 
     return multi_threading;
