@@ -43,6 +43,7 @@ public:
     bool listen();
 
     bool is_multi_threading_enabled() { return multi_threading; }
+    void disable_multi_threading(bool b);
 };
 
 #endif //FINAL_PROJECT_INPUT_HPP

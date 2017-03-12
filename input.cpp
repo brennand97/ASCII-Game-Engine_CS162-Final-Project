@@ -71,3 +71,7 @@ void Input::loop() {
         getInput();
     }
 }
+
+void Input::disable_multi_threading(bool b) {
+    multi_threading = !b;
+}
