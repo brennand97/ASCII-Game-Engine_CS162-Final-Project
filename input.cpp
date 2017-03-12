@@ -27,18 +27,26 @@ void Input::stop() {
 }
 
 void Input::end() {
-    if(thread->joinable()) {
+    if(multi_threading && thread->joinable()) {
         thread->join();
     }
 }
 
-void Input::listen() {
-    thread = new std::thread(&Input::loop, std::ref(*this));
-    thread->detach();
+bool Input::listen() {
+    try {
+        thread = new std::thread(&Input::loop, std::ref(*this));
+        thread->detach();
+    } catch ( std::system_error e ) {
+        // OSU ENGR Flip server doesn't have multi-threading :( such a shame
+        multi_threading = false;
+    }
+
+    return multi_threading;
+
 }
 
-void Input::loop() {
-    while (!stop_trigger) {
+void Input::getInput() {
+    if(multi_threading || (std::cin.rdbuf() && std::cin.rdbuf()->in_avail() >= 0)) {
         char c = getch();
         std::vector<Key>::iterator it;
         it = std::find(keys.begin(), keys.end(), c);
@@ -51,5 +59,11 @@ void Input::loop() {
             }
             (*it).last_seen = c_time_point;
         }
+    }
+}
+
+void Input::loop() {
+    while (!stop_trigger && multi_threading) {
+        getInput();
     }
 }

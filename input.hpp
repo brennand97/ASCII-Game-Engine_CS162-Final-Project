@@ -28,6 +28,7 @@ private:
     };
     std::vector<Key> keys;
     std::thread* thread = nullptr;
+    bool multi_threading = true;
     bool stop_trigger;
     void loop();
 public:
@@ -36,9 +37,12 @@ public:
 
     void listenTo(char c, v_d_callback callback);
 
+    void getInput();
     void stop();
     void end();
-    void listen();
+    bool listen();
+
+    bool is_multi_threading_enabled() { return multi_threading; }
 };
 
 #endif //FINAL_PROJECT_INPUT_HPP
