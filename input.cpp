@@ -46,7 +46,7 @@ bool Input::listen() {
 }
 
 void Input::getInput() {
-    if(multi_threading || (std::cin.rdbuf() && std::cin.rdbuf()->in_avail() >= 0)) {
+    if(multi_threading || (std::cin.rdbuf() && std::cin.rdbuf()->in_avail() > 0)) {
         char c = getch();
         std::vector<Key>::iterator it;
         it = std::find(keys.begin(), keys.end(), c);
