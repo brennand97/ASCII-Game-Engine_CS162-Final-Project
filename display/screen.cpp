@@ -16,6 +16,7 @@ Screen::Screen(int width, int height) {
 }
 
 Screen::~Screen() {
+    moveCursorVertically(-2);
     delete frame;
     delete previous_frame;
 }

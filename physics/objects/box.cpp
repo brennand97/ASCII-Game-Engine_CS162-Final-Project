@@ -73,11 +73,7 @@ Box::Box(double *pos, double width, double height) : ParticleContainer() {
     specific_constraints.push_back(diagonal_constraint);
 }
 
-Box::~Box() {
-    delete width_constraint;
-    delete height_constraint;
-    delete diagonal_constraint;
-}
+Box::~Box() {}
 
 void Box::render(Screen* screen) {
 

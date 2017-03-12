@@ -63,6 +63,7 @@ void EmptyWorld::setup() {
     b_box[1] = 20.0;
     Box* box = new Box(b_box, 10, 10);
     box->setParent(physics);
+    box->setDrawChar('@');
     double * b_vel = new double[2];
     b_vel[0] = 5;
     b_vel[1] = 5;
