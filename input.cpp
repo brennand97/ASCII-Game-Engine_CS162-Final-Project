@@ -36,7 +36,7 @@ bool Input::listen() {
     try {
         thread = new std::thread(&Input::loop, std::ref(*this));
         thread->detach();
-    } catch ( std::system_error e ) {
+    } catch ( std::exception e ) {
         // OSU ENGR Flip server doesn't have multi-threading :( such a shame
         multi_threading = false;
     }
