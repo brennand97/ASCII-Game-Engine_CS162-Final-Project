@@ -41,6 +41,7 @@ bool Input::listen() {
     } catch ( std::exception e ) {
         // OSU ENGR Flip server doesn't have multi-threading :( such a shame
         multi_threading = false;
+        std::ios_base::sync_with_stdio(false);
         initTermios(0);
     }
 
