@@ -77,15 +77,8 @@ void EmptyWorld::setup() {
     LineConstraint* lc = new LineConstraint(10, Constraint::Equality::EQUAL);
     lc->addParticle(p1);
     lc->addParticle(p2);
-    DragConstraint*  ldc = new DragConstraint(0.01);
-    ldc->addParticle(p1);
-    ldc->addParticle(p2);
-    //DragConstraint* dc = new DragConstraint(0.01);
-//    dc->addParticle(p1);
-//    dc->addParticle(p2);
 
     physics->addSpecificConstraint(lc);
-    //physics->addSubGlobalConstraint(dc);
 
 }
 
