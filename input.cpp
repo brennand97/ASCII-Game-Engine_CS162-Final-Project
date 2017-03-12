@@ -46,7 +46,6 @@ bool Input::listen() {
     }
 
     return multi_threading;
-
 }
 
 void Input::getInput() {

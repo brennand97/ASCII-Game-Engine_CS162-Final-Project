@@ -26,7 +26,6 @@ int main (int argc, char** argv) {
     emptyWorld->setup();
 
     Input* input = new Input();
-    input->disable_multi_threading(true);
     input->listenTo('q', [&stop, &input](double dt) -> void {
         stop = true;
         input->stop();
@@ -45,11 +44,14 @@ int main (int argc, char** argv) {
         }
         std::vector<GameObject*> gos;
         emptyWorld->getChildrenOfType(Box::TYPE, &gos);
+        std::cout << gos.size() << std::endl;
         std::vector<GameObject*>::iterator it;
         for(it = gos.begin(); it != gos.end(); it++) {
-            (*((Particle*) ((Box*) (*it))->getChildren()[0]))[0] += vel[0];
-            (*((Particle*) ((Box*) (*it))->getChildren()[0]))[1] += vel[1];
+            std::cout << (*it)->getId() << std::endl;
         }
+        it = gos.begin();
+        ((Box*) (*it))->addVelocity(vel);
+        delete [] vel;
     });
     input->listenTo('s', [&emptyWorld, &accel](double dt) -> void {
         double * vel = new double[2];
@@ -64,11 +66,9 @@ int main (int argc, char** argv) {
         }
         std::vector<GameObject*> gos;
         emptyWorld->getChildrenOfType(Box::TYPE, &gos);
-        std::vector<GameObject*>::iterator it;
-        for(it = gos.begin(); it != gos.end(); it++) {
-            (*((Particle*) ((Box*) (*it))->getChildren()[0]))[0] += vel[0];
-            (*((Particle*) ((Box*) (*it))->getChildren()[0]))[1] += vel[1];
-        }
+        std::vector<GameObject*>::iterator it = gos.begin();
+        ((Box*) (*it))->addVelocity(vel);
+        delete [] vel;
     });
     input->listenTo('d', [&emptyWorld, &accel](double dt) -> void {
         double * vel = new double[2];
@@ -83,11 +83,9 @@ int main (int argc, char** argv) {
         }
         std::vector<GameObject*> gos;
         emptyWorld->getChildrenOfType(Box::TYPE, &gos);
-        std::vector<GameObject*>::iterator it;
-        for(it = gos.begin(); it != gos.end(); it++) {
-            (*((Particle*) ((Box*) (*it))->getChildren()[0]))[0] += vel[0];
-            (*((Particle*) ((Box*) (*it))->getChildren()[0]))[1] += vel[1];
-        }
+        std::vector<GameObject*>::iterator it = gos.begin();
+        ((Box*) (*it))->addVelocity(vel);
+        delete [] vel;
     });
     input->listenTo('a', [&emptyWorld, &accel](double dt) -> void {
         double * vel = new double[2];
@@ -102,11 +100,9 @@ int main (int argc, char** argv) {
         }
         std::vector<GameObject*> gos;
         emptyWorld->getChildrenOfType(Box::TYPE, &gos);
-        std::vector<GameObject*>::iterator it;
-        for(it = gos.begin(); it != gos.end(); it++) {
-            (*((Particle*) ((Box*) (*it))->getChildren()[0]))[0] += vel[0];
-            (*((Particle*) ((Box*) (*it))->getChildren()[0]))[1] += vel[1];
-        }
+        std::vector<GameObject*>::iterator it = gos.begin();
+        ((Box*) (*it))->addVelocity(vel);
+        delete [] vel;
     });
     input->listen();
 
