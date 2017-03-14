@@ -31,7 +31,7 @@ private:
     char draw_char = '#';
 
     std::chrono::high_resolution_clock::time_point last_angle_change;
-    double hold_angle_milliseconds = 200;
+    double hold_angle_milliseconds = 300.0;
 
     LineConstraint* wheel_width_constraint;
     LineConstraint* axel_width_constraint;
