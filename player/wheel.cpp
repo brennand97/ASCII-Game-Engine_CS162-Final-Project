@@ -257,6 +257,7 @@ void Wheel::WheelConstraint::fix(int iter, Particle * p1, Particle * p2) {
                 delete [] n_pos;
             }
             delete [] tmp;
+            delete [] diff;
         }
         if (douglas::vector::magnitude(res_vel2) != 0) {
             // Tmp container for calculations
@@ -287,6 +288,7 @@ void Wheel::WheelConstraint::fix(int iter, Particle * p1, Particle * p2) {
                 delete[] n_pos;
             }
             delete [] tmp;
+            delete [] diff;
         }
 
         // Delete all the vectors
