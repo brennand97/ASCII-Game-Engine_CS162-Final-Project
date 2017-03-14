@@ -59,9 +59,11 @@ Wheel::Wheel(double *pos, double width, double height, double angle, double drag
     Particle* l_w_t = new Particle(l_w_t_pos);
     Particle* l_w_b = new Particle(l_w_b_pos);
     Particle* l_w_a = new Particle(l_w_a_pos);
+    l_w_a->setMass(10);
     Particle* r_w_t = new Particle(r_w_t_pos);
     Particle* r_w_b = new Particle(r_w_b_pos);
     Particle* r_w_a = new Particle(r_w_a_pos);
+    r_w_a->setMass(10);
 
     // Add particles as children (left -> right, top -> bottom)
     addChild(l_w_t);
@@ -153,12 +155,14 @@ void Wheel::setWheelWidth(double h) {
 void Wheel::setAngle(double angle) {
     const double pi = 3.1415926535897;
 
+    double a_sign = (angle < 0 ? -1 : 1);
+
     this->angle = angle;
     double pid4 = pi / 4;
     if (angle < -pid4 || angle > pid4) {
-        angle = pid4 * (angle < 0 ? -1 : 1);
+        angle = pid4 * a_sign;
     }
-    double displacement = std::sin(angle) * wheel_width * (angle < 0 ? -1 : 1);
+    double displacement = std::sin(angle) * wheel_width;
     double height = std::cos(angle) * wheel_width;
     double p_diagonal, n_diagonal;
 

@@ -70,13 +70,13 @@ int main (int argc, char** argv) {
         std::vector<GameObject*> gos;
         emptyWorld->getChildrenOfType(Wheel::TYPE, &gos);
         std::vector<GameObject*>::iterator it = gos.begin();
-        ((Wheel*) (*it))->setAngle(-douglas::pi / 10);
+        ((Wheel*) (*it))->setAngle(douglas::pi / 10);
     });
     input->listenTo('a', [&emptyWorld, &accel](double dt) -> void {
         std::vector<GameObject*> gos;
         emptyWorld->getChildrenOfType(Wheel::TYPE, &gos);
         std::vector<GameObject*>::iterator it = gos.begin();
-        ((Wheel*) (*it))->setAngle(douglas::pi / 10);
+        ((Wheel*) (*it))->setAngle(-1 * douglas::pi / 10);
     });
     input->listen();
 

@@ -84,7 +84,7 @@ void EmptyWorld::setup() {
     wheel_pos[0] = 10;
     wheel_pos[1] = 5;
     Wheel* wheel = new Wheel(wheel_pos, 10, 6, 0.0, 100);
-    double * wheel_vel = douglas::vector::vector(1, 1);
+    double * wheel_vel = douglas::vector::vector(1, 5);
     wheel->addVelocity(wheel_vel);
     wheel->setParent(physics);
     physics->addChild(wheel);

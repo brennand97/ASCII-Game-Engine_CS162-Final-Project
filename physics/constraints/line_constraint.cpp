@@ -47,8 +47,9 @@ void LineConstraint::fix(int iter, Particle *p1, Particle *p2) {
 
     double diff = (dlength - length) / dlength;
 
-    double scale1 = 0.5;
-    double scale2 = 0.5;
+    double mass_ratio = p1->getMass() / p2->getMass();
+    double scale1 = 1 / (1 + mass_ratio);
+    double scale2 = scale1 * mass_ratio;
 
     (*p1)[0] += dx * scale1 * diff;
     (*p1)[1] += dy * scale1 * diff;
