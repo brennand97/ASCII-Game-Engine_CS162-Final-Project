@@ -7,6 +7,8 @@
 
 #include "../physics/particle_container.hpp"
 #include "../physics/constraints/line_constraint.hpp"
+#include "../personal_utilities/vec_func.hpp"
+#include <chrono>
 
 class Wheel : public ParticleContainer {
 
@@ -27,6 +29,9 @@ private:
     double angle;
     double drag_coefficient;
     char draw_char = '#';
+
+    std::chrono::high_resolution_clock::time_point last_angle_change;
+    double hold_angle_milliseconds = 200;
 
     LineConstraint* wheel_width_constraint;
     LineConstraint* axel_width_constraint;
@@ -54,6 +59,7 @@ public:
     void setDrawChar(char c) { this->draw_char = c; }
 
     void render(Screen*);
+    void step(double dt);
 
 };
 

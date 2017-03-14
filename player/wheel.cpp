@@ -5,7 +5,6 @@
 #include "wheel.hpp"
 #include <cmath>
 #include "../spaces/space.hpp"
-#include "../personal_utilities/vec_func.hpp"
 
 std::string Wheel::TYPE = "wheel";
 std::string Wheel::WheelConstraint::TYPE = "wheel_constraint";
@@ -171,11 +170,12 @@ void Wheel::setAngle(double angle) {
     positive_diagonal_constraint->setLength(p_diagonal);
     negative_diagonal_constraint->setLength(n_diagonal);
 
+    last_angle_change = std::chrono::high_resolution_clock::now();
 }
 
 void Wheel::changeAngle(double d_angle) {
     angle += d_angle;
-    setAngle(0.5);
+    setAngle(angle);
 }
 
 void Wheel::render(Screen * screen) {
@@ -197,6 +197,13 @@ void Wheel::render(Screen * screen) {
     delete [] p3;
     delete [] p4;
     delete [] p5;
+}
+
+void Wheel::step(double dt) {
+    ParticleContainer::step(dt);
+    if((std::chrono::high_resolution_clock::now() - last_angle_change).count() / 1000000 > hold_angle_milliseconds) {
+        setAngle(0);
+    }
 }
 
 Wheel::WheelConstraint::WheelConstraint(double drag_coefficient) {
@@ -222,69 +229,73 @@ void Wheel::WheelConstraint::fix(int iter, Particle * p1, Particle * p2) {
         double *res_vel2 = douglas::vector::project(vel2, resistanceVector);
 
         if (douglas::vector::magnitude(res_vel1) != 0) {
-            // Create holding vector for calculations
-            double *accl = douglas::vector::copy(res_vel1);
+            // Tmp container for calculations
+            double * tmp = douglas::vector::copy(res_vel1);
             // Square each of the components
-            accl[0] *= std::abs(res_vel1[0]);
-            accl[1] *= std::abs(res_vel1[1]);
+            tmp[0] *= std::abs(res_vel1[0]);
+            tmp[1] *= std::abs(res_vel1[1]);
             // Get the previous delta time for the particle
             double p_dt = p1->getPreviousStepTime();
             // Scale the factor by the drag coefficient, time squared, and inverse mass to get displacement
-            douglas::vector::scale(accl, (this->drag_coefficient * p_dt * p_dt) / p1->getMass());
-            // Calculated the vectors of the resistance vector and resistance velocity both added and subtracted
-            double *added = douglas::vector::add(resistanceVector, res_vel1);
-            double *subtracted = douglas::vector::subtract(resistanceVector, res_vel1);
-            // Use the previous two vector's magnitude to determine their orientation with each other, 0 or 180
-            if (douglas::vector::magnitude(added) > douglas::vector::magnitude(subtracted)) {
-                // If 0 degrees of separation, reverse so velocity is depleted
-                douglas::vector::scale(accl, -1.0);
-            }
+            douglas::vector::scale(tmp, (this->drag_coefficient * p_dt) / p1->getMass());
+            // Reverse vector to be opposite of velocity
+            douglas::vector::scale(tmp, -1.0);
             // Calculate the new position
-            double *n_pos = douglas::vector::add(p1->getPosition(), accl);
-            // Set the new position
-            p1->setPosition(n_pos);
-            // Delete all the old variables
-            delete[] accl;
-            delete[] added;
-            delete[] subtracted;
-            delete[] n_pos;
+            double *diff = douglas::vector::project(tmp, resistanceVector);
+            if(douglas::vector::magnitude(diff) > douglas::vector::magnitude(res_vel1)) {
+                douglas::vector::scale(res_vel1, -1.0);
+                double *n_pos = douglas::vector::add(p1->getPosition(), res_vel1);
+                // Set the new position
+                p1->setPosition(n_pos);
+                // Delete all the old variables
+                delete [] n_pos;
+            } else {
+                double *n_pos = douglas::vector::add(p1->getPosition(), diff);
+                // Set the new position
+                p1->setPosition(n_pos);
+                // Delete all the old variables
+                delete [] n_pos;
+            }
+            delete [] tmp;
         }
         if (douglas::vector::magnitude(res_vel2) != 0) {
-            // Create holding vector for calculations
-            double *accl = douglas::vector::copy(res_vel2);
+            // Tmp container for calculations
+            double * tmp = douglas::vector::copy(res_vel2);
             // Square each of the components
-            accl[0] *= std::abs(res_vel2[0]);
-            accl[1] *= std::abs(res_vel2[1]);
+            tmp[0] *= std::abs(res_vel2[0]);
+            tmp[1] *= std::abs(res_vel2[1]);
             // Get the previous delta time for the particle
             double p_dt = p2->getPreviousStepTime();
             // Scale the factor by the drag coefficient, time squared, and inverse mass to get displacement
-            douglas::vector::scale(accl, (this->drag_coefficient * p_dt * p_dt) / p2->getMass());
-            // Calculated the vectors of the resistance vector and resistance velocity both added and subtracted
-            double *added = douglas::vector::add(resistanceVector, res_vel2);
-            double *subtracted = douglas::vector::subtract(resistanceVector, res_vel2);
-            // Use the previous two vector's magnitude to determine their orientation with each other, 0 or 180
-            if (douglas::vector::magnitude(added) > douglas::vector::magnitude(subtracted)) {
-                // If 0 degrees of separation, reverse so velocity is depleted
-                douglas::vector::scale(accl, -1.0);
-            }
+            douglas::vector::scale(tmp, (this->drag_coefficient * p_dt) / p2->getMass());
+            // Reverse vector to be opposite of velocity
+            douglas::vector::scale(tmp, -1.0);
             // Calculate the new position
-            double *n_pos = douglas::vector::add(p2->getPosition(), accl);
-            // Set the new position
-            p2->setPosition(n_pos);
-            // Delete all the old variables
-            delete[] accl;
-            delete[] added;
-            delete[] subtracted;
-            delete[] n_pos;
+            double *diff = douglas::vector::project(tmp, resistanceVector);
+            if(douglas::vector::magnitude(diff) > douglas::vector::magnitude(res_vel2)) {
+                douglas::vector::scale(res_vel2, -1.0);
+                double *n_pos = douglas::vector::add(p2->getPosition(), res_vel2);
+                // Set the new position
+                p2->setPosition(n_pos);
+                // Delete all the old variables
+                delete [] n_pos;
+            } else {
+                double *n_pos = douglas::vector::add(p2->getPosition(), diff);
+                // Set the new position
+                p2->setPosition(n_pos);
+                // Delete all the old variables
+                delete[] n_pos;
+            }
+            delete [] tmp;
         }
 
         // Delete all the vectors
-        delete[] vel1;
-        delete[] vel2;
-        delete[] wheelVector;
-        delete[] resistanceVector;
-        delete[] res_vel1;
-        delete[] res_vel2;
+        delete [] vel1;
+        delete [] vel2;
+        delete [] wheelVector;
+        delete [] resistanceVector;
+        delete [] res_vel1;
+        delete [] res_vel2;
     }
 
 }

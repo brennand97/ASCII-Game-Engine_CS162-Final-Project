@@ -13,7 +13,9 @@
 #include "game_object.hpp"
 #include "spaces/empty_world.hpp"
 #include "physics/objects/box.hpp"
+#include "player/wheel.hpp"
 #include "input.hpp"
+#include "personal_utilities/vec_func.hpp"
 
 int main (int argc, char** argv) {
 
@@ -65,38 +67,16 @@ int main (int argc, char** argv) {
         delete [] vel;
     });
     input->listenTo('d', [&emptyWorld, &accel](double dt) -> void {
-        double * vel = new double[2];
-        vel[0] = accel;
-        vel[1] = 0;
-        if (dt < 0.1) {
-            vel[0] *= dt * dt;
-            vel[1] *= dt * dt;
-        } else {
-            vel[0] *= 0.01;
-            vel[1] *= 0.01;
-        }
         std::vector<GameObject*> gos;
-        emptyWorld->getChildrenOfType(Box::TYPE, &gos);
+        emptyWorld->getChildrenOfType(Wheel::TYPE, &gos);
         std::vector<GameObject*>::iterator it = gos.begin();
-        ((Box*) (*it))->addVelocity(vel);
-        delete [] vel;
+        ((Wheel*) (*it))->setAngle(-douglas::pi / 10);
     });
     input->listenTo('a', [&emptyWorld, &accel](double dt) -> void {
-        double * vel = new double[2];
-        vel[0] = -accel;
-        vel[1] = 0;
-        if (dt < 0.1) {
-            vel[0] *= dt * dt;
-            vel[1] *= dt * dt;
-        } else {
-            vel[0] *= 0.01;
-            vel[1] *= 0.01;
-        }
         std::vector<GameObject*> gos;
-        emptyWorld->getChildrenOfType(Box::TYPE, &gos);
+        emptyWorld->getChildrenOfType(Wheel::TYPE, &gos);
         std::vector<GameObject*>::iterator it = gos.begin();
-        ((Box*) (*it))->addVelocity(vel);
-        delete [] vel;
+        ((Wheel*) (*it))->setAngle(douglas::pi / 10);
     });
     input->listen();
 
