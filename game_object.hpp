@@ -43,7 +43,7 @@ public:
 
     // GameObject Children
     std::vector<GameObject*> getChildren() { return children; }
-    void addChild(GameObject* child) { children.push_back(child); }
+    void addChild(GameObject* child) { child->setParent(this); children.push_back(child); }
     GameObject* getChild(unsigned int c_obj_id);
     void removeChild(GameObject * obj);
     void removeChild(unsigned int c_obj_id);

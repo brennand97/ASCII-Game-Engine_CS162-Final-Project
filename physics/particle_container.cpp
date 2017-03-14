@@ -4,6 +4,7 @@
 
 #include "particle_container.hpp"
 #include "../game_object.hpp"
+#include "../spaces/space.hpp"
 #include "constraints/constraint.hpp"
 #include <string>
 #include <vector>
@@ -26,6 +27,10 @@ ParticleContainer::~ParticleContainer() {
         delete (*sc_it);
     }
 
+    for( sc_it = super_global_constraints.begin(); sc_it != super_global_constraints.end(); sc_it++ ) {
+        delete (*sc_it);
+    }
+
 }
 
 void ParticleContainer::addSpecificConstraint(Constraint * p) {
@@ -36,14 +41,28 @@ void ParticleContainer::addSubGlobalConstraint(SingleConstraint * p) {
     sub_global_constraints.push_back(p);
 }
 
-void ParticleContainer::getGlobalConstraints(std::vector < SingleConstraint * > * vec) {
+void ParticleContainer::addSuperGlobalConstraint(SingleConstraint * p) {
+    super_global_constraints.push_back(p);
+}
+
+void ParticleContainer::getGlobalConstraints(std::vector < SingleConstraint * > * vec, bool supers) {
     for(unsigned int i = 0; i < sub_global_constraints.size(); i++) {
         vec->push_back(sub_global_constraints[i]);
+    }
+    if(false) {
+        for(unsigned int i = 0; i < super_global_constraints.size(); i++) {
+            Space* world = (Space*) getWorld();
+            std::vector<GameObject*> allPCs;
+            world->getChildrenOfType(ParticleContainer::TYPE, &allPCs);
+            for(unsigned int i = 0; i < allPCs.size(); i++) {
+                ((ParticleContainer*) allPCs[i])->getSuperGlobalConstraints(vec);
+            }
+        }
     }
     std::vector<GameObject*> parentPCs;
     parent->getParentsOfType(ParticleContainer::TYPE, &parentPCs);
     for(unsigned int i = 0; i < parentPCs.size(); i++) {
-        ((ParticleContainer*) parentPCs[i])->getGlobalConstraints(vec);
+        ((ParticleContainer*) parentPCs[i])->getGlobalConstraints(vec, false);
     }
 }
 
@@ -55,6 +74,12 @@ void ParticleContainer::getSubGlobalConstraints(std::vector < SingleConstraint *
 
 void ParticleContainer::removeSubGlobalConstraint(int index) {
     sub_global_constraints.erase(sub_global_constraints.begin() + index, sub_global_constraints.begin() + index + 1);
+}
+
+void ParticleContainer::getSuperGlobalConstraints(std::vector < SingleConstraint * > * vec) {
+    for(unsigned int i = 0; i < super_global_constraints.size(); i++) {
+        vec->push_back(super_global_constraints[i]);
+    }
 }
 
 void ParticleContainer::getSpecificConstraints(std::vector < Constraint * > * vec) {

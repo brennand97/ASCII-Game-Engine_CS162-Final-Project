@@ -15,6 +15,7 @@ class ParticleContainer : public GameObject {
 protected:
     std::vector<Constraint*> specific_constraints;
     std::vector<SingleConstraint*> sub_global_constraints;
+    std::vector<SingleConstraint*> super_global_constraints;
 public:
 
     static std::string TYPE;
@@ -25,11 +26,14 @@ public:
 
     void addSpecificConstraint(Constraint*);
     void addSubGlobalConstraint(SingleConstraint*);
+    void addSuperGlobalConstraint(SingleConstraint*);
 
-    void getGlobalConstraints(std::vector<SingleConstraint*>*);
+    void getGlobalConstraints(std::vector<SingleConstraint*>* vec, bool supers = true);
     std::vector<SingleConstraint*> getSubGlobalConstraints() { return sub_global_constraints; }
     void getSubGlobalConstraints(std::vector<SingleConstraint*>*);
     void removeSubGlobalConstraint(int index);
+    std::vector<SingleConstraint*> getSuperGlobalConstraints() { return super_global_constraints; }
+    void getSuperGlobalConstraints(std::vector<SingleConstraint*>*);
     std::vector<Constraint*> getSpecificConstraints() { return specific_constraints; }
     void getSpecificConstraints(std::vector<Constraint*>*);
 

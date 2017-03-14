@@ -23,14 +23,13 @@ int main (int argc, char** argv) {
 
     Screen* screen = new Screen(190, 60);
     EmptyWorld* emptyWorld = new EmptyWorld(100.0,50.0);
-    emptyWorld->setup();
 
     Input* input = new Input();
     input->listenTo('q', [&stop, &input](double dt) -> void {
         stop = true;
         input->stop();
     });
-    double accel = 50;
+    double accel = 20;
     input->listenTo('w', [&emptyWorld, &accel](double dt) -> void {
         double * vel = new double[2];
         vel[0] = 0;
@@ -44,12 +43,7 @@ int main (int argc, char** argv) {
         }
         std::vector<GameObject*> gos;
         emptyWorld->getChildrenOfType(Box::TYPE, &gos);
-        std::cout << gos.size() << std::endl;
-        std::vector<GameObject*>::iterator it;
-        for(it = gos.begin(); it != gos.end(); it++) {
-            std::cout << (*it)->getId() << std::endl;
-        }
-        it = gos.begin();
+        std::vector<GameObject*>::iterator it = gos.begin();
         ((Box*) (*it))->addVelocity(vel);
         delete [] vel;
     });

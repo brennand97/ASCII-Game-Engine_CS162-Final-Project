@@ -34,10 +34,10 @@ Box::Box(double *pos, double width, double height) : ParticleContainer() {
     pos2[1] = dy;
     double * pos3 = new double[2];
     pos3[0] = width + dx;
-    pos3[1] = dy - height;
+    pos3[1] = dy + height;
     double * pos4 = new double[2];
     pos4[0] = dx;
-    pos4[1] = dy - height;
+    pos4[1] = dy + height;
 
     Particle* p1 = new Particle(pos1);
     Particle* p2 = new Particle(pos2);

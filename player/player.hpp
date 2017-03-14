@@ -7,7 +7,7 @@
 #ifndef FINAL_PROJECT_PLAYER_HPP
 #define FINAL_PROJECT_PLAYER_HPP
 
-#include "game_object.hpp"
+#include "../game_object.hpp"
 
 class Player : public GameObject {
 

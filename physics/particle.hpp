@@ -33,9 +33,9 @@ public:
 
     // Position Data
     const double * getPosition() { return pos; }
-    void setPosition(double * pos) { delete [] pos; this->pos = pos; }
+    void setPosition(const double * pos) { this->pos[0] = pos[0]; this->pos[1] = pos[1]; }
     const double * getPPosition() { return ppos; }
-    void setPPosition(double * ppos) { delete [] ppos; this->ppos = ppos; }
+    void setPPosition(const double * ppos) { this->ppos[0] = ppos[0]; this->ppos[1] = ppos[1]; }
 
     void step(double dt);
     void render(Screen*);
