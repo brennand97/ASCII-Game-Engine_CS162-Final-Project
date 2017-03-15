@@ -32,9 +32,10 @@ public:
     double getWidth() { return unit_width; }
     double getHeight() { return unit_height; }
 
-    double * convertToPixels(double * pos, Screen* screen);
+    void convertToPixels(double * pos, Screen* screen);
     double * convertToPixels(const double * pos, Screen* screen);
-    double * convertToPixels(double x, double y, Screen* screen);
+    double * convertToPixels(const double x, const double y, Screen* screen);
+    void convertToPixels(double *x, double *y, Screen* screen);
     double * convertToPixels(Particle * p, Screen* screen);
 };
 

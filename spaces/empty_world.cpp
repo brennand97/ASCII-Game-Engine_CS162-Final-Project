@@ -6,7 +6,7 @@
 #include "../physics/constraints/line_constraint.hpp"
 #include "../physics/constraints/drag_constraint.hpp"
 #include "../physics/objects/box.hpp"
-#include "../player/wheel.hpp"
+#include "../player/player.hpp"
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -80,16 +80,16 @@ void EmptyWorld::setup() {
 
     physics->addSpecificConstraint(lc);
 
-    double * wheel_pos = new double[2];
-    wheel_pos[0] = 10;
-    wheel_pos[1] = 5;
-    Wheel* wheel = new Wheel(wheel_pos, 10, 6, 0.0, 100);
-    double * wheel_vel = douglas::vector::vector(1, 5);
-    wheel->addVelocity(wheel_vel);
-    wheel->setParent(physics);
-    physics->addChild(wheel);
-    delete [] wheel_pos;
-    delete [] wheel_vel;
+    double * player_pos = new double[2];
+    player_pos[0] = 20.0;
+    player_pos[1] = 20.0;
+    Player* player = new Player(player_pos, 5.0, 10.0, 3.0, 1000.0, 1000.0);
+    double * player_vel = douglas::vector::vector(1, 5);
+    player->addVelocity(player_vel);
+    player->setParent(physics);
+    physics->addChild(player);
+    delete [] player_pos;
+    delete [] player_vel;
 
 }
 
@@ -102,10 +102,6 @@ void EmptyWorld::step(double dt) {
 }
 
 void EmptyWorld::render(Screen* screen) {
-
-//    std::vector<GameObject*> wheels;
-//    getChildrenOfType(Wheel::TYPE, &wheels);
-//    ((Wheel*) wheels[0])->changeAngle(previous_dt);
 
     double x_upp = unit_width / screen->getWidth();
     double y_upp = unit_height / screen->getHeight();

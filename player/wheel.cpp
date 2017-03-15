@@ -23,8 +23,8 @@ Wheel::Wheel(double *pos, double width, double height, double angle, double drag
     double b_y;
 
     if(pos != nullptr) {
-        l_x = pos[0] - (width / 2);
-        b_y = pos[0] - (height / 2);
+        l_x = pos[0] - (width / 2.0);
+        b_y = pos[1] - (height / 2.0);
     } else {
         l_x = 0;
         b_y = 0;
@@ -180,6 +180,11 @@ void Wheel::setAngle(double angle) {
 void Wheel::changeAngle(double d_angle) {
     angle += d_angle;
     setAngle(angle);
+}
+
+double* Wheel::getWheelVector() {
+    return douglas::vector::subtract(((Particle*) children[0])->getPosition(),
+                                     ((Particle*) children[1])->getPosition());
 }
 
 void Wheel::render(Screen * screen) {

@@ -55,8 +55,12 @@ public:
     double getAngle() { return angle; }
     void setAngle(double angle);
     void changeAngle(double d_angle);
+    double getDrag() { return drag_coefficient; }
+    void setDrag(double drag) { this->drag_coefficient = drag; }
     char getDrawChar() { return draw_char; }
     void setDrawChar(char c) { this->draw_char = c; }
+
+    double * getWheelVector();
 
     void render(Screen*);
     void step(double dt);

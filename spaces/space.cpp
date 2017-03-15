@@ -40,7 +40,7 @@ void Space::handlePhysics(int t_iter) {
 
 }
 
-double* Space::convertToPixels(double x, double y, Screen* screen) {
+double* Space::convertToPixels(const double x, const double y, Screen* screen) {
     double x_ppu = screen->getWidth() / unit_width;
     double y_ppu = screen->getHeight() / unit_height;
     double* output = new double[2];
@@ -49,8 +49,15 @@ double* Space::convertToPixels(double x, double y, Screen* screen) {
     return output;
 }
 
-double* Space::convertToPixels(double *pos, Screen *screen) {
-    return convertToPixels(pos[0], pos[1], screen);
+void Space::convertToPixels(double * x, double * y, Screen* screen) {
+    double* output = convertToPixels(*x, *y, screen);
+    *x = output[0];
+    *y = output[1];
+    delete [] output;
+}
+
+void Space::convertToPixels(double *pos, Screen *screen) {
+    convertToPixels(&pos[0], &pos[1], screen);
 }
 
 double* Space::convertToPixels(const double *pos, Screen *screen) {
