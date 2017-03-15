@@ -11,6 +11,8 @@ namespace douglas {
 
     const double pi = 3.1415926535897;
 
+    unsigned int factorial(unsigned int n);
+
     namespace vector {
 
         double * vector(const double x, const double y);

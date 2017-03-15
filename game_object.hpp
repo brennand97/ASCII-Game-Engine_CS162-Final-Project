@@ -17,6 +17,7 @@ class GameObject : public Typed {
 protected:
     unsigned int obj_id;
     double previous_dt = -1;
+    char draw_char = '#';
     GameObject* parent = nullptr;
     GameObject* world = nullptr;
     std::vector<GameObject*> children;
@@ -56,6 +57,10 @@ public:
     // Time Step
     virtual void step(double dt);
     double getPreviousStepTime() { return previous_dt; }
+
+    // Draw char
+    char getDrawChar() { return draw_char; }
+    void setDrawChar(char c) { this->draw_char = c; }
 
     // Virtual Render function
     virtual void render(Screen* screen) = 0;

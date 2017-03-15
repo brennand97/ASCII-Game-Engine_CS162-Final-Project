@@ -5,18 +5,17 @@
 #ifndef FINAL_PROJECT_BOX_HPP
 #define FINAL_PROJECT_BOX_HPP
 
-#include "../particle_container.hpp"
+#include "../objects/convex_polygon.hpp"
 #include "../constraints/line_constraint.hpp"
 #include <string>
 
-class Box : public ParticleContainer {
+class Box : public ConvexPolygon {
 private:
     double width;
     double height;
-    char draw_char = '#';
-    LineConstraint* width_constraint;
-    LineConstraint* height_constraint;
-    LineConstraint* diagonal_constraint;
+//    LineConstraint* width_constraint;
+//    LineConstraint* height_constraint;
+//    LineConstraint* diagonal_constraint;
 public:
 
     static std::string TYPE;
@@ -25,13 +24,11 @@ public:
     ~Box();
 
     double getWidth() { return width; }
-    void setWidth(double w) { this->width = w; }
+    //void setWidth(double w) { this->width = w; }
     double getHeight() { return height; }
-    void setHeight(double h) { this->height = h; }
-    char getDrawChar() { return draw_char; }
-    void setDrawChar(char c) { this->draw_char = c; }
+    //void setHeight(double h) { this->height = h; }
 
-    void render(Screen*);
+    //void render(Screen*);
 };
 
 #endif //FINAL_PROJECT_BOX_HPP

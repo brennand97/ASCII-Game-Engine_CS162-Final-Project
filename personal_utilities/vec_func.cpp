@@ -6,6 +6,13 @@
 
 namespace douglas {
 
+    unsigned int factorial(unsigned int n) {
+        unsigned int ret = 1;
+        for(unsigned int i = 1; i <= n; ++i)
+            ret *= i;
+        return ret;
+    }
+
     namespace vector {
 
         double * vector(const double x, const double y) {
@@ -46,7 +53,15 @@ namespace douglas {
         }
 
         double angle(const double * v1, const double * v2) {
-            return std::asin( dotProduct(v1, v2) / ( magnitude(v1) * magnitude(v2) ) );
+            double a = std::asin( dotProduct(v1, v2) / ( magnitude(v1) * magnitude(v2) ) );
+            double * added = add(v1, v2);
+            double * subtracted = subtract(v1, v2);
+            if(magnitude(added) < magnitude(subtracted)) {
+                a += douglas::pi;
+            }
+            delete [] added;
+            delete [] subtracted;
+            return a;
         }
 
         double * add(const double * v1, const double * v2) {

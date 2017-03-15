@@ -49,7 +49,7 @@ void ParticleContainer::getGlobalConstraints(std::vector < SingleConstraint * > 
     for(unsigned int i = 0; i < sub_global_constraints.size(); i++) {
         vec->push_back(sub_global_constraints[i]);
     }
-    if(false) {
+    if(supers) {
         for(unsigned int i = 0; i < super_global_constraints.size(); i++) {
             Space* world = (Space*) getWorld();
             std::vector<GameObject*> allPCs;

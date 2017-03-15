@@ -11,7 +11,7 @@
 
 std::string Box::TYPE = "box";
 
-Box::Box(double *pos, double width, double height) : ParticleContainer() {
+Box::Box(double *pos, double width, double height) : ConvexPolygon(true, 1) {
     addType(Box::TYPE);
 
     this->width = width;
@@ -49,51 +49,60 @@ Box::Box(double *pos, double width, double height) : ParticleContainer() {
     addChild(p3);
     addChild(p4);
 
-    width_constraint = new LineConstraint(width, Constraint::Equality::EQUAL);
-    width_constraint->addParticle(p1);
-    width_constraint->addParticle(p2);
-    width_constraint->addParticle(p3);
-    width_constraint->addParticle(p4);
+    vertices.push_back(p1);
+    vertices.push_back(p2);
+    vertices.push_back(p3);
+    vertices.push_back(p4);
 
-    height_constraint = new LineConstraint(height, Constraint::Equality::EQUAL);
-    height_constraint->addParticle(p1);
-    height_constraint->addParticle(p4);
-    height_constraint->addParticle(p2);
-    height_constraint->addParticle(p3);
+    num_vertices = vertices.size();
 
-    double diag = std::sqrt((width*width) + (height*height));
-    diagonal_constraint = new LineConstraint(diag, Constraint::Equality::EQUAL);
-    diagonal_constraint->addParticle(p1);
-    diagonal_constraint->addParticle(p3);
-    diagonal_constraint->addParticle(p2);
-    diagonal_constraint->addParticle(p4);
+    setConstraints();
 
-    specific_constraints.push_back(width_constraint);
-    specific_constraints.push_back(height_constraint);
-    specific_constraints.push_back(diagonal_constraint);
+//    width_constraint = new LineConstraint(width, Constraint::Equality::EQUAL);
+//    width_constraint->addParticle(p1);
+//    width_constraint->addParticle(p2);
+//    width_constraint->addParticle(p3);
+//    width_constraint->addParticle(p4);
+//
+//    height_constraint = new LineConstraint(height, Constraint::Equality::EQUAL);
+//    height_constraint->addParticle(p1);
+//    height_constraint->addParticle(p4);
+//    height_constraint->addParticle(p2);
+//    height_constraint->addParticle(p3);
+//
+//    double diag = std::sqrt((width*width) + (height*height));
+//    diagonal_constraint = new LineConstraint(diag, Constraint::Equality::EQUAL);
+//    diagonal_constraint->addParticle(p1);
+//    diagonal_constraint->addParticle(p3);
+//    diagonal_constraint->addParticle(p2);
+//    diagonal_constraint->addParticle(p4);
+//
+//    specific_constraints.push_back(width_constraint);
+//    specific_constraints.push_back(height_constraint);
+//    specific_constraints.push_back(diagonal_constraint);
 }
 
 Box::~Box() {}
 
-void Box::render(Screen* screen) {
-
-    Space* world = (Space*) getWorld();
-
-    double * pos1 = world->convertToPixels((Particle*) children[0], screen);
-    double * pos2 = world->convertToPixels((Particle*) children[1], screen);
-    double * pos3 = world->convertToPixels((Particle*) children[2], screen);
-    double * pos4 = world->convertToPixels((Particle*) children[3], screen);
-
-    std::vector<Pixel> box;
-    screen->line(pos1, pos2, draw_char, &box);
-    screen->line(pos2, pos3, draw_char, &box);
-    screen->line(pos3, pos4, draw_char, &box);
-    screen->line(pos4, pos1, draw_char, &box);
-    screen->addToFrame(box);
-
-    delete [] pos1;
-    delete [] pos2;
-    delete [] pos3;
-    delete [] pos4;
-
-}
+//void Box::render(Screen* screen) {
+//
+//    Space* world = (Space*) getWorld();
+//
+//    double * pos1 = world->convertToPixels((Particle*) children[0], screen);
+//    double * pos2 = world->convertToPixels((Particle*) children[1], screen);
+//    double * pos3 = world->convertToPixels((Particle*) children[2], screen);
+//    double * pos4 = world->convertToPixels((Particle*) children[3], screen);
+//
+//    std::vector<Pixel> box;
+//    screen->line(pos1, pos2, draw_char, &box);
+//    screen->line(pos2, pos3, draw_char, &box);
+//    screen->line(pos3, pos4, draw_char, &box);
+//    screen->line(pos4, pos1, draw_char, &box);
+//    screen->addToFrame(box);
+//
+//    delete [] pos1;
+//    delete [] pos2;
+//    delete [] pos3;
+//    delete [] pos4;
+//
+//}
