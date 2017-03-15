@@ -18,7 +18,7 @@ Player::Player(double * pos,
 
     double x;
     double y_low;
-    if ( pow != nullptr ) {
+    if ( pos != nullptr ) {
         x = pos[0];
         y_low = pos[1] - (height / 2.0);
     } else {
@@ -27,14 +27,12 @@ Player::Player(double * pos,
     }
 
     double * f_w_pos = douglas::vector::vector(x, y_low + height);
-    std::cout << "(" << f_w_pos[0] << ", " << f_w_pos[1] << ")" << std::endl;
     frontWheels = new Wheel(f_w_pos, width, wheel_width, 0, front_drag_coefficient);
     frontWheels->setDrawChar(draw_char);
     addChild(frontWheels);
     delete [] f_w_pos;
 
     double * b_w_pos = douglas::vector::vector(x, y_low);
-    std::cout << "(" << b_w_pos[0] << ", " << b_w_pos[1] << ")" << std::endl;
     backWheels = new Wheel(b_w_pos, width, wheel_width, 0, back_drag_coefficient);
     backWheels->setDrawChar(draw_char);
     addChild(backWheels);
