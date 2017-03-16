@@ -20,6 +20,8 @@ protected:
     BoxConstraint* boundary;
     void handlePhysics(int);
 
+    Space* neighbors[4];
+
 public:
 
     static std::string TYPE;
@@ -37,6 +39,11 @@ public:
     double * convertToPixels(const double x, const double y, Screen* screen);
     void convertToPixels(double *x, double *y, Screen* screen);
     double * convertToPixels(Particle * p, Screen* screen);
+
+    // Handle neighbor getting and setting
+    // Indexed starting from the top (0) going clockwise until the left (3)
+    Space* getSpace(int index) { return neighbors[index]; }
+    void setSpace(int index, Space* space) { neighbors[index] = space; }
 };
 
 #endif //FINAL_PROJECT_SPACE_HPP

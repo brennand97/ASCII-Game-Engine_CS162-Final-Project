@@ -29,6 +29,8 @@ protected:
     ConvexPolygonConstraint* solid_constraint;
     std::vector<LineConstraint*> line_constraints;
 
+    void setConstraints();
+
 public:
 
     static std::string TYPE;
@@ -36,7 +38,6 @@ public:
     ConvexPolygon(bool solid = true, double rigid = 1);
     ConvexPolygon(std::vector<Particle*> vertices, bool solid = true, double rigid = 1);
 
-    void setConstraints();
     void render(Screen* screen);
 
 };
