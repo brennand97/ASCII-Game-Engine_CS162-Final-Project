@@ -5,9 +5,9 @@
 #ifndef FINAL_PROJECT_GAME_GRID_M_T_HPP
 #define FINAL_PROJECT_GAME_GRID_M_T_HPP
 
-#include "../../space.hpp"
+#include "room.hpp"
 
-class GridMT : public Space {
+class GridMT : public Room {
 
 public:
 

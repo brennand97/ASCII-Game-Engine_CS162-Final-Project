@@ -10,7 +10,7 @@
 std::string GridMT::TYPE = "grid_middle_top";
 
 // Default constructor
-GridMT::GridMT(double u_w, double u_h) : Space(u_w, u_h) {
+GridMT::GridMT(double u_w, double u_h) : Room(u_w, u_h) {
     // Add type to type list
     addType(GridMT::TYPE);
     // Call virtual setup function

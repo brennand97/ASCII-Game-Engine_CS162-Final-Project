@@ -2,8 +2,8 @@
 // Created by Brennan on 3/16/2017.
 //
 
-#ifndef FINAL_PROJECT_GRID_HPP
-#define FINAL_PROJECT_GRID_HPP
+#ifndef FINAL_PROJECT_GRID_TILES_HPP
+#define FINAL_PROJECT_GRID_TILES_HPP
 
 #include "grid_l_t.hpp"
 #include "grid_m_t.hpp"
@@ -15,4 +15,4 @@
 #include "grid_m_b.hpp"
 #include "grid_r_b.hpp"
 
-#endif //FINAL_PROJECT_GRID_HPP
+#endif //FINAL_PROJECT_GRID_TILES_HPP

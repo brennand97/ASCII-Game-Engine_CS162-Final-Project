@@ -10,7 +10,7 @@
 std::string GridRT::TYPE = "grid_right_top";
 
 // Default constructor
-GridRT::GridRT(double u_w, double u_h) : Space(u_w, u_h) {
+GridRT::GridRT(double u_w, double u_h) : Room(u_w, u_h) {
     // Add type to type list
     addType(GridRT::TYPE);
     // Call virtual setup function

@@ -10,7 +10,7 @@
 std::string GridLM::TYPE = "grid_left_middle";
 
 // Default constructor
-GridLM::GridLM(double u_w, double u_h) : Space(u_w, u_h) {
+GridLM::GridLM(double u_w, double u_h) : Room(u_w, u_h) {
     // Add type to type list
     addType(GridLM::TYPE);
     // Call virtual setup function

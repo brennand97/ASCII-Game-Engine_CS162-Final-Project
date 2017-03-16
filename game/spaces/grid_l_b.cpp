@@ -10,7 +10,7 @@
 std::string GridLB::TYPE = "grid_left_bottom";
 
 // Default constructor
-GridLB::GridLB(double u_w, double u_h) : Space(u_w, u_h) {
+GridLB::GridLB(double u_w, double u_h) : Room(u_w, u_h) {
     // Add type to type list
     addType(GridLB::TYPE);
     // Call virtual setup function

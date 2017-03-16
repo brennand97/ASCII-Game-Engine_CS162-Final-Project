@@ -10,7 +10,7 @@
 std::string GridMB::TYPE = "grid_middle_bottom";
 
 // Default constructor
-GridMB::GridMB(double u_w, double u_h) : Space(u_w, u_h) {
+GridMB::GridMB(double u_w, double u_h) : Room(u_w, u_h) {
     // Add type to type list
     addType(GridMB::TYPE);
     // Call virtual setup function
