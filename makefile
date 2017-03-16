@@ -14,6 +14,9 @@ SRCS := $(filter-out ./game_main.cpp, $(shell find ./ -type f ! -wholename "*exa
 HEADERS := $(shell find ./ -type f ! -wholename "*examples/*" -name "*.hpp*")
 OBJS := $(SRCS:.cpp=.o)
 
+CLEAN_SRCS := $(shell find ./ -type f -name "*.cpp")
+CLEAN_OBJS := $(CLEAN_SRCS:.cpp=.o)
+
 main: $(OBJS) $(HEADERS) game_main
 	$(CXX) $(LDFLAGS) $(OBJS) game_main.o -o $(EXECUTABLE)
 
@@ -23,9 +26,12 @@ game_main: $(OBJS) $(HEADERS)
 $(OBJS): %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 	
+all: main physics_test
+	
 clean:
-	@rm -vf $(OBJS)
+	@rm -vf $(CLEAN_OBJS)
 	@rm -vf $(EXECUTABLE)
+	@rm -vf ./examples/physics_test/physics_test
 	@echo All object files and executable removed
 	
 display:
@@ -40,6 +46,7 @@ display:
 	
 	@echo Executable:
 	@echo $(EXECUTABLE)
+
 
 PHYSICS_TEST_SRCS := $(shell find ./examples/physics_test/ -type f -name "*.cpp")
 PHYSICS_TEST_OBJS := $(PHYSICS_TEST_SRCS:.cpp=.o)
