@@ -5,9 +5,9 @@
 #ifndef FINAL_PROJECT_WHEEL_HPP
 #define FINAL_PROJECT_WHEEL_HPP
 
-#include "../physics/particle_container.hpp"
-#include "../physics/constraints/line_constraint.hpp"
-#include "../personal_utilities/vec_func.hpp"
+#include "../../physics/particle_container.hpp"
+#include "../../physics/constraints/line_constraint.hpp"
+#include "../../personal_utilities/vec_func.hpp"
 #include <chrono>
 
 class Wheel : public ParticleContainer {

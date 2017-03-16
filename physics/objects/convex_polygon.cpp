@@ -3,7 +3,7 @@
 //
 
 #include "convex_polygon.hpp"
-#include "../../spaces/space.hpp"
+#include "../../space.hpp"
 #include <cmath>
 
 std::string ConvexPolygon::TYPE = "convex_polygon";

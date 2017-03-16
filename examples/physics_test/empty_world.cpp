@@ -3,10 +3,10 @@
 //
 
 #include "empty_world.hpp"
-#include "../physics/constraints/line_constraint.hpp"
-#include "../physics/constraints/drag_constraint.hpp"
-#include "../physics/objects/box.hpp"
-#include "../player/player.hpp"
+#include "../../physics/constraints/line_constraint.hpp"
+#include "../../physics/constraints/drag_constraint.hpp"
+#include "../../physics/objects/box.hpp"
+#include "../../game/player/player.hpp"
 #include <iostream>
 #include <vector>
 #include <algorithm>

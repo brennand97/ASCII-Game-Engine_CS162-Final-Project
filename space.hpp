@@ -5,10 +5,10 @@
 #ifndef FINAL_PROJECT_SPACE_HPP
 #define FINAL_PROJECT_SPACE_HPP
 
-#include "../game_object.hpp"
-#include "../physics/particle_container.hpp"
-#include "../physics/constraints/box_constraint.hpp"
-#include "../display/screen.hpp"
+#include "game_object.hpp"
+#include "physics/particle_container.hpp"
+#include "physics/constraints/box_constraint.hpp"
+#include "display/screen.hpp"
 #include <string>
 #include <vector>
 

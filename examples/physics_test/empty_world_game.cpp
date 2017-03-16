@@ -9,14 +9,14 @@
 #include <chrono>
 #include <thread>
 #include <atomic>
-#include "../display/screen.hpp"
-#include "../game_object.hpp"
+#include "../../display/screen.hpp"
+#include "../../game_object.hpp"
 #include "empty_world.hpp"
-#include "../physics/objects/box.hpp"
-#include "../game/player/wheel.hpp"
-#include "../game/player/player.hpp"
-#include "../input.hpp"
-#include "../personal_utilities/vec_func.hpp"
+#include "../../physics/objects/box.hpp"
+#include "../../game/player/wheel.hpp"
+#include "../../game/player/player.hpp"
+#include "../../input.hpp"
+#include "../../personal_utilities/vec_func.hpp"
 
 int main (int argc, char** argv) {
 

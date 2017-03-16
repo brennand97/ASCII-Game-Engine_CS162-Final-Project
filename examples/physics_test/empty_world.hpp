@@ -5,7 +5,7 @@
 #ifndef FINAL_PROJECT_EMPTY_WORLD_HPP
 #define FINAL_PROJECT_EMPTY_WORLD_HPP
 
-#include "space.hpp"
+#include "../../space.hpp"
 #include <string>
 
 class EmptyWorld : public Space {

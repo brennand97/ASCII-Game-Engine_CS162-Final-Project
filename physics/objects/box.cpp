@@ -4,7 +4,7 @@
 
 #include "box.hpp"
 #include "../particle.hpp"
-#include "../../spaces/space.hpp"
+#include "../../space.hpp"
 #include <string>
 #include <cmath>
 #include <algorithm>

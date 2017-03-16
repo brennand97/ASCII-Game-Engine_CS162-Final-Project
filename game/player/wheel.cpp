@@ -4,7 +4,7 @@
 
 #include "wheel.hpp"
 #include <cmath>
-#include "../spaces/space.hpp"
+#include "../../space.hpp"
 
 std::string Wheel::TYPE = "wheel";
 std::string Wheel::WheelConstraint::TYPE = "wheel_constraint";

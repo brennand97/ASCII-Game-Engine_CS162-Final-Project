@@ -3,7 +3,7 @@
 //
 
 #include "space.hpp"
-#include "../physics/constraints/box_constraint.hpp"
+#include "physics/constraints/box_constraint.hpp"
 #include <iostream>
 #include <string>
 #include <algorithm>

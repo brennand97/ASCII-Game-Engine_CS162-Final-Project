@@ -3,7 +3,7 @@
 //
 
 #include "player.hpp"
-#include "../spaces/space.hpp"
+#include "../../space.hpp"
 
 std::string Player::TYPE = "player_car";
 

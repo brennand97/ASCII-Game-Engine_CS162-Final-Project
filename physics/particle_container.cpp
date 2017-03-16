@@ -4,7 +4,7 @@
 
 #include "particle_container.hpp"
 #include "../game_object.hpp"
-#include "../spaces/space.hpp"
+#include "../space.hpp"
 #include "constraints/constraint.hpp"
 #include <string>
 #include <vector>
