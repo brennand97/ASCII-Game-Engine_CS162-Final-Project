@@ -20,9 +20,7 @@
 #include "game/spaces/grid_tiles.hpp"
 
 void initializeGrid(Room***, double, double);
-void initializeInput(Input*, Player*);
-void move(Player* player, Space* from, Space* to);
-void createPlayer(Player*);
+Room* getPlayerRoom(Room***);
 
 int main (int argc, char** argv) {
 
@@ -32,95 +30,25 @@ int main (int argc, char** argv) {
         grid[i] = new Room*[3];
     }
     // fill grid with the correct instances
-    initializeGrid(grid, 100.0, 100.0);
+    initializeGrid(grid, 100.0, 50.0);
 
     // Create the player
-    Player* player;
-    createPlayer(player);
+    double * player_pos = douglas::vector::vector(20, 20);
+    Player* player = new Player(player_pos, 5.0, 10.0, 3.0, 100000.0, 100000.0);
+    delete [] player_pos;
+    grid[1][1]->setPlayer(player);
 
     // Boolean to tell the loop to stop
     bool stop = false;
 
     // Input system initialized
     Input* input = new Input();
+    double accel = 10;
+    double angle = douglas::pi / 7.0;
     input->listenTo('q', [&input, &stop](double dt) -> void {
         stop = true;
         input->stop();
     });
-    initializeInput(input, player);
-    //input->listen();
-
-    double * l1_p1 = douglas::vector::vector(1,0);
-    double * l1_p2 = douglas::vector::vector(1,2);
-    double * l2_p1 = douglas::vector::vector(2,0);
-    double * l2_p2 = douglas::vector::vector(0,2);
-    try {
-        double * intersect = douglas::vector::intersection(l1_p1, l1_p2, l2_p1, l2_p2);
-        std::cout << "(" << intersect[0] << ", " << intersect[1] << ")" << std::endl;
-        delete [] intersect;
-    } catch ( std::out_of_range e ) {
-        std::cout << e.what() << std::endl;
-    }
-    delete [] l1_p1;
-    delete [] l1_p2;
-    delete [] l2_p1;
-    delete [] l2_p2;
-
-    //input->end();
-    delete input;
-    // clear all the memory of grid including the space pointers
-    for(int i = 0; i < 3; i++) {
-        for(int j = 0; j < 3; j++) {
-            delete grid[i][j];
-        }
-        delete [] grid[i];
-    }
-    delete [] grid;
-
-    return 0;
-
-}
-
-void initializeGrid(Room* **grid, double w, double h) {
-    grid[0][0] = new GridLT(w, h);
-    grid[1][0] = new GridMT(w, h);
-    grid[2][0] = new GridRT(w, h);
-    grid[0][1] = new GridLM(w, h);
-    grid[1][1] = new GridMM(w, h);
-    grid[2][1] = new GridRM(w, h);
-    grid[0][2] = new GridLB(w, h);
-    grid[1][2] = new GridMB(w, h);
-    grid[2][2] = new GridRB(w, h);
-
-    for(int i = 0; i < 3; i++) {
-        for(int j = 0; j < 3; j++) {
-            if (i > 0) {
-                grid[i][j]->setSpace(3, grid[i - 1][j]);
-            }
-            if (i < 2) {
-                grid[i][j]->setSpace(1, grid[i + 1][j]);
-            }
-            if (j > 0) {
-                grid[i][j]->setSpace(0, grid[i][j - 1]);
-            }
-            if (j < 2) {
-                grid[i][j]->setSpace(2, grid[i][j + 1]);
-            }
-        }
-    }
-}
-
-void createPlayer(Player* player) {
-    double * player_pos = douglas::vector::vector(2.5, 5.0);
-    player = new Player(player_pos, 5.0, 10.0, 3.0, 1000.0, 1000.0);
-    delete [] player_pos;
-}
-
-void initializeInput(Input* input, Player* player) {
-
-    double accel = 10;
-    double angle = douglas::pi / 7.0;
-
     input->listenTo('w', [&accel, &player](double dt) -> void {
         double vel = accel;
         if (dt < 0.1) {
@@ -170,5 +98,97 @@ void initializeInput(Input* input, Player* player) {
         std::vector<GameObject*>::iterator it = gos.begin();
         ((Wheel*) (*it))->setAngle(-1 * angle);
     });
+    input->listen();
 
+    // Create screen
+    Screen* screen = new Screen(190, 60);
+
+    double dt = 0.5;
+    std::chrono::high_resolution_clock::time_point t = std::chrono::high_resolution_clock::now();
+    std::chrono::high_resolution_clock::time_point start_time = t;
+
+    while (!stop) {
+
+        Room* room = getPlayerRoom(grid);
+        if(room == nullptr) {
+            std::cout << "No room had the player in it." << std::endl;
+            break;
+        }
+
+        if(!input->is_multi_threading_enabled()) {
+            input->getInput();
+        }
+
+        room->step(dt);
+
+        room->render(screen);
+        screen->displayFrame();
+        screen->printValue(1, " FPS: " + std::to_string(1/dt));
+        screen->printValue(2, " Room Type: " + room->getType());
+
+        room->checkPlayerLocation();
+
+        std::chrono::high_resolution_clock::time_point nt = std::chrono::high_resolution_clock::now();
+        dt = (nt - t).count() / 1000000000.0;
+        t = nt;
+
+        if ((t - start_time).count() / 1000000000.0 > 30) {
+            //break;
+        }
+    }
+
+    input->end();
+    delete input;
+    // clear all the memory of grid including the space pointers
+    for(int i = 0; i < 3; i++) {
+        for(int j = 0; j < 3; j++) {
+            delete grid[i][j];
+        }
+        delete [] grid[i];
+    }
+    delete [] grid;
+    delete screen;
+
+    return 0;
+
+}
+
+void initializeGrid(Room* **grid, double w, double h) {
+    grid[0][0] = new GridLT(w, h);
+    grid[1][0] = new GridMT(w, h);
+    grid[2][0] = new GridRT(w, h);
+    grid[0][1] = new GridLM(w, h);
+    grid[1][1] = new GridMM(w, h);
+    grid[2][1] = new GridRM(w, h);
+    grid[0][2] = new GridLB(w, h);
+    grid[1][2] = new GridMB(w, h);
+    grid[2][2] = new GridRB(w, h);
+
+    for(int i = 0; i < 3; i++) {
+        for(int j = 0; j < 3; j++) {
+            if (i > 0) {
+                grid[i][j]->setSpace(3, grid[i - 1][j]);
+            }
+            if (i < 2) {
+                grid[i][j]->setSpace(1, grid[i + 1][j]);
+            }
+            if (j > 0) {
+                grid[i][j]->setSpace(0, grid[i][j - 1]);
+            }
+            if (j < 2) {
+                grid[i][j]->setSpace(2, grid[i][j + 1]);
+            }
+        }
+    }
+}
+
+Room* getPlayerRoom(Room* **grid) {
+    for(int i = 0; i < 3; i++) {
+        for(int j = 0; j < 3; j++) {
+            if (grid[i][j]->hasPlayer()) {
+                return grid[i][j];
+            }
+        }
+    }
+    return nullptr;
 }

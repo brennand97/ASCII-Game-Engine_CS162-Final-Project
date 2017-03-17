@@ -55,6 +55,32 @@ Player::Player(double * pos,
 
 }
 
+double* Player::getPlayerMidPoint() {
+    double * intersect = douglas::vector::intersection(((Particle*) frontWheels->getChildren()[1])->getPosition(),
+                                                       ((Particle*) backWheels->getChildren()[4])->getPosition(),
+                                                       ((Particle*) frontWheels->getChildren()[4])->getPosition(),
+                                                       ((Particle*) backWheels->getChildren()[1])->getPosition());
+    return intersect;
+}
+
+void Player::movePlayerBy(double dx, double dy) {
+    std::vector<GameObject*>::iterator g_it;
+    std::vector<GameObject*> particles;
+    getChildrenOfType(Particle::TYPE, &particles);
+    for(g_it = particles.begin(); g_it != particles.end(); g_it++) {
+        double * n_pos = douglas::vector::copy(((Particle*) *g_it)->getPosition());
+        n_pos[0] += dx;
+        n_pos[1] += dy;
+        double * n_ppos = douglas::vector::copy(((Particle*) *g_it)->getPPosition());
+        n_ppos[0] += dx;
+        n_ppos[1] += dy;
+        ((Particle*) *g_it)->setPosition(n_pos);
+        ((Particle*) *g_it)->setPPosition(n_ppos);
+        delete [] n_pos;
+        delete [] n_ppos;
+    }
+}
+
 void Player::render(Screen *screen) {
 
     renderChildren(screen);

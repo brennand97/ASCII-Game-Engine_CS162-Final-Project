@@ -47,6 +47,9 @@ public:
     char getDrawChar() { return draw_char; }
     void setDrawChar(char c) { this->draw_char = c; frontWheels->setDrawChar(c); backWheels->setDrawChar(c); }
 
+    double * getPlayerMidPoint();
+    void movePlayerBy(double dx, double dy);
+
     void render(Screen* screen);
 
 };
