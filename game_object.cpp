@@ -99,6 +99,17 @@ void GameObject::getChildrenOfType(std::string type, std::vector < GameObject * 
     }
 }
 
+void GameObject::getImmediateChildrenOfType(std::string type, std::vector < GameObject * > * vec) {
+    if(children.size() > 0) {
+        std::vector<GameObject*>::iterator it;
+        for(it = children.begin(); it != children.end(); it++) {
+            if((*it)->isType(type)) {
+                vec->push_back(*it);
+            }
+        }
+    }
+}
+
 void GameObject::stepChildren(double dt) {
 
     std::vector<GameObject*>::iterator it;

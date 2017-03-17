@@ -77,6 +77,8 @@ void ConvexPolygon::ConvexPolygonConstraint::fix(int iter, Particle *p) {
     // THIS IS NOT CURRENTLY WORKING AND WAS A BAD IDEA MATHEMATICALLY
     // The Separating Axis Theorem (SAT) should be implemented instead
 
+    return;
+
     if(this->polygon->solid) {
 
         // TODO this could do with a limiting factor to decrease calculation time for non-effected particles

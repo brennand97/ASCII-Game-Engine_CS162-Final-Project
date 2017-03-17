@@ -53,6 +53,7 @@ public:
     GameObject* getWorld();
     void getParentsOfType(std::string, std::vector<GameObject*>*);
     void getChildrenOfType(std::string, std::vector<GameObject*>*);
+    void getImmediateChildrenOfType(std::string, std::vector<GameObject*>*);
 
     // Time Step
     virtual void step(double dt);

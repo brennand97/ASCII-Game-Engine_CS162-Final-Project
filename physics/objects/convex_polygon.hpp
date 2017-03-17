@@ -12,6 +12,7 @@
 
 class ConvexPolygon : public ParticleContainer {
 
+public:
     class ConvexPolygonConstraint : public SingleConstraint {
     private:
         ConvexPolygon* polygon;

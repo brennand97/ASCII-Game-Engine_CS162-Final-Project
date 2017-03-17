@@ -50,13 +50,11 @@ void ParticleContainer::getGlobalConstraints(std::vector < SingleConstraint * > 
         vec->push_back(sub_global_constraints[i]);
     }
     if(supers) {
-        for(unsigned int i = 0; i < super_global_constraints.size(); i++) {
-            Space* world = (Space*) getWorld();
-            std::vector<GameObject*> allPCs;
-            world->getChildrenOfType(ParticleContainer::TYPE, &allPCs);
-            for(unsigned int i = 0; i < allPCs.size(); i++) {
-                ((ParticleContainer*) allPCs[i])->getSuperGlobalConstraints(vec);
-            }
+        Space* world = (Space*) getWorld();
+        std::vector<GameObject*> allPCs;
+        world->getChildrenOfType(ParticleContainer::TYPE, &allPCs);
+        for(unsigned int i = 0; i < allPCs.size(); i++) {
+            ((ParticleContainer*) allPCs[i])->getSuperGlobalConstraints(vec);
         }
     }
     std::vector<GameObject*> parentPCs;
@@ -98,6 +96,8 @@ void ParticleContainer::addVelocity(double *vel) {
     }
 }
 
+#include "../game/player/wheel.hpp"
+#include "objects/wall.hpp"
 void ParticleContainer::handleConstraints(int iter) {
     std::vector<Constraint*>::iterator it;
     for(it = specific_constraints.begin(); it != specific_constraints.end(); it++) {
@@ -107,12 +107,12 @@ void ParticleContainer::handleConstraints(int iter) {
     // Get particles
     std::vector<GameObject*>::iterator g_it;
     std::vector<GameObject*> particles;
-    getChildrenOfType(Particle::TYPE, &particles);
+    getImmediateChildrenOfType(Particle::TYPE, &particles);
 
     // Get global constraints
     std::vector<SingleConstraint*>::iterator s_it;
     std::vector<SingleConstraint*> global_constraints;
-    getGlobalConstraints(&global_constraints);
+    getGlobalConstraints(&global_constraints, true);
     for(s_it = global_constraints.begin(); s_it != global_constraints.end(); s_it++) {
         for(g_it = particles.begin(); g_it != particles.end(); g_it++) {
             (*s_it)->fix(iter, (Particle*) *g_it);

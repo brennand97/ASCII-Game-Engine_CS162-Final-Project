@@ -13,6 +13,16 @@ namespace douglas {
         return ret;
     }
 
+    int sign(const double d) {
+        if (d > 0) {
+            return 1;
+        } else if (d < 0) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
     namespace vector {
 
         double * vector(const double x, const double y) {
@@ -88,6 +98,62 @@ namespace douglas {
             double mag2 = magnitude(onto);
             scale(out, dotProduct(v, onto) / (mag2 * mag2));
             return out;
+        }
+
+        double * intersection(const double * l1_p1,
+                              const double * l1_p2,
+                              const double * l2_p1,
+                              const double * l2_p2) {
+
+            if (l1_p1[0] > l1_p2[0]) {
+                return intersection(l1_p2, l1_p1, l2_p1, l2_p2);
+            } else if (l2_p1[0] > l2_p2[0]) {
+                return intersection(l1_p1, l1_p2, l2_p2, l2_p1);
+            }
+
+            if ( l1_p1[0] == l1_p2[0] && l2_p1[0] == l2_p2[0] ) {
+                // Both vertical lines
+                throw std::out_of_range("Both line segments are vertical lines");
+            } else if ( l1_p1[0] == l1_p2[0] ) {
+                // To decrease writing the same code twice
+                return intersection(l2_p1, l2_p2, l1_p1, l1_p2);
+            } else if ( l2_p1[0] == l2_p2[0] ) {
+                // Handle a single vertical line
+                double m1 = (l1_p2[1] - l1_p1[1]) / (l1_p2[0] - l1_p1[0]);
+
+                double t1 = l2_p1[0] - l1_p1[0];
+                double t2 = (m1 * t1) + l1_p1[1] - l2_p1[1];
+
+                if ( t1 < 0 || t1 > (l1_p2[0] - l1_p1[0])
+                     || t2 < 0 || t2 > (l2_p2[1] - l2_p1[1])) {
+                    // The line segments do not cross
+                    throw std::out_of_range("The line segments do not cross");
+                } else {
+                    return vector(l2_p1[0], t2 + l2_p1[1]);
+                }
+
+            } else {
+                // Handle two none vertical lines
+                double m1 = (l1_p2[1] - l1_p1[1]) / (l1_p2[0] - l1_p1[0]);
+                double m2 = (l2_p2[1] - l2_p1[1]) / (l2_p2[0] - l2_p1[0]);
+
+                if ( m1 == m2 ) {
+                    // The lines are parallel and never meet
+                    throw std::out_of_range("The lines are parallel and never meet");
+                }
+
+                double t2 = ((l2_p1[1] - l1_p1[1]) - (m1 * (l2_p1[0] - l1_p1[0]))) / (m1 - m2);
+                double t1 = t2 + l2_p1[0] - l1_p1[0];
+
+                if ( t1 < 0 || t1 > (l1_p2[0] - l1_p1[0])
+                     || t2 < 0 || t2 > (l2_p2[0] - l2_p1[0])) {
+                    // The line segments do not cross
+                    throw std::out_of_range("The line segments do not cross");
+                } else {
+                    return vector(t1 + l1_p1[0], (m1 * t1) + l1_p1[1]);
+                }
+            }
+
         }
 
     }

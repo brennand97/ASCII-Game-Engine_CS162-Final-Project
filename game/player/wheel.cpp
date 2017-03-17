@@ -215,7 +215,7 @@ void Wheel::step(double dt) {
     }
 }
 
-Wheel::WheelConstraint::WheelConstraint(double drag_coefficient) {
+Wheel::WheelConstraint::WheelConstraint(double drag_coefficient) : PairConstraint() {
     addType(WheelConstraint::TYPE);
     this->drag_coefficient = drag_coefficient;
 }

@@ -48,9 +48,26 @@ int main (int argc, char** argv) {
         input->stop();
     });
     initializeInput(input, player);
+    //input->listen();
 
+    double * l1_p1 = douglas::vector::vector(1,0);
+    double * l1_p2 = douglas::vector::vector(1,2);
+    double * l2_p1 = douglas::vector::vector(2,0);
+    double * l2_p2 = douglas::vector::vector(0,2);
+    try {
+        double * intersect = douglas::vector::intersection(l1_p1, l1_p2, l2_p1, l2_p2);
+        std::cout << "(" << intersect[0] << ", " << intersect[1] << ")" << std::endl;
+        delete [] intersect;
+    } catch ( std::out_of_range e ) {
+        std::cout << e.what() << std::endl;
+    }
+    delete [] l1_p1;
+    delete [] l1_p2;
+    delete [] l2_p1;
+    delete [] l2_p2;
 
-
+    //input->end();
+    delete input;
     // clear all the memory of grid including the space pointers
     for(int i = 0; i < 3; i++) {
         for(int j = 0; j < 3; j++) {

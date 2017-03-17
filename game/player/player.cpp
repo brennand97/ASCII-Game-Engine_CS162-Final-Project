@@ -12,7 +12,7 @@ Player::Player(double * pos,
                double height,
                double wheel_width,
                double front_drag_coefficient,
-               double back_drag_coefficient) {
+               double back_drag_coefficient) : ParticleContainer() {
 
     addType(Player::TYPE);
 
@@ -56,31 +56,42 @@ Player::Player(double * pos,
 }
 
 void Player::render(Screen *screen) {
+
     renderChildren(screen);
 
     double * front_diff = douglas::vector::subtract(((Particle*) frontWheels->getChildren()[4])->getPosition(),
                                                    ((Particle*) frontWheels->getChildren()[1])->getPosition());
     douglas::vector::scale(front_diff, 0.5);
     double * front_mid = douglas::vector::add(front_diff, ((Particle*) frontWheels->getChildren()[1])->getPosition());
-    delete [] front_diff;
+
 
     double * back_diff = douglas::vector::subtract(((Particle*) backWheels->getChildren()[4])->getPosition(),
                                                    ((Particle*) backWheels->getChildren()[1])->getPosition());
     douglas::vector::scale(back_diff, 0.5);
     double * back_mid = douglas::vector::add(back_diff, ((Particle*) backWheels->getChildren()[1])->getPosition());
-    delete [] back_diff;
+
+    douglas::vector::scale(back_diff, 0.5);
+    double * back_l_mid = douglas::vector::add(back_diff, back_mid);
+    douglas::vector::scale(back_diff, -1.0);
+    double * back_r_mid = douglas::vector::add(back_diff, back_mid);
 
     Space* space = (Space*) getWorld();
     space->convertToPixels(front_mid, screen);
     space->convertToPixels(back_mid, screen);
+    space->convertToPixels(back_l_mid, screen);
+    space->convertToPixels(back_r_mid, screen);
 
     std::vector<Pixel> line;
     screen->line(front_mid, back_mid, draw_char, &line);
+    screen->line(front_mid, back_l_mid, draw_char, &line);
+    screen->line(front_mid, back_r_mid, draw_char, &line);
     screen->addToFrame(line);
 
     delete [] front_mid;
+    delete [] front_diff;
     delete [] back_mid;
-
-
+    delete [] back_diff;
+    delete [] back_l_mid;
+    delete [] back_r_mid;
 
 }
