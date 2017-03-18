@@ -28,6 +28,8 @@ namespace douglas {
 
         double magnitude(const double * v);
 
+        double distance(const double * v1, const double * v2);
+
         void unitVector(double * v);
 
         void unitVector(double &x, double &y);

@@ -7,6 +7,7 @@
 
 #include "../particle_container.hpp"
 #include "../constraints/single_constraint.hpp"
+#include "../constraints/line_constraint.hpp"
 
 class MovableWall : public ParticleContainer {
 public:
@@ -25,13 +26,14 @@ protected:
     Particle* p1;
     Particle* p2;
 
+    LineConstraint* lineConstraint;
     MovableWallConstraint* movableWallConstraint;
 
 public:
 
     static std::string TYPE;
 
-    MovableWall(Particle* p1, Particle* p2);
+    MovableWall(double* p1, double* p2);
 
     void render(Screen* screen);
 

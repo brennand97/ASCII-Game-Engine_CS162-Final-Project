@@ -48,6 +48,10 @@ namespace douglas {
             return std::sqrt(dotProduct(v, v));
         }
 
+        double distance(const double * v1, const double * v2) {
+            return std::sqrt(((v2[0] - v1[0]) * (v2[0] - v1[0])) + ((v2[1] - v1[1]) * (v2[1] - v1[1])));
+        }
+
         void unitVector(double * v) {
             double mag = magnitude(v);
             v[0] /= mag;
