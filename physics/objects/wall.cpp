@@ -41,12 +41,13 @@ Wall::WallConstraint::WallConstraint(Wall *wall) : SingleConstraint() {
 }
 
 void Wall::WallConstraint::fix(int iter, Particle *p) {
-    double * inter_path = nullptr;
+    double * inter_path = douglas::vector::subtract(p->getPPosition(), p->getPosition());
+    douglas::vector::scale(inter_path, 1);
+    double * ppos = douglas::vector::add(p->getPosition(), inter_path);
+
+    double * intersect = nullptr;
     try {
-        inter_path = douglas::vector::subtract(p->getPPosition(), p->getPosition());
-        douglas::vector::scale(inter_path, 1);
-        double * ppos = douglas::vector::add(p->getPosition(), inter_path);
-        double * intersect = douglas::vector::intersection(wall->top, wall->bottom,
+        intersect = douglas::vector::intersection(wall->top, wall->bottom,
                                                            p->getPosition(), ppos);
 
         double * wall_vec = douglas::vector::subtract(wall->top, wall->bottom);
@@ -62,9 +63,6 @@ void Wall::WallConstraint::fix(int iter, Particle *p) {
         double * n_pos = douglas::vector::add(p->getPosition(), diff);
         p->setPosition(n_pos);
 
-        delete [] inter_path;
-        delete [] ppos;
-        delete [] intersect;
         delete [] wall_vec;
         delete [] orth_wall_vec;
         delete [] p_path;
@@ -77,4 +75,8 @@ void Wall::WallConstraint::fix(int iter, Particle *p) {
         // There is no intersection of the lines
         delete [] inter_path;
     }
+
+    delete [] inter_path;
+    delete [] ppos;
+    delete [] intersect;
 }
