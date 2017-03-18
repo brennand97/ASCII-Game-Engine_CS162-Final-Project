@@ -12,6 +12,7 @@ Input::Input() {
 }
 
 Input::~Input() {
+    end();
     if(thread != nullptr) {
         delete thread;
     }
@@ -30,6 +31,7 @@ void Input::end() {
     if(multi_threading && thread->joinable()) {
         thread->join();
     } else {
+        std::ios_base::sync_with_stdio(true);
         resetTermios();
     }
 }

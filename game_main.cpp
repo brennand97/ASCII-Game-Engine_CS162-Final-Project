@@ -137,7 +137,6 @@ int main (int argc, char** argv) {
         }
     }
 
-    input->end();
     delete input;
     // clear all the memory of grid including the space pointers
     for(int i = 0; i < 3; i++) {
