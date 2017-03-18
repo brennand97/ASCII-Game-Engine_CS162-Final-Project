@@ -13,11 +13,19 @@
 class Screen {
 protected:
 
+    struct sideline {
+        std::string s;
+        int n;
+        int c_l;
+    };
+
     int width, height;
     bool first_frame = true;
 
     std::vector<Pixel>* previous_frame;
     std::vector<Pixel>* frame;
+
+    std::vector<sideline> sideLines;
 
     void newFrame();
     std::vector<Pixel> pullFrame();
@@ -66,6 +74,7 @@ public:
     void displayFrame();
 
     void printValue(int j, std::string value);
+    void printLines();
 
     void line(double * p1, double * p2, char c, std::vector<Pixel>* vec);
     void line(const double * p1, const double * p2, char c, std::vector<Pixel>* vec);

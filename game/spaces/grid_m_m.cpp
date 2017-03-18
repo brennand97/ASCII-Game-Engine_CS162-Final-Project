@@ -20,7 +20,7 @@ GridMM::GridMM(double u_w, double u_h) : Room(u_w, u_h) {
 // Setup function, set's up the environment
 void GridMM::setup() {
     // Makes the boundary slightly bouncy
-    boundary->setRigid(0.1);
+    boundary->setRigid(0);
 
 }
 

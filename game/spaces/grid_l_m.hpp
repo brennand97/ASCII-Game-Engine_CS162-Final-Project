@@ -8,6 +8,9 @@
 #include "room.hpp"
 
 class GridLM : public Room {
+protected:
+
+    Wall* left_wall;
 
 public:
 

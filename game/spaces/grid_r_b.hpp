@@ -8,6 +8,10 @@
 #include "room.hpp"
 
 class GridRB : public Room {
+protected:
+
+    Wall* right_wall;
+    Wall* bottom_wall;
 
 public:
 

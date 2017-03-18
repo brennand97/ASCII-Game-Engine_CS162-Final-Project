@@ -12,12 +12,12 @@ Room::Room(double u_w, double u_h) : Space(u_w, u_h) {
 
 void Room::setPlayer(Player * p) {
     this->player = p;
-    addChild(p);
+    physics->addChild(p);
 }
 
 void Room::removePlayer() {
     if (player != nullptr) {
-        removeChild(this->player);
+        physics->removeChild(this->player);
         player = nullptr;
     }
 }

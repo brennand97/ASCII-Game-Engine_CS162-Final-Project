@@ -7,6 +7,7 @@
 
 #include "../../space.hpp"
 #include "../player/player.hpp"
+#include "../../physics/objects/wall.hpp"
 
 class Room : public Space {
 protected:
@@ -23,8 +24,6 @@ public:
     void removePlayer();
     void checkPlayerLocation();
     bool hasPlayer() { return player != nullptr; }
-
-    void step(double dt);
 
 };
 

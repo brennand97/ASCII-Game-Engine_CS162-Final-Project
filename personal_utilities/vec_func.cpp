@@ -105,6 +105,7 @@ namespace douglas {
                               const double * l2_p1,
                               const double * l2_p2) {
 
+            // Make sure both lines' x-component progress in the positive direction
             if (l1_p1[0] > l1_p2[0]) {
                 return intersection(l1_p2, l1_p1, l2_p1, l2_p2);
             } else if (l2_p1[0] > l2_p2[0]) {
@@ -118,6 +119,12 @@ namespace douglas {
                 // To decrease writing the same code twice
                 return intersection(l2_p1, l2_p2, l1_p1, l1_p2);
             } else if ( l2_p1[0] == l2_p2[0] ) {
+
+                // Make sure y progresses in the positive direction
+                if ( l2_p1[1] > l2_p2[1] ) {
+                    return intersection(l1_p1, l1_p2, l2_p2, l2_p1);
+                }
+
                 // Handle a single vertical line
                 double m1 = (l1_p2[1] - l1_p1[1]) / (l1_p2[0] - l1_p1[0]);
 

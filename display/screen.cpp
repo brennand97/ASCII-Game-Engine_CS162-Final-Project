@@ -131,14 +131,39 @@ void Screen::displayFrame() {
     moveCursorVertically( -p_j );
 
     newFrame();
+
+    printLines();
 }
 
 void Screen::printValue(int j, std::string value) {
-    moveCursorVertically(height - j);
-    moveCursorHorizontally(width + 1);
-    std::cout << value << std::flush;
-    moveCursorHorizontally( -width - 1 - value.length() );
-    moveCursorVertically(-height + j);
+    std::vector<sideline>::iterator it;
+    for(it = sideLines.begin(); it != sideLines.end(); it++) {
+        if((*it).n == j) {
+            (*it).s = value;
+            return;
+        }
+    }
+    sideline sl;
+    sl.s = value;
+    sl.n = j;
+    sl.c_l = value.size();
+    sideLines.push_back(sl);
+}
+
+void Screen::printLines() {
+    std::vector<sideline>::iterator it;
+    for(it = sideLines.begin(); it != sideLines.end(); it++) {
+        moveCursorVertically(height - (*it).n);
+        moveCursorHorizontally(width + 1);
+        for(int i = 0; i < (*it).c_l; i++) {
+            std::cout << " " << std::flush;
+        }
+        moveCursorHorizontally( -(*it).c_l );
+        std::cout << (*it).s << std::flush;
+        (*it).c_l = (*it).s.length();
+        moveCursorHorizontally( -width - 1 - (*it).s.length() );
+        moveCursorVertically(-height + (*it).n);
+    }
 }
 
 void Screen::line(double *p1, double *p2, char c, std::vector<Pixel>* vec) {

@@ -20,7 +20,15 @@ GridRM::GridRM(double u_w, double u_h) : Room(u_w, u_h) {
 // Setup function, set's up the environment
 void GridRM::setup() {
     // Makes the boundary slightly bouncy
-    boundary->setRigid(0.1);
+    boundary->setRigid(0);
+
+    double * r_w_t = douglas::vector::vector( unit_width - 0.5, unit_height + (unit_height / 2.0));
+    double * r_w_b = douglas::vector::vector( unit_width - 0.5, - (unit_height / 2.0));
+    right_wall = new Wall(r_w_t, r_w_b);
+    right_wall->setDrawChar('|');
+    physics->addChild(right_wall);
+    delete [] r_w_t;
+    delete [] r_w_b;
 
 }
 

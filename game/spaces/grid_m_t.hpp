@@ -8,6 +8,9 @@
 #include "room.hpp"
 
 class GridMT : public Room {
+protected:
+
+    Wall* top_wall;
 
 public:
 

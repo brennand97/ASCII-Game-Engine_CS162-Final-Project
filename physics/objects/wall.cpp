@@ -42,7 +42,7 @@ void Wall::WallConstraint::fix(int iter, Particle *p) {
         double * ppos = douglas::vector::add(p->getPosition(), inter_path);
         double * intersect = douglas::vector::intersection(wall->top, wall->bottom,
                                                            p->getPosition(), ppos);
-        //std::cout << "h";
+
         double * wall_vec = douglas::vector::subtract(wall->top, wall->bottom);
         double * orth_wall_vec = douglas::vector::vector(-1 * wall_vec[1], wall_vec[0]);
 
