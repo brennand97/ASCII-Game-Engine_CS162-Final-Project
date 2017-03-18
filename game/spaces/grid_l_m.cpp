@@ -135,7 +135,7 @@ void GridLM::setup() {
     right_arm = new MovableWall(right_arm_top, pivot_point_arr, false);
     physics->addChild(right_arm);
 
-    double * left_arm_trap_point = douglas::vector::vector(unit_width * (0.5q), unit_height * (2.0 / 3.0));
+    double * left_arm_trap_point = douglas::vector::vector(unit_width * (0.5), unit_height * (2.0 / 3.0));
     left_stop = new TrappedPoint(2, left_arm_trap_point);
     left_stop->addParticle((Particle*) left_arm->getChildren()[0]);
     physics->addSpecificConstraint(left_stop);
