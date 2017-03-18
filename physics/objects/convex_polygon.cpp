@@ -44,6 +44,7 @@ void ConvexPolygon::setConstraints() {
             lc->addParticle(vertices[j]);
             line_constraints.push_back(lc);
             addSpecificConstraint(lc);
+            delete [] dist;
         }
     }
 }
