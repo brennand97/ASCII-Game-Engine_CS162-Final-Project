@@ -36,8 +36,9 @@ Wall::WallConstraint::WallConstraint(Wall *wall) : SingleConstraint() {
 }
 
 void Wall::WallConstraint::fix(int iter, Particle *p) {
+    double * inter_path = nullptr;
     try {
-        double * inter_path = douglas::vector::subtract(p->getPPosition(), p->getPosition());
+        inter_path = douglas::vector::subtract(p->getPPosition(), p->getPosition());
         douglas::vector::scale(inter_path, 1);
         double * ppos = douglas::vector::add(p->getPosition(), inter_path);
         double * intersect = douglas::vector::intersection(wall->top, wall->bottom,
@@ -69,5 +70,6 @@ void Wall::WallConstraint::fix(int iter, Particle *p) {
         delete [] n_pos;
     } catch (std::out_of_range e) {
         // There is no intersection of the lines
+        delete [] inter_path;
     }
 }
