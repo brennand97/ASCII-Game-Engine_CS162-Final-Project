@@ -32,8 +32,8 @@ void Input::end() {
         thread->join();
     } else {
         std::ios_base::sync_with_stdio(true);
-        resetTermios();
     }
+    resetTermios();
 }
 
 bool Input::listen() {
@@ -44,15 +44,15 @@ bool Input::listen() {
         // OSU ENGR Flip server doesn't have multi-threading :( such a shame
         multi_threading = false;
         std::ios_base::sync_with_stdio(false);
-        initTermios(0);
     }
+    initTermios(0);
 
     return multi_threading;
 }
 
 void Input::getInput() {
     if(multi_threading || (std::cin.rdbuf() && std::cin.rdbuf()->in_avail() > 0)) {
-        char c = getch();
+        char c = getchar();
         std::vector<Key>::iterator it;
         it = std::find(keys.begin(), keys.end(), c);
         if(it != keys.end()) {

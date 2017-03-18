@@ -8,6 +8,16 @@
 #include "room.hpp"
 
 class GridMM : public Room {
+protected:
+
+    Wall* left_top_wall;
+    Wall* left_bottom_wall;
+    Wall* top_left_wall;
+    Wall* top_right_wall;
+    Wall* right_top_wall;
+    Wall* right_bottom_wall;
+    Wall* bottom_left_wall;
+    Wall* bottom_right_wall;
 
 public:
 

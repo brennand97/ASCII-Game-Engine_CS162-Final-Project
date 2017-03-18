@@ -44,7 +44,7 @@ int main (int argc, char** argv) {
     // Input system initialized
     Input* input = new Input();
     double accel = 20;
-    double angle = douglas::pi / 7.0;
+    double angle = douglas::pi / 9.0;
     input->listenTo('q', [&input, &stop](double dt) -> void {
         stop = true;
         input->stop();
@@ -101,7 +101,7 @@ int main (int argc, char** argv) {
     input->listen();
 
     // Create screen
-    Screen* screen = new Screen(170, 50);
+    Screen* screen = new Screen(150, 50);
 
     double dt = 0.5;
     std::chrono::high_resolution_clock::time_point t = std::chrono::high_resolution_clock::now();

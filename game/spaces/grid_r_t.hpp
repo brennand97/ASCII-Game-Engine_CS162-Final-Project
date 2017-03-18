@@ -13,6 +13,11 @@ protected:
     Wall* right_wall;
     Wall* top_wall;
 
+    Wall* left_top_wall;
+    Wall* left_bottom_wall;
+    Wall* bottom_left_wall;
+    Wall* bottom_right_wall;
+
 public:
 
     static std::string TYPE;
