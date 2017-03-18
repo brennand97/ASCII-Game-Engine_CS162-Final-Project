@@ -19,6 +19,11 @@ Wall::Wall(double *top, double *bottom) : ParticleContainer() {
     addSuperGlobalConstraint(wallConstraint);
 }
 
+Wall::~Wall() {
+    delete [] top;
+    delete [] bottom;
+}
+
 void Wall::render(Screen *screen) {
     Space* world = (Space*) getWorld();
     std::vector<Pixel> line;

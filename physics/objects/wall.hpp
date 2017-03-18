@@ -26,6 +26,7 @@ protected:
 public:
     static std::string TYPE;
     Wall(double * top, double * bottom);
+    ~Wall();
     void render(Screen* screen);
 };
 
