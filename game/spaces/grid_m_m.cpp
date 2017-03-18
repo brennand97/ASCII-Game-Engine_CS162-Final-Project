@@ -6,8 +6,6 @@
 
 #include "grid_m_m.hpp"
 
-#include "../../physics/objects/movable_wall.hpp"
-#include "../../physics/constraints/fixed_point.hpp"
 // Type declaration
 std::string GridMM::TYPE = "grid_middle_middle";
 
@@ -95,17 +93,6 @@ void GridMM::setup() {
     physics->addChild(bottom_right_wall);
     delete [] b_r_w_1;
     delete [] b_r_w_2;
-
-    //TEST
-    double * p1 = douglas::vector::vector(unit_width / 2.0, (unit_height/2.0) + 5);
-    double * p2 = douglas::vector::vector(unit_width / 2.0, (unit_height/2.0) - 5);
-    MovableWall* mw = new MovableWall(p1, p2);
-    physics->addChild(mw);
-    FixedPoint* fp = new FixedPoint(p2);
-    fp->addParticle((Particle*) mw->getChildren()[1]);
-    physics->addSpecificConstraint(fp);
-    delete [] p1;
-    delete [] p2;
 
 }
 

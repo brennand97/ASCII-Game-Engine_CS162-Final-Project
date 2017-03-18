@@ -9,8 +9,9 @@
 std::string MovableWall::TYPE = "movable_wall";
 std::string MovableWall::MovableWallConstraint::TYPE = "movable_wall_constraint";
 
-MovableWall::MovableWall(double *pos1, double *pos2) : ParticleContainer() {
+MovableWall::MovableWall(double *pos1, double *pos2, bool wall_moves) : ParticleContainer() {
     addType(MovableWall::TYPE);
+    this->wall_moves = wall_moves;
     this->p1 = new Particle(douglas::vector::copy(pos1));
     this->p2 = new Particle(douglas::vector::copy(pos2));
     addChild(this->p1);
@@ -69,30 +70,35 @@ void MovableWall::MovableWallConstraint::fix(int iter, Particle *p) {
         douglas::vector::scale(diff, 1.2);
 
         double * p_diff = douglas::vector::copy(diff);
-        douglas::vector::scale(p_diff, 0.5);
+        if(wall->wall_moves) {
+            douglas::vector::scale(p_diff, 0.5);
+        }
         double * n_pos = douglas::vector::add(p->getPosition(), diff);
         p->setPosition(n_pos);
 
-        douglas::vector::scale(diff, -0.5);
-        double wall_length = douglas::vector::magnitude(wall_vec);
-        double r1 = douglas::vector::distance(wall->p2->getPosition(), intersect) / wall_length;
-        double r2 = douglas::vector::distance(wall->p1->getPosition(), intersect) / wall_length;
-        double lambda = 1 / ((r1 * r1) + (r2 * r2));
+        if(wall->wall_moves) {
+            douglas::vector::scale(diff, -0.5);
+            double wall_length = douglas::vector::magnitude(wall_vec);
+            double r1 = douglas::vector::distance(wall->p2->getPosition(), intersect) / wall_length;
+            double r2 = douglas::vector::distance(wall->p1->getPosition(), intersect) / wall_length;
+            double lambda = 1 / ((r1 * r1) + (r2 * r2));
 
-        double * p1_diff = douglas::vector::copy(diff);
-        douglas::vector::scale(p1_diff, r1 * lambda);
-        double * p1_n_pos = douglas::vector::add(p1_diff, wall->p1->getPosition());
-        wall->p1->setPosition(p1_n_pos);
+            double *p1_diff = douglas::vector::copy(diff);
+            douglas::vector::scale(p1_diff, r1 * lambda);
+            double *p1_n_pos = douglas::vector::add(p1_diff, wall->p1->getPosition());
+            wall->p1->setPosition(p1_n_pos);
 
-        double * p2_diff = douglas::vector::copy(diff);
-        douglas::vector::scale(p2_diff, r2 * lambda);
-        double * p2_n_pos = douglas::vector::add(p2_diff, wall->p2->getPosition());
-        wall->p2->setPosition(p2_n_pos);
+            double *p2_diff = douglas::vector::copy(diff);
+            douglas::vector::scale(p2_diff, r2 * lambda);
+            double *p2_n_pos = douglas::vector::add(p2_diff, wall->p2->getPosition());
+            wall->p2->setPosition(p2_n_pos);
 
-        delete [] p1_n_pos;
-        delete [] p2_n_pos;
-        delete [] p1_diff;
-        delete [] p2_diff;
+            delete [] p1_n_pos;
+            delete [] p2_n_pos;
+            delete [] p1_diff;
+            delete [] p2_diff;
+        }
+
         delete [] p_diff;
         delete [] wall_vec;
         delete [] orth_wall_vec;

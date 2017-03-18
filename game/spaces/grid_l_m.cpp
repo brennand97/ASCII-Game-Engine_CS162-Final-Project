@@ -123,6 +123,49 @@ void GridLM::setup() {
     delete [] t_m_b_w_1;
     delete [] t_m_b_w_2;
 
+    // Rotating Puzzle Piece
+
+    double * pivot_point_arr = douglas::vector::vector(unit_width * (7.0 / 10.0), unit_height * (2.0 / 9.0));
+
+    double * left_arm_top = douglas::vector::vector(unit_width * (21.0 / 50.0), unit_height * (1.0 / 3.0));
+    left_arm = new MovableWall(left_arm_top, pivot_point_arr);
+    physics->addChild(left_arm);
+
+    double * right_arm_top = douglas::vector::vector(unit_width * (73.0 / 90.0), unit_height * (59.0 / 90.0));
+    right_arm = new MovableWall(right_arm_top, pivot_point_arr, false);
+    physics->addChild(right_arm);
+
+    double * left_arm_trap_point = douglas::vector::vector(unit_width * (0.5q), unit_height * (2.0 / 3.0));
+    left_stop = new TrappedPoint(2, left_arm_trap_point);
+    left_stop->addParticle((Particle*) left_arm->getChildren()[0]);
+    physics->addSpecificConstraint(left_stop);
+
+    rigid_connector = new LineConstraint(douglas::vector::distance(left_arm_top, right_arm_top), Constraint::EQUAL);
+    rigid_connector->addParticle((Particle*) left_arm->getChildren()[0]);
+    rigid_connector->addParticle((Particle*) right_arm->getChildren()[0]);
+    physics->addSpecificConstraint(rigid_connector);
+
+    pivot_point = new FixedPoint(pivot_point_arr);
+    pivot_point->addParticle((Particle*) left_arm->getChildren()[1]);
+    pivot_point->addParticle((Particle*) right_arm->getChildren()[1]);
+    physics->addSpecificConstraint(pivot_point);
+
+    double * right_arm_vector = douglas::vector::subtract(pivot_point_arr, right_arm_top);
+    douglas::vector::unitVector(right_arm_vector);
+    douglas::vector::scale(right_arm_vector, 5.0);
+    double * right_wall_top_point = douglas::vector::vector(unit_width * (71.0 / 90.0), unit_height * (63.0 / 90.0));
+    double * right_wall_bottom_point = douglas::vector::add(right_wall_top_point, right_arm_vector);
+    blocking_right_wall = new Wall(right_wall_top_point, right_wall_bottom_point);
+    physics->addChild(blocking_right_wall);
+
+    delete [] right_arm_vector;
+    delete [] right_wall_top_point;
+    delete [] right_wall_bottom_point;
+    delete [] pivot_point_arr;
+    delete [] left_arm_trap_point;
+    delete [] left_arm_top;
+    delete [] right_arm_top;
+
 }
 
 // Steps through one iteration of the physics

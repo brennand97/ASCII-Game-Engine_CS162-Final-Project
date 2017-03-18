@@ -23,6 +23,8 @@ public:
 
 protected:
 
+    bool wall_moves;
+
     Particle* p1;
     Particle* p2;
 
@@ -33,7 +35,7 @@ public:
 
     static std::string TYPE;
 
-    MovableWall(double* p1, double* p2);
+    MovableWall(double* p1, double* p2, bool wall_moves = true);
 
     void render(Screen* screen);
 

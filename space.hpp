@@ -40,6 +40,8 @@ public:
     void convertToPixels(double *x, double *y, Screen* screen);
     double * convertToPixels(Particle * p, Screen* screen);
 
+    ParticleContainer* getPhysics() { return physics; }
+
     // Handle neighbor getting and setting
     // Indexed starting from the top (0) going clockwise until the left (3)
     Space* getSpace(int index) { return neighbors[index]; }
