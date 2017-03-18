@@ -73,7 +73,6 @@ void Wall::WallConstraint::fix(int iter, Particle *p) {
         delete [] n_pos;
     } catch (std::out_of_range e) {
         // There is no intersection of the lines
-        delete [] inter_path;
     }
 
     delete [] inter_path;
