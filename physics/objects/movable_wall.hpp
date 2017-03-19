@@ -37,6 +37,8 @@ public:
 
     MovableWall(double* p1, double* p2, bool wall_moves = true);
 
+    void exclude(GameObject* go) { movableWallConstraint->exclude(go); }
+
     void render(Screen* screen);
 
 };

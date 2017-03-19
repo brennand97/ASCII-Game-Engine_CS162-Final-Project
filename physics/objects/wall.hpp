@@ -27,6 +27,7 @@ public:
     static std::string TYPE;
     Wall(double * top, double * bottom);
     ~Wall();
+    void exclude(GameObject* go) { wallConstraint->exclude(go); }
     void render(Screen* screen);
 };
 

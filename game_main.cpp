@@ -21,6 +21,7 @@
 
 void initializeGrid(Room***, double, double);
 Room* getPlayerRoom(Room***);
+void stepRooms(Room***, double);
 
 int main (int argc, char** argv) {
 
@@ -119,7 +120,7 @@ int main (int argc, char** argv) {
             input->getInput();
         }
 
-        room->step(dt);
+        stepRooms(grid, dt);
 
         room->render(screen);
         screen->displayFrame();
@@ -190,4 +191,12 @@ Room* getPlayerRoom(Room* **grid) {
         }
     }
     return nullptr;
+}
+
+void stepRooms(Room* **grid, double dt) {
+    for(int i = 0; i < 3; i++) {
+        for(int j = 0; j < 3; j++) {
+            grid[i][j]->step(dt);
+        }
+    }
 }

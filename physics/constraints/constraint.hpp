@@ -14,6 +14,7 @@
 class Constraint : public Typed {
 protected:
     std::vector<Particle*> particles;
+    std::vector<unsigned int> excluded;
 public:
 
     enum Equality { EQUAL, LESS_THAN, LESS_THAN_EQUAL, GREATER_THAN, GREATER_THAN_EQUAL};
@@ -26,6 +27,9 @@ public:
     std::vector<Particle*> getParticles() { return particles; }
     void addParticle(Particle* p) { particles.push_back(p); }
     void removeParticle(unsigned int id);
+
+    void exclude(GameObject* go);
+    bool isExcluded(GameObject* go);
 
     virtual void fix(int iter) = 0;
 

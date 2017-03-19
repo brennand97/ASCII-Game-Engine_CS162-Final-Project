@@ -16,3 +16,23 @@ void Constraint::removeParticle(unsigned int id) {
         }
     }
 }
+
+void Constraint::exclude(GameObject *go) {
+    if(!isExcluded(go)) {
+        excluded.push_back(go->getId());
+    }
+}
+
+bool Constraint::isExcluded(GameObject *go) {
+    for(unsigned int i = 0; i < excluded.size(); i++) {
+        unsigned int id = excluded[i];
+        if(go->getId() == id) {
+            return true;
+        }
+    }
+    if(go->getParent() != nullptr) {
+        return isExcluded(go->getParent());
+    } else {
+        return false;
+    }
+}

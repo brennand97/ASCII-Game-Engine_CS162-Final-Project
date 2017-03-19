@@ -41,6 +41,9 @@ Wall::WallConstraint::WallConstraint(Wall *wall) : SingleConstraint() {
 }
 
 void Wall::WallConstraint::fix(int iter, Particle *p) {
+    if(isExcluded(p))
+        return;
+
     double * inter_path = douglas::vector::subtract(p->getPPosition(), p->getPosition());
     douglas::vector::scale(inter_path, 1);
     double * ppos = douglas::vector::add(p->getPosition(), inter_path);
