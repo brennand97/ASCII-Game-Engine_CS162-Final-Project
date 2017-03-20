@@ -5,6 +5,7 @@
 #include "screen.hpp"
 #include <algorithm>
 #include <cmath>
+#include <chrono>
 
 Screen::Screen(int width, int height) {
     this->width = width;
@@ -59,6 +60,8 @@ std::vector<Pixel> Screen::pullDeltaFrame() {
             }
         }
     }
+    std::sort(delta.begin(), delta.end(), Pixel::i_low_to_high());
+    std::sort(delta.begin(), delta.end(), Pixel::j_low_to_high());
     return delta;
 }
 
@@ -66,7 +69,7 @@ void Screen::addToFrame(std::vector <Pixel> add) {
     std::vector<Pixel>::iterator it;
     for(it = add.begin(); it != add.end(); it++) {
         if((*it).getI() >= 0 && (*it).getI() < width && (*it).getJ() >= 0 && (*it).getJ() < height) {
-            (*std::find(frame->begin(), frame->end(), *it)).setChar((*it).getChar());
+            (*frame)[(*it).getI() + (width * (*it).getJ())].setChar((*it).getChar());
         }
     }
 }
@@ -126,6 +129,13 @@ void Screen::displayFrame() {
         std::cout << p.getChar() << std::flush;
         p_i = p.getI() + 1;
         p_j = p.getJ();
+        while ((i + 1) < v_frame.size() &&
+                v_frame[i + 1].getI() == p_i &&
+                v_frame[i + 1].getJ() == p_j) {
+            i++;
+            std::cout << v_frame[i].getChar() << std::flush;
+            p_i++;
+        }
     }
     moveCursorHorizontally( -p_i );
     moveCursorVertically( -p_j );
@@ -134,6 +144,7 @@ void Screen::displayFrame() {
 
     printLines();
     clearLines();
+
 }
 
 void Screen::printValue(int j, std::string value) {

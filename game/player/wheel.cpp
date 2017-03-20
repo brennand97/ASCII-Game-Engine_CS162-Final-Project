@@ -188,24 +188,29 @@ double* Wheel::getWheelVector() {
 }
 
 void Wheel::render(Screen * screen) {
-    Space* world = (Space*) getWorld();
-    std::vector<Pixel> lines;
-    double * p0 = world->convertToPixels((Particle*) getChildren()[0], screen);
-    double * p1 = world->convertToPixels((Particle*) getChildren()[1], screen);
-    double * p2 = world->convertToPixels((Particle*) getChildren()[2], screen);
-    double * p3 = world->convertToPixels((Particle*) getChildren()[3], screen);
-    double * p4 = world->convertToPixels((Particle*) getChildren()[4], screen);
-    double * p5 = world->convertToPixels((Particle*) getChildren()[5], screen);
-    screen->line(p1, p4, draw_char, &lines);
-    screen->line(p0, p2, draw_char, &lines);
-    screen->line(p3, p5, draw_char, &lines);
-    screen->addToFrame(lines);
-    delete [] p0;
-    delete [] p1;
-    delete [] p2;
-    delete [] p3;
-    delete [] p4;
-    delete [] p5;
+    if(changed) {
+        rendered_pixels.clear();
+
+        Space* world = (Space*) getWorld();
+        double * p0 = world->convertToPixels((Particle*) getChildren()[0], screen);
+        double * p1 = world->convertToPixels((Particle*) getChildren()[1], screen);
+        double * p2 = world->convertToPixels((Particle*) getChildren()[2], screen);
+        double * p3 = world->convertToPixels((Particle*) getChildren()[3], screen);
+        double * p4 = world->convertToPixels((Particle*) getChildren()[4], screen);
+        double * p5 = world->convertToPixels((Particle*) getChildren()[5], screen);
+        screen->line(p1, p4, draw_char, &rendered_pixels);
+        screen->line(p0, p2, draw_char, &rendered_pixels);
+        screen->line(p3, p5, draw_char, &rendered_pixels);
+        delete [] p0;
+        delete [] p1;
+        delete [] p2;
+        delete [] p3;
+        delete [] p4;
+        delete [] p5;
+    }
+
+    screen->addToFrame(rendered_pixels);
+
 }
 
 void Wheel::step(double dt) {

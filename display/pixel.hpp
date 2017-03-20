@@ -23,6 +23,19 @@ public:
     void setChar(char c) { this->c = c; }
     bool operator ==(const Pixel& other) { return (i == other.i) && (j == other.j); }
     bool operator !=(const Pixel& other) { return !(*this == other); }
+
+    struct i_low_to_high {
+        inline bool operator() (const Pixel& p1, const Pixel& p2) {
+            return (p1.i < p2.i);
+        }
+    };
+
+    struct j_low_to_high {
+        inline bool operator() (const Pixel& p1, const Pixel& p2) {
+            return (p1.j < p2.j);
+        }
+    };
+
 };
 
 #endif //FINAL_PROJECT_PIXEL_HPP

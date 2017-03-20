@@ -25,14 +25,20 @@ Wall::~Wall() {
 }
 
 void Wall::render(Screen *screen) {
-    Space* world = (Space*) getWorld();
-    std::vector<Pixel> line;
-    double * p_top = world->convertToPixels((const double*) top, screen);
-    double * p_bot = world->convertToPixels((const double*) bottom, screen);
-    screen->line(p_top, p_bot, draw_char, &line);
-    delete [] p_top;
-    delete [] p_bot;
-    screen->addToFrame(line);
+    if(changed) {
+        rendered_pixels.clear();
+
+        Space* world = (Space*) getWorld();
+        double * p_top = world->convertToPixels((const double*) top, screen);
+        double * p_bot = world->convertToPixels((const double*) bottom, screen);
+        screen->line(p_top, p_bot, draw_char, &rendered_pixels);
+        delete [] p_top;
+        delete [] p_bot;
+
+        changed = false;
+    }
+
+    screen->addToFrame(rendered_pixels);
 }
 
 Wall::WallConstraint::WallConstraint(Wall *wall) : SingleConstraint() {

@@ -96,8 +96,6 @@ void ParticleContainer::addVelocity(double *vel) {
     }
 }
 
-#include "../game/player/wheel.hpp"
-#include "objects/wall.hpp"
 void ParticleContainer::handleConstraints(int iter) {
     std::vector<Constraint*>::iterator it;
     for(it = specific_constraints.begin(); it != specific_constraints.end(); it++) {

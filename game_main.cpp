@@ -34,7 +34,7 @@ int main (int argc, char** argv) {
     int screen_width = 150;     // Columns in terminal
     int screen_height = 50;     // Rows of in terminal
 
-    double time_limit = 100;  // Time limit in seconds (5 min)
+    double time_limit = 300;  // Time limit in seconds (5 min)
 
     bool win_state = false;   // True means successful
 
@@ -73,6 +73,11 @@ int main (int argc, char** argv) {
     Input* input = new Input();
     double accel = 20;
     double angle = douglas::pi / 9.0;
+    input->listenTo('r', [&player](double dt) -> void {
+        player->setChanged(!player->getChanged());
+        player->getChildren()[0]->setChanged(!player->getChildren()[0]->getChanged());
+        player->getChildren()[1]->setChanged(!player->getChildren()[1]->getChanged());
+    });
     input->listenTo('q', [&input, &stop](double dt) -> void {
         stop = true;
         input->stop();
@@ -139,7 +144,7 @@ int main (int argc, char** argv) {
 
         Room* room = getPlayerRoom(grid);
         if(room == nullptr) {
-            std::cout << "No room had the player in it." << std::endl;
+            std::cout << "ERROR: No room had the player in it." << std::endl;
             break;
         }
 
@@ -149,9 +154,12 @@ int main (int argc, char** argv) {
 
         stepRooms(grid, dt);
 
+        std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
         room->render(screen);
+        screen->printValue(1, " Render time: " +
+                std::to_string((std::chrono::high_resolution_clock::now() - t2).count() / 1000000000.0));
         screen->displayFrame();
-        screen->printValue(1, " FPS: " + std::to_string(1/dt));
+        screen->printValue(0, " FPS: " + std::to_string(1/dt));
         screen->printValue(2, " Room Type: " + room->getType());
         screen->printValue(5, " Time Left: " + std::to_string(time_limit - ((t - start_time).count() / 1000000000.0)));
 

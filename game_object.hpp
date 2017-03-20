@@ -18,6 +18,8 @@ protected:
     unsigned int obj_id;
     double previous_dt = -1;
     char draw_char = '#';
+    bool changed = true;
+    std::vector<Pixel> rendered_pixels;
     GameObject* parent = nullptr;
     GameObject* world = nullptr;
     std::vector<GameObject*> children;
@@ -62,6 +64,11 @@ public:
     // Draw char
     char getDrawChar() { return draw_char; }
     void setDrawChar(char c) { this->draw_char = c; }
+
+    // Pre-Rendered Section
+    bool getChanged() { return changed; }
+    void setChanged(bool b) { this->changed = b; }
+    const std::vector<Pixel> getRendered() { return rendered_pixels; }
 
     // Virtual Render function
     virtual void render(Screen* screen) = 0;

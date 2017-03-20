@@ -258,11 +258,6 @@ void GridMT::setup() {
     pinwheel_drag_constraint->addParticle((Particle*) pinwheel_4->getChildren()[1]);
     physics->addSpecificConstraint(pinwheel_drag_constraint);
 
-    // Add velocity to the PinWheel
-    double * pw_vel = douglas::vector::vector(0.0, 10.0);
-    pinwheel_1->addVelocity(pw_vel);
-    delete [] pw_vel;
-
 }
 
 // Steps through one iteration of the physics

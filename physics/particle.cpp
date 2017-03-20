@@ -70,6 +70,12 @@ void Particle::step(double dt) {
     vel[0] = (pos[0] - ppos[0]) / previous_dt;
     vel[1] = (pos[1] - ppos[1]) / previous_dt;
 
+    if(vel[0] == 0 && vel[1] == 0) {
+        changed = false;
+    } else {
+        changed = true;
+    }
+
     n_pos[0] = pos[0] + (vel[0] * dt);
     n_pos[1] = pos[1] + (vel[1] * dt);
 
