@@ -9,6 +9,7 @@
 #include <chrono>
 #include <thread>
 #include "personal_utilities/vec_func.hpp"
+#include "personal_utilities/douglbre_util.hpp"
 #include "display/screen.hpp"
 #include "game_object.hpp"
 #include "physics/objects/box.hpp"
@@ -39,7 +40,9 @@ int main (int argc, char** argv) {
     bool win_state = false;   // True means successful
 
     std::cout << std::endl << "WARNING:    If your terminal is not around 200x60 (col x row) the graphics will glitch out." << std::endl;
+
     std::cout << std::endl << "NOTE:       Best played in full screen on a local machine, though ssh does work, it will just lag sometimes." << std::endl;
+
     std::cout << std::endl << "INFO:       In this game you will play as a car and you need to collect";
     std::cout << std::endl << "            3 keys from nine different rooms arranged in a grid.  Use WASD";
     std::cout << std::endl << "            for the movement, and due to how keyboard input is accepted";
@@ -48,7 +51,35 @@ int main (int argc, char** argv) {
     std::cout << std::endl << "            the key and it sending a constant stream of input, so tapping";
     std::cout << std::endl << "            is the best way to move. Press 'q' to quit." << std::endl;
 
-    std::cout << std::endl << "TIME LIMIT: 5 minutes." << std::endl;
+    std::cout << std::endl << "HOW TO:     The three keys are located in the top left corner space,";
+    std::cout << std::endl << "            the middle left space, and the top right space.  Both the";
+    std::cout << std::endl << "            top left and right spaces are easy, just navigate upwards";
+    std::cout << std::endl << "            from the starting place, the middle and push through the";
+    std::cout << std::endl << "            pinwheel to get to the left or the right.  If you keep getting";
+    std::cout << std::endl << "            stuck on the pinwheel try going to the right from the middle";
+    std::cout << std::endl << "            then up to get one key, then through the pinwheel from right";
+    std::cout << std::endl << "            to left from up there.  To get the third and final key you";
+    std::cout << std::endl << "            will need to go to the left middle and work your way down from";
+    std::cout << std::endl << "            there through the tunnel to push the wall from the bottom.";
+    std::cout << std::endl << "            You can then go back to the middle, go to the left room and";
+    std::cout << std::endl << "            you will know be able to navigate around the moved wall. Finally";
+    std::cout << std::endl << "            to end go back to the middle space." << std::endl;
+
+    std::cout << std::endl << "TIME LIMIT: 5 minutes." << std::endl << std::endl;
+
+    char yn;
+    auto yn_valid = [](char c) -> bool {
+        if(c == 'y' || c =='n') {
+            return true;
+        } else {
+            std::cout << "You must reply 'y' for yes, or 'n' for no." << std::endl;
+            return false;
+        }
+    };
+    douglbre::user::validate_input<char>("Would you like to play the game? (y/n) ", &yn, yn_valid);
+    if (yn == 'n') {
+        return 0;
+    }
 
     std::cout << std::endl << "Press 'q' to quit." << std::endl;
 
@@ -186,6 +217,7 @@ int main (int argc, char** argv) {
         }
     }
 
+    std::cout << std::endl << std::endl;
     printEnding(win_state);
 
     delete input;
