@@ -15,10 +15,12 @@ public:
     class MovableWallConstraint : public SingleConstraint {
     protected:
         MovableWall* wall;
+        bool delete_wall = false;
     public:
         static std::string TYPE;
         MovableWallConstraint(MovableWall* wall);
         MovableWallConstraint(Particle* p1, Particle* p2, bool wall_moves = true);
+        ~MovableWallConstraint();
         void setWallMove(bool b) { this->wall->wall_moves = b; }
         void fix(int iter, Particle* p);
     };

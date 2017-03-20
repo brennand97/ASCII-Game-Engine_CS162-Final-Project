@@ -59,6 +59,13 @@ MovableWall::MovableWallConstraint::MovableWallConstraint(MovableWall *wall) : S
 MovableWall::MovableWallConstraint::MovableWallConstraint(Particle* p1, Particle* p2, bool wall_moves) : SingleConstraint() {
     addType(MovableWallConstraint::TYPE);
     this->wall = new MovableWall(p1, p2, wall_moves);
+    this->delete_wall = true;
+}
+
+MovableWall::MovableWallConstraint::~MovableWallConstraint() {
+    if (delete_wall) {
+        delete wall;
+    }
 }
 
 void MovableWall::MovableWallConstraint::fix(int iter, Particle *p) {
