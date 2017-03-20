@@ -105,6 +105,90 @@ void GridMM::step(double dt) {
 // Renders the space
 void GridMM::render(Screen *screen) {
 
+    // Inform player about the room
+    screen->printValue(7, " Info:      To complete this game,");
+    screen->printValue(8, "            please bring 3 keys to");
+    screen->printValue(9, "            this room. Your progress");
+    screen->printValue(10,"            will be denoted in the");
+    screen->printValue(11,"            box on the floor. There");
+    screen->printValue(12,"            are 9 rooms which can be");
+    screen->printValue(13,"            accessed by the doors in");
+    screen->printValue(14,"            the walls.");
+    screen->printValue(16," Movement:  WASD keys");
+
+    double * t_l = douglas::vector::vector((unit_width / 3.0), unit_height - (unit_height / 3.0));
+    double * t_r = douglas::vector::vector(unit_width - (unit_width / 3.0), unit_height - (unit_height / 3.0));
+    double * b_r = douglas::vector::vector(unit_width - (unit_width / 3.0), (unit_height / 3.0));
+    double * b_l = douglas::vector::vector((unit_width / 3.0), (unit_height / 3.0));
+
+    Space* world = (Space*) getWorld();
+    world->convertToPixels(t_l, screen);
+    world->convertToPixels(t_r, screen);
+    world->convertToPixels(b_r, screen);
+    world->convertToPixels(b_l, screen);
+
+    std::vector<Pixel> box;
+    screen->line(t_l, t_r, '.', &box);
+    screen->line(b_l, b_r, '.', &box);
+    screen->line(t_l, b_l, '.', &box);
+    screen->line(t_r, b_r, '.', &box);
+    screen->addToFrame(box);
+
+    std::vector<Pixel> ticks;
+    if(show_marker_1) {
+        double * p1 = douglas::vector::vector((unit_width / 2.5), unit_height - (unit_height / 2.5));
+        double * p2 = douglas::vector::vector((unit_width / 2.5), (unit_height / 2.5));
+        world->convertToPixels(p1, screen);
+        world->convertToPixels(p2, screen);
+        screen->line(p1, p2, '.', &ticks);
+        delete [] p1;
+        delete [] p2;
+    }
+
+    if(show_marker_2) {
+        double * p1 = douglas::vector::vector((unit_width / 2.0), unit_height - (unit_height / 2.5));
+        double * p2 = douglas::vector::vector((unit_width / 2.0), (unit_height / 2.5));
+        world->convertToPixels(p1, screen);
+        world->convertToPixels(p2, screen);
+        screen->line(p1, p2, '.', &ticks);
+        delete [] p1;
+        delete [] p2;
+    }
+
+    if(show_marker_3) {
+        double * p1 = douglas::vector::vector(unit_width - (unit_width / 2.5), unit_height - (unit_height / 2.5));
+        double * p2 = douglas::vector::vector(unit_width - (unit_width / 2.5), (unit_height / 2.5));
+        world->convertToPixels(p1, screen);
+        world->convertToPixels(p2, screen);
+        screen->line(p1, p2, '.', &ticks);
+        delete [] p1;
+        delete [] p2;
+    }
+
+    screen->addToFrame(ticks);
+
+    delete [] t_l;
+    delete [] t_r;
+    delete [] b_r;
+    delete [] b_l;
+
     // Renders all the children
     renderChildren(screen);
+}
+
+void GridMM::setMarker(int i, bool b) {
+    switch (i) {
+        case 1: {
+            show_marker_1 = b;
+            break;
+        }
+        case 2: {
+            show_marker_2 = b;
+            break;
+        }
+        case 3: {
+            show_marker_3 = b;
+            break;
+        }
+    }
 }

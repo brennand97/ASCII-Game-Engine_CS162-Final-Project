@@ -85,6 +85,42 @@ void GridRM::setup() {
     delete [] b_r_w_1;
     delete [] b_r_w_2;
 
+    // Top Middle Wall
+    double * t_m_w_1 = douglas::vector::vector( 0.0, unit_height - (unit_height / 3.0));
+    double * t_m_w_2 = douglas::vector::vector( unit_width - (unit_width / 4.0), unit_height - (unit_height / 3.0));
+    top_middle_wall = new Wall(t_m_w_1, t_m_w_2);
+    top_middle_wall->setDrawChar('_');
+    physics->addChild(top_middle_wall);
+    delete [] t_m_w_1;
+    delete [] t_m_w_2;
+
+    // Bottom Middle Wall
+    double * b_m_w_1 = douglas::vector::vector( 0.0, (unit_height / 3.0));
+    double * b_m_w_2 = douglas::vector::vector( unit_width - (unit_width / 4.0), (unit_height / 3.0));
+    bottom_middle_wall = new Wall(b_m_w_1, b_m_w_2);
+    bottom_middle_wall->setDrawChar('_');
+    physics->addChild(bottom_middle_wall);
+    delete [] b_m_w_1;
+    delete [] b_m_w_2;
+
+    // Left Top Middle Wall
+    double * l_t_m_w_1 = douglas::vector::vector( (unit_width / 2.5), unit_height);
+    double * l_t_m_w_2 = douglas::vector::vector( (unit_width / 2.5), unit_height - (unit_height / 3.0));
+    left_top_middle_wall = new Wall(l_t_m_w_1, l_t_m_w_2);
+    left_top_middle_wall->setDrawChar('|');
+    physics->addChild(left_top_middle_wall);
+    delete [] l_t_m_w_1;
+    delete [] l_t_m_w_2;
+
+    // Left Bottom Middle Wall
+    double * l_b_m_w_1 = douglas::vector::vector( (unit_width / 2.5), 0.0);
+    double * l_b_m_w_2 = douglas::vector::vector( (unit_width / 2.5), (unit_height / 3.0));
+    left_bottom_middle_wall = new Wall(l_b_m_w_1, l_b_m_w_2);
+    left_bottom_middle_wall->setDrawChar('|');
+    physics->addChild(left_bottom_middle_wall);
+    delete [] l_b_m_w_1;
+    delete [] l_b_m_w_2;
+
 }
 
 // Steps through one iteration of the physics

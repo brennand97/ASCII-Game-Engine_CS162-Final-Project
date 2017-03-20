@@ -6,6 +6,8 @@
 #define FINAL_PROJECT_GAME_GRID_R_T_HPP
 
 #include "room.hpp"
+#include "../../physics/objects/movable_wall.hpp"
+#include "../../physics/constraints/drag_constraint.hpp"
 
 class GridRT : public Room {
 protected:
@@ -17,6 +19,13 @@ protected:
     Wall* left_bottom_wall;
     Wall* bottom_left_wall;
     Wall* bottom_right_wall;
+
+    ParticleContainer* mvs;
+    MovableWall* mv1;
+    MovableWall* mv2;
+    MovableWall* mv3;
+
+    DragConstraint* mvs_drag;
 
 public:
 

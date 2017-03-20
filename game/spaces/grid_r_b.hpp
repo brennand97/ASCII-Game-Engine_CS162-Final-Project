@@ -18,6 +18,11 @@ protected:
     Wall* top_left_wall;
     Wall* top_right_wall;
 
+    Wall * tunnel_top_left_wall;
+    Wall * tunnel_top_right_wall;
+    Wall * tunnel_middle_top_wall;
+    Wall * tunnel_middle_bottom_wall;
+
 public:
 
     static std::string TYPE;

@@ -76,6 +76,44 @@ void GridRB::setup() {
     delete [] t_r_w_1;
     delete [] t_r_w_2;
 
+    // Tunnel Walls
+
+    // Tunnel Top Left Wall
+    double * t_t_l_w_1 = douglas::vector::vector( (unit_width / 2.5), unit_height);
+    double * t_t_l_w_2 = douglas::vector::vector( (unit_width / 2.5), unit_height - (unit_height / 3.0));
+    tunnel_top_left_wall = new Wall(t_t_l_w_1, t_t_l_w_2);
+    tunnel_top_left_wall->setDrawChar('|');
+    physics->addChild(tunnel_top_left_wall);
+    delete [] t_t_l_w_1;
+    delete [] t_t_l_w_2;
+
+    // Tunnel Top Right Wall
+    double * t_t_r_w_1 = douglas::vector::vector( unit_width - (unit_width / 2.5), unit_height);
+    double * t_t_r_w_2 = douglas::vector::vector( unit_width - (unit_width / 2.5), (unit_height / 3.0));
+    tunnel_top_right_wall = new Wall(t_t_r_w_1, t_t_r_w_2);
+    tunnel_top_right_wall->setDrawChar('|');
+    physics->addChild(tunnel_top_right_wall);
+    delete [] t_t_r_w_1;
+    delete [] t_t_r_w_2;
+
+    // Tunnel Middle Top Wall
+    double * t_m_t_w_1 = douglas::vector::vector( 0.0, unit_height - (unit_height / 3.0));
+    double * t_m_t_w_2 = douglas::vector::vector( (unit_width / 2.5), unit_height - (unit_height / 3.0));
+    tunnel_middle_top_wall = new Wall(t_m_t_w_1, t_m_t_w_2);
+    tunnel_middle_top_wall->setDrawChar('_');
+    physics->addChild(tunnel_middle_top_wall);
+    delete [] t_m_t_w_1;
+    delete [] t_m_t_w_2;
+
+    // Tunnel Middle Bottom Wall
+    double * t_m_b_w_1 = douglas::vector::vector( 0.0, (unit_height / 3.0));
+    double * t_m_b_w_2 = douglas::vector::vector( unit_width - (unit_width / 2.5), (unit_height / 3.0));
+    tunnel_middle_bottom_wall = new Wall(t_m_b_w_1, t_m_b_w_2);
+    tunnel_middle_bottom_wall->setDrawChar('_');
+    physics->addChild(tunnel_middle_bottom_wall);
+    delete [] t_m_b_w_1;
+    delete [] t_m_b_w_2;
+
 }
 
 // Steps through one iteration of the physics

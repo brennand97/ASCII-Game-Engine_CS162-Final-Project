@@ -133,6 +133,7 @@ void Screen::displayFrame() {
     newFrame();
 
     printLines();
+    clearLines();
 }
 
 void Screen::printValue(int j, std::string value) {
@@ -163,6 +164,13 @@ void Screen::printLines() {
         (*it).c_l = (*it).s.length();
         moveCursorHorizontally( -width - 1 - (*it).s.length() );
         moveCursorVertically(-height + (*it).n);
+    }
+}
+
+void Screen::clearLines() {
+    std::vector<sideline>::iterator it;
+    for(it = sideLines.begin(); it != sideLines.end(); it++) {
+        (*it).s = "";
     }
 }
 

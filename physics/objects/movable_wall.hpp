@@ -18,6 +18,8 @@ public:
     public:
         static std::string TYPE;
         MovableWallConstraint(MovableWall* wall);
+        MovableWallConstraint(Particle* p1, Particle* p2, bool wall_moves = true);
+        void setWallMove(bool b) { this->wall->wall_moves = b; }
         void fix(int iter, Particle* p);
     };
 
@@ -30,6 +32,8 @@ protected:
 
     LineConstraint* lineConstraint;
     MovableWallConstraint* movableWallConstraint;
+
+    MovableWall(Particle* p1, Particle* p2, bool wall_moves = true);
 
 public:
 

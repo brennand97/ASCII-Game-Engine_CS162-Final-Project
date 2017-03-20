@@ -61,14 +61,14 @@ void EmptyWorld::setup() {
 //    }
 //
     double * b_box = new double[2];
-    b_box[0] = 10.0;
+    b_box[0] = 70.0;
     b_box[1] = 20.0;
     Box* box = new Box(b_box, 10, 10);
     box->setDrawChar('@');
     double * b_vel = new double[2];
     b_vel[0] = 5;
     b_vel[1] = 5;
-    box->addVelocity(b_vel);
+    //box->addVelocity(b_vel);
     (*((Particle*)box->getChildren()[0]))[0] += 4;
     physics->addChild(box);
 

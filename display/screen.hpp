@@ -75,6 +75,7 @@ public:
 
     void printValue(int j, std::string value);
     void printLines();
+    void clearLines();
 
     void line(double * p1, double * p2, char c, std::vector<Pixel>* vec);
     void line(const double * p1, const double * p2, char c, std::vector<Pixel>* vec);

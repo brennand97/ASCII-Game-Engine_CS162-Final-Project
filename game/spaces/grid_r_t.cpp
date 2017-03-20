@@ -76,6 +76,34 @@ void GridRT::setup() {
     delete [] b_r_w_1;
     delete [] b_r_w_2;
 
+    // Set up movable walls
+    mvs = new ParticleContainer();
+    physics->addChild(mvs);
+
+    double * mv1_1 = douglas::vector::vector(unit_width - 20.0, unit_height - 5.0);
+    double * mv1_2 = douglas::vector::vector(unit_width - 5.0, unit_height - 30.0);
+    mv1 = new MovableWall(mv1_1, mv1_2, true);
+    mvs->addChild(mv1);
+    delete [] mv1_1;
+    delete [] mv1_2;
+
+    double * mv2_1 = douglas::vector::vector(unit_width / 6.0, unit_height - 10.0);
+    double * mv2_2 = douglas::vector::vector(unit_width / 5.0, unit_height / 2.0);
+    mv2 = new MovableWall(mv2_1, mv2_2, true);
+    mvs->addChild(mv2);
+    delete [] mv2_1;
+    delete [] mv2_2;
+
+    double * mv3_1 = douglas::vector::vector(unit_width / 2.0, unit_height / 10.0);
+    double * mv3_2 = douglas::vector::vector(unit_width / 3.0, unit_height / 4.0);
+    mv3 = new MovableWall(mv3_1, mv3_2, true);
+    mvs->addChild(mv3);
+    delete [] mv3_1;
+    delete [] mv3_2;
+
+    mvs_drag = new DragConstraint(0.5);
+    mvs->addSubGlobalConstraint(mvs_drag);
+
 }
 
 // Steps through one iteration of the physics

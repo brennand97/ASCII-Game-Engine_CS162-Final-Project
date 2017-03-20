@@ -19,6 +19,10 @@ protected:
     Wall* bottom_left_wall;
     Wall* bottom_right_wall;
 
+    bool show_marker_1 = false;
+    bool show_marker_2 = false;
+    bool show_marker_3 = false;
+
 public:
 
     static std::string TYPE;
@@ -29,6 +33,8 @@ public:
     void setup();
     void step(double dt);
     void render(Screen* screen);
+
+    void setMarker(int i, bool b);
 
 };
 

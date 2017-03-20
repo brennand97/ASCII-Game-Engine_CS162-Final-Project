@@ -58,6 +58,16 @@ Box::Box(double *pos, double width, double height) : ConvexPolygon(true, 1) {
 
     setConstraints();
 
+    mmc_bottom = new MovableWall::MovableWallConstraint(p1, p2);
+    mmc_right = new MovableWall::MovableWallConstraint(p2, p3);
+    mmc_top = new MovableWall::MovableWallConstraint(p3, p4);
+    mmc_left = new MovableWall::MovableWallConstraint(p4, p1);
+
+    addSuperGlobalConstraint(mmc_bottom);
+    addSuperGlobalConstraint(mmc_right);
+    addSuperGlobalConstraint(mmc_top);
+    addSuperGlobalConstraint(mmc_left);
+
 //    width_constraint = new LineConstraint(width, Constraint::Equality::EQUAL);
 //    width_constraint->addParticle(p1);
 //    width_constraint->addParticle(p2);

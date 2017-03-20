@@ -7,6 +7,7 @@
 
 #include "../objects/convex_polygon.hpp"
 #include "../constraints/line_constraint.hpp"
+#include "../objects/movable_wall.hpp"
 #include <string>
 
 class Box : public ConvexPolygon {
@@ -16,6 +17,10 @@ private:
 //    LineConstraint* width_constraint;
 //    LineConstraint* height_constraint;
 //    LineConstraint* diagonal_constraint;
+    MovableWall::MovableWallConstraint* mmc_left;
+    MovableWall::MovableWallConstraint* mmc_top;
+    MovableWall::MovableWallConstraint* mmc_right;
+    MovableWall::MovableWallConstraint* mmc_bottom;
 public:
 
     static std::string TYPE;

@@ -85,6 +85,24 @@ void GridMB::setup() {
     delete [] r_b_w_1;
     delete [] r_b_w_2;
 
+    // Middle Top Wall
+    double * m_t_w_1 = douglas::vector::vector(0.0, unit_height - (unit_height / 3.0));
+    double * m_t_w_2 = douglas::vector::vector(unit_width, unit_height - (unit_height / 3.0));
+    middle_top_wall = new Wall(m_t_w_1, m_t_w_2);
+    middle_top_wall->setDrawChar('_');
+    physics->addChild(middle_top_wall);
+    delete [] m_t_w_1;
+    delete [] m_t_w_2;
+
+    // Middle Bottom Wall
+    double * m_b_w_1 = douglas::vector::vector(0.0, (unit_height / 3.0));
+    double * m_b_w_2 = douglas::vector::vector(unit_width, (unit_height / 3.0));
+    middle_bottom_wall = new Wall(m_b_w_1, m_b_w_2);
+    middle_bottom_wall->setDrawChar('_');
+    physics->addChild(middle_bottom_wall);
+    delete [] m_b_w_1;
+    delete [] m_b_w_2;
+
 }
 
 // Steps through one iteration of the physics

@@ -22,8 +22,35 @@
 void initializeGrid(Room***, double, double);
 Room* getPlayerRoom(Room***);
 void stepRooms(Room***, double);
+void printEnding(bool state);
 
 int main (int argc, char** argv) {
+
+    // These define the size of the game worlds, in arbitrary units.
+    double world_width = 100.0;
+    double world_height = 50.0;
+
+    // These define the size of the game screen, but not the total space taken up by the game
+    int screen_width = 150;     // Columns in terminal
+    int screen_height = 50;     // Rows of in terminal
+
+    double time_limit = 100;  // Time limit in seconds (5 min)
+
+    bool win_state = false;   // True means successful
+
+    std::cout << std::endl << "WARNING:    If your terminal is not around 200x60 (col x row) the graphics will glitch out." << std::endl;
+    std::cout << std::endl << "NOTE:       Best played in full screen on a local machine, though ssh does work, it will just lag sometimes." << std::endl;
+    std::cout << std::endl << "INFO:       In this game you will play as a car and you need to collect";
+    std::cout << std::endl << "            3 keys from nine different rooms arranged in a grid.  Use WASD";
+    std::cout << std::endl << "            for the movement, and due to how keyboard input is accepted";
+    std::cout << std::endl << "            from the keyboard only one key can be pressed at a time and";
+    std::cout << std::endl << "            there is approximately a 300 millisecond pause between holding";
+    std::cout << std::endl << "            the key and it sending a constant stream of input, so tapping";
+    std::cout << std::endl << "            is the best way to move. Press 'q' to quit." << std::endl;
+
+    std::cout << std::endl << "TIME LIMIT: 5 minutes." << std::endl;
+
+    std::cout << std::endl << "Press 'q' to quit." << std::endl;
 
     // create double array of space pointers
     Room* **grid = new Room**[3];
@@ -31,7 +58,7 @@ int main (int argc, char** argv) {
         grid[i] = new Room*[3];
     }
     // fill grid with the correct instances
-    initializeGrid(grid, 100.0, 50.0);
+    initializeGrid(grid, world_width, world_height);
 
     // Create the player
     double * player_pos = douglas::vector::vector(20, 20);
@@ -102,7 +129,7 @@ int main (int argc, char** argv) {
     input->listen();
 
     // Create screen
-    Screen* screen = new Screen(150, 50);
+    Screen* screen = new Screen(screen_width, screen_height);
 
     double dt = 0.5;
     std::chrono::high_resolution_clock::time_point t = std::chrono::high_resolution_clock::now();
@@ -126,6 +153,7 @@ int main (int argc, char** argv) {
         screen->displayFrame();
         screen->printValue(1, " FPS: " + std::to_string(1/dt));
         screen->printValue(2, " Room Type: " + room->getType());
+        screen->printValue(5, " Time Left: " + std::to_string(time_limit - ((t - start_time).count() / 1000000000.0)));
 
         room->checkPlayerLocation();
 
@@ -133,10 +161,12 @@ int main (int argc, char** argv) {
         dt = (nt - t).count() / 1000000000.0;
         t = nt;
 
-        if ((t - start_time).count() / 1000000000.0 > 30) {
-            //break;
+        if ((t - start_time).count() / 1000000000.0 > time_limit) {
+            break;
         }
     }
+
+    printEnding(win_state);
 
     delete input;
     // clear all the memory of grid including the space pointers
@@ -151,6 +181,15 @@ int main (int argc, char** argv) {
 
     return 0;
 
+}
+
+void printEnding(bool state) {
+    if(state) {
+
+    } else {
+        std::cout << ".\n.\n.\n.\n." << std::endl;
+        std::cout << "Game Over." << std::endl;
+    }
 }
 
 void initializeGrid(Room* **grid, double w, double h) {

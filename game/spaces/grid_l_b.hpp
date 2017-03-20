@@ -6,6 +6,8 @@
 #define FINAL_PROJECT_GAME_GRID_L_B_HPP
 
 #include "room.hpp"
+#include "../../physics/objects/box.hpp"
+#include "../../physics/constraints/drag_constraint.hpp"
 
 class GridLB : public Room {
 protected:
@@ -17,6 +19,9 @@ protected:
     Wall* top_right_wall;
     Wall* right_top_wall;
     Wall* right_bottom_wall;
+
+    Box* box;
+    DragConstraint* box_drag;
 
 public:
 

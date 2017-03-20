@@ -9,6 +9,13 @@
 std::string MovableWall::TYPE = "movable_wall";
 std::string MovableWall::MovableWallConstraint::TYPE = "movable_wall_constraint";
 
+MovableWall::MovableWall(Particle *p1, Particle *p2, bool wall_moves) : ParticleContainer() {
+    addType(MovableWall::TYPE);
+    this->p1 = p1;
+    this->p2 = p2;
+    this->wall_moves = wall_moves;
+}
+
 MovableWall::MovableWall(double *pos1, double *pos2, bool wall_moves) : ParticleContainer() {
     addType(MovableWall::TYPE);
     this->wall_moves = wall_moves;
@@ -47,6 +54,11 @@ void MovableWall::render(Screen *screen) {
 MovableWall::MovableWallConstraint::MovableWallConstraint(MovableWall *wall) : SingleConstraint() {
     addType(MovableWall::MovableWallConstraint::TYPE);
     this->wall = wall;
+}
+
+MovableWall::MovableWallConstraint::MovableWallConstraint(Particle* p1, Particle* p2, bool wall_moves) : SingleConstraint() {
+    addType(MovableWallConstraint::TYPE);
+    this->wall = new MovableWall(p1, p2, wall_moves);
 }
 
 void MovableWall::MovableWallConstraint::fix(int iter, Particle *p) {

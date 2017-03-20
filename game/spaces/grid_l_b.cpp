@@ -76,6 +76,14 @@ void GridLB::setup() {
     delete [] r_b_w_1;
     delete [] r_b_w_2;
 
+    // Movable Box
+    double * b_pos = douglas::vector::vector(unit_width / 2.0, unit_height / 2.0);
+    box = new Box(b_pos, 10.0, 10.0);
+    box_drag = new DragConstraint(0.5);
+    box->addSubGlobalConstraint(box_drag);
+    physics->addChild(box);
+    delete [] b_pos;
+
 }
 
 // Steps through one iteration of the physics

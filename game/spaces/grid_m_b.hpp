@@ -19,6 +19,9 @@ protected:
     Wall* right_top_wall;
     Wall* right_bottom_wall;
 
+    Wall* middle_top_wall;
+    Wall* middle_bottom_wall;
+
 public:
 
     static std::string TYPE;
