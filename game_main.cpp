@@ -152,16 +152,28 @@ int main (int argc, char** argv) {
             input->getInput();
         }
 
-        stepRooms(grid, dt);
-
+        // Step all the rooms
         std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+        stepRooms(grid, dt);
+        screen->printValue(1, " Step Time: " +
+                              std::to_string((std::chrono::high_resolution_clock::now() - t2).count() / 1000000000.0));
+
+        // Render all the elements
+        t2 = std::chrono::high_resolution_clock::now();
         room->render(screen);
-        screen->printValue(1, " Render time: " +
+        screen->printValue(2, " Render Time: " +
                 std::to_string((std::chrono::high_resolution_clock::now() - t2).count() / 1000000000.0));
+
+        // Display onto terminal
+        t2 = std::chrono::high_resolution_clock::now();
         screen->displayFrame();
+        screen->printValue(3, " Terminal Write Time: " +
+                              std::to_string((std::chrono::high_resolution_clock::now() - t2).count() / 1000000000.0));
+
+        // Print out stats
         screen->printValue(0, " FPS: " + std::to_string(1/dt));
-        screen->printValue(2, " Room Type: " + room->getType());
-        screen->printValue(5, " Time Left: " + std::to_string(time_limit - ((t - start_time).count() / 1000000000.0)));
+        screen->printValue(5, " Room Type: " + room->getType());
+        screen->printValue(7, " Time Left: " + std::to_string(time_limit - ((t - start_time).count() / 1000000000.0)));
 
         room->checkPlayerLocation();
 

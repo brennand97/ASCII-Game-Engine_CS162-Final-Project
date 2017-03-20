@@ -106,15 +106,15 @@ void GridMM::step(double dt) {
 void GridMM::render(Screen *screen) {
 
     // Inform player about the room
-    screen->printValue(7, " Info:      To complete this game,");
-    screen->printValue(8, "            please bring 3 keys to");
-    screen->printValue(9, "            this room. Your progress");
-    screen->printValue(10,"            will be denoted in the");
-    screen->printValue(11,"            box on the floor. There");
-    screen->printValue(12,"            are 9 rooms which can be");
-    screen->printValue(13,"            accessed by the doors in");
-    screen->printValue(14,"            the walls.");
-    screen->printValue(16," Movement:  WASD keys");
+    screen->printValue(9, " Info:      To complete this game,");
+    screen->printValue(10,"            please bring 3 keys to");
+    screen->printValue(11,"            this room. Your progress");
+    screen->printValue(12,"            will be denoted in the");
+    screen->printValue(13,"            box on the floor. There");
+    screen->printValue(14,"            are 9 rooms which can be");
+    screen->printValue(15,"            accessed by the doors in");
+    screen->printValue(16,"            the walls.");
+    screen->printValue(18," Movement:  WASD keys");
 
     double * t_l = douglas::vector::vector((unit_width / 3.0), unit_height - (unit_height / 3.0));
     double * t_r = douglas::vector::vector(unit_width - (unit_width / 3.0), unit_height - (unit_height / 3.0));
