@@ -1,6 +1,8 @@
-//
-// Created by Brennan on 3/12/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/12/2017
+ * Description: This is the header file for the Wheel class
+ */
 
 #ifndef FINAL_PROJECT_WHEEL_HPP
 #define FINAL_PROJECT_WHEEL_HPP
@@ -10,8 +12,11 @@
 #include "../../personal_utilities/vec_func.hpp"
 #include <chrono>
 
+// The Wheel class represents two wheels connected by an axel.  There is a constraint of each of the wheels that
+// provides heavy resistance to the moving orthogonally to the two points that define them.
 class Wheel : public ParticleContainer {
 
+    // This is the constraint tha prevents the wheels from being able to move sideways.
     class WheelConstraint : public PairConstraint {
     private:
         double drag_coefficient;

@@ -1,6 +1,8 @@
-//
-// Created by Brennan on 3/12/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/12/2017
+ * Description: This is the source file for the Wheel class
+ */
 
 #include "wheel.hpp"
 #include <cmath>

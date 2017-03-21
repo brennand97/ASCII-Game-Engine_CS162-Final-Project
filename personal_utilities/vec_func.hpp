@@ -18,6 +18,8 @@ namespace douglas {
 
     namespace vector {
 
+        // Helpful vector functions using a 2-d array as a vector
+
         double * vector(const double x, const double y);
 
         double * copy(const double * v);

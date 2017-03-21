@@ -1,12 +1,22 @@
-//
-// Created by Brennan on 3/14/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/13/2017
+ * Description: This file holds the source code for the car class
+ */
 
 #include "player.hpp"
 #include "../../space.hpp"
 
 std::string Player::TYPE = "player_car";
 
+// Default player constructor.
+// <pos> refers to the center position of the player
+// <width> is the width of the player (car)
+// <height> is the length of the player (car)
+// <wheel_width> is the width of the front and back wheel of the player (car)
+// <front_drag_coefficient> is the drag coefficient for the front wheel's
+//                          WheelConstraint (e.g. the sideways friction of the wheels)
+// <back_drag_coefficient> is the same as front_drag_coefficient except for the back wheels
 Player::Player(double * pos,
                double width,
                double height,
@@ -14,8 +24,10 @@ Player::Player(double * pos,
                double front_drag_coefficient,
                double back_drag_coefficient) : ParticleContainer() {
 
+    // Add type to Typed type list
     addType(Player::TYPE);
 
+    // Calculate the bottom middle point for the car box
     double x;
     double y_low;
     if ( pos != nullptr ) {
@@ -26,18 +38,21 @@ Player::Player(double * pos,
         y_low = 0;
     }
 
+    // Create the front wheels
     double * f_w_pos = douglas::vector::vector(x, y_low + height);
     frontWheels = new Wheel(f_w_pos, width, wheel_width, 0, front_drag_coefficient);
     frontWheels->setDrawChar(draw_char);
     addChild(frontWheels);
     delete [] f_w_pos;
 
+    // Create the back wheels
     double * b_w_pos = douglas::vector::vector(x, y_low);
     backWheels = new Wheel(b_w_pos, width, wheel_width, 0, back_drag_coefficient);
     backWheels->setDrawChar(draw_char);
     addChild(backWheels);
     delete [] b_w_pos;
 
+    // Define the line constraint for the height of the car
     height_constraint = new LineConstraint(height, Constraint::EQUAL);
     height_constraint->addParticle(((Particle*) frontWheels->getChildren()[1]));
     height_constraint->addParticle(((Particle*) backWheels->getChildren()[1]));
@@ -45,6 +60,7 @@ Player::Player(double * pos,
     height_constraint->addParticle(((Particle*) backWheels->getChildren()[4]));
     addSpecificConstraint(height_constraint);
 
+    // Define the line constraint for the diagonals of the car
     double diagonal = std::sqrt((width * width) + (height * height));
     diagonal_constraint = new LineConstraint(diagonal, Constraint::EQUAL);
     diagonal_constraint->addParticle(((Particle*) frontWheels->getChildren()[1]));
@@ -53,8 +69,13 @@ Player::Player(double * pos,
     diagonal_constraint->addParticle(((Particle*) backWheels->getChildren()[1]));
     addSpecificConstraint(diagonal_constraint);
 
+    // The width constraint doesn't need to be defined as that is taken care of by the front and back wheels.
+
 }
 
+// Return the middle of the player.  This function assumes that the car is in a good state due to its constraints
+// as the midpoint is calculated by the intersection of the diagonal lines made by the midpoints of the front and back
+// wheels of the player (car).
 double* Player::getPlayerMidPoint() {
     double * intersect = douglas::vector::intersection(((Particle*) frontWheels->getChildren()[1])->getPosition(),
                                                        ((Particle*) backWheels->getChildren()[4])->getPosition(),
@@ -63,6 +84,7 @@ double* Player::getPlayerMidPoint() {
     return intersect;
 }
 
+// Move all the particles in the player by dx and dy.  This is used for jumping between Rooms.
 void Player::movePlayerBy(double dx, double dy) {
     std::vector<GameObject*>::iterator g_it;
     std::vector<GameObject*> particles;
@@ -81,6 +103,11 @@ void Player::movePlayerBy(double dx, double dy) {
     }
 }
 
+// Render function for the car.  Renders only the middle connecting lines of the car between the front and back
+// wheels as the front and back wheels render themselves.  The render consists of a straight line between the centers
+// of the wheels and two diagonal lines forming a triangle pointing to the front wheels to make moving the car
+// easier as it provides the user with a visual of which end of the player (car) is the front before they turn the
+// wheels.
 void Player::render(Screen *screen) {
 
     renderChildren(screen);

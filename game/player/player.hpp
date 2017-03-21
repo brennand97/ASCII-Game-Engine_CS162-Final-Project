@@ -1,6 +1,6 @@
 /**
  * Author:      Brennan Douglas
- * Date:        03/05/2017
+ * Date:        03/13/2017
  * Description: This is the header file for the Player class
  */
 
@@ -10,7 +10,9 @@
 #include "../../physics/particle_container.hpp"
 #include "wheel.hpp"
 
-// Player is a car
+// Player is a car that can be controlled by turning its front wheels.  The physics engine turns it from the friction
+// simulated by the wheel constraint on the front and the back wheels.  Player implements ParticleContainer as physics
+// functionality is desired/required.
 class Player : public ParticleContainer {
 private:
 
