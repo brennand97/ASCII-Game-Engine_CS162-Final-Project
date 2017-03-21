@@ -258,10 +258,10 @@ int main (int argc, char** argv) {
 }
 
 void printEnding(bool state) {
+    std::cout << ".\n.\n.\n.\n." << std::endl;
     if(state) {
-
+        std::cout << "YOU WON!!!" << std::endl;
     } else {
-        std::cout << ".\n.\n.\n.\n." << std::endl;
         std::cout << "Game Over." << std::endl;
     }
 }
