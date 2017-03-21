@@ -8,6 +8,7 @@
 #include "room.hpp"
 #include "../../physics/objects/movable_wall.hpp"
 #include "../../physics/constraints/drag_constraint.hpp"
+#include "../key.hpp"
 
 class GridRT : public Room {
 protected:
@@ -27,12 +28,16 @@ protected:
 
     DragConstraint* mvs_drag;
 
+    Key* key;
+
 public:
 
     static std::string TYPE;
     constexpr static int RELAXATION_ROUNDS = 5;
 
     GridRT(double u_w, double u_h);
+
+    Key* getKey() { return key; }
 
     void setup();
     void step(double dt);

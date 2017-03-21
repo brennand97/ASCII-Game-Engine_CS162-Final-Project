@@ -123,6 +123,13 @@ void GridLM::setup() {
     delete [] t_m_b_w_1;
     delete [] t_m_b_w_2;
 
+    // Define the key
+    double * k_pos = douglas::vector::vector(unit_width - (unit_width / 3.0), unit_height / 2.0);
+    key = new Key(k_pos, 5);
+    key->setDrawChar('*');
+    addChild(key);
+    delete [] k_pos;
+
     // Rotating Puzzle Piece
 
     double * pivot_point_arr = douglas::vector::vector(unit_width * (7.0 / 10.0), unit_height * (2.0 / 9.0));

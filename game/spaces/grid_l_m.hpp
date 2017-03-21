@@ -9,6 +9,7 @@
 #include "../../physics/objects/movable_wall.hpp"
 #include "../../physics/constraints/fixed_point.hpp"
 #include "../../physics/constraints/trapped_point.hpp"
+#include "../key.hpp"
 
 class GridLM : public Room {
 protected:
@@ -36,12 +37,17 @@ protected:
     TrappedPoint* right_stop;
     LineConstraint* rigid_connector;
 
+    // Key
+    Key* key;
+
 public:
 
     static std::string TYPE;
     constexpr static int RELAXATION_ROUNDS = 5;
 
     GridLM(double u_w, double u_h);
+
+    Key* getKey() { return key; }
 
     void setup();
     void step(double dt);

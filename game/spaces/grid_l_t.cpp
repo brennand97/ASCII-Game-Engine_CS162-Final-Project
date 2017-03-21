@@ -76,6 +76,13 @@ void GridLT::setup() {
     delete [] b_r_w_1;
     delete [] b_r_w_2;
 
+    // Create key
+    double * k_pos = douglas::vector::vector(unit_width / 2.0, unit_height / 2.0);
+    key = new Key(k_pos, 5.0);
+    key->setDrawChar('*');
+    addChild(key);
+    delete [] k_pos;
+
 }
 
 // Steps through one iteration of the physics

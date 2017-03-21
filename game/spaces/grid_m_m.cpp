@@ -192,3 +192,17 @@ void GridMM::setMarker(int i, bool b) {
         }
     }
 }
+
+bool GridMM::getMarker(int i) {
+    switch (i) {
+        case 1: {
+            return show_marker_1;
+        }
+        case 2: {
+            return show_marker_2;
+        }
+        case 3: {
+            return show_marker_3;
+        }
+    }
+}

@@ -35,6 +35,7 @@ public:
     void render(Screen* screen);
 
     void setMarker(int i, bool b);
+    bool getMarker(int i);
 
 };
 

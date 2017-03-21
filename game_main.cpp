@@ -24,6 +24,8 @@ void initializeGrid(Room***, double, double);
 Room* getPlayerRoom(Room***);
 void stepRooms(Room***, double);
 void printEnding(bool state);
+void attachPlayerToKeys(Room***, Player*);
+bool checkKey(int, Room***);
 
 int main (int argc, char** argv) {
 
@@ -36,6 +38,7 @@ int main (int argc, char** argv) {
     int screen_height = 50;     // Rows of in terminal
 
     double time_limit = 300;  // Time limit in seconds (5 min)
+    double win_delay_seconds = 2; // Time delay to win from final room enter (2 sec)
 
     bool win_state = false;   // True means successful
 
@@ -96,6 +99,7 @@ int main (int argc, char** argv) {
     Player* player = new Player(player_pos, 5.0, 10.0, 3.0, 100000.0, 100000.0);
     delete [] player_pos;
     grid[1][1]->setPlayer(player);
+    attachPlayerToKeys(grid, player);
 
     // Boolean to tell the loop to stop
     bool stop = false;
@@ -167,9 +171,14 @@ int main (int argc, char** argv) {
     // Create screen
     Screen* screen = new Screen(screen_width, screen_height);
 
+    // Easy access to the middle room
+    GridMM* gridMM = (GridMM*) grid[1][1];
+
     double dt = 0.5;
     std::chrono::high_resolution_clock::time_point t = std::chrono::high_resolution_clock::now();
     std::chrono::high_resolution_clock::time_point start_time = t;
+
+    std::chrono::high_resolution_clock::time_point win_delay = t;
 
     while (!stop) {
 
@@ -181,6 +190,19 @@ int main (int argc, char** argv) {
 
         if(!input->is_multi_threading_enabled()) {
             input->getInput();
+        }
+
+        gridMM->setMarker(1, checkKey(1, grid));
+        gridMM->setMarker(2, checkKey(2, grid));
+        gridMM->setMarker(3, checkKey(3, grid));
+
+        if(room == gridMM && gridMM->getMarker(1) && gridMM->getMarker(2) && gridMM->getMarker(3)) {
+            if(!win_state) {
+                win_delay = std::chrono::high_resolution_clock::now();
+            } else if((std::chrono::high_resolution_clock::now() - win_delay).count() / 1000000000.0 > win_delay_seconds){
+                break;
+            }
+            win_state = true;
         }
 
         // Step all the rooms
@@ -241,6 +263,33 @@ void printEnding(bool state) {
     } else {
         std::cout << ".\n.\n.\n.\n." << std::endl;
         std::cout << "Game Over." << std::endl;
+    }
+}
+
+bool checkKey(int k_int, Room* **grid) {
+    switch (k_int) {
+        case 1: {
+            return ((GridLM*) grid[0][1])->getKey()->getPickedUp();
+        }
+        case 2: {
+            return ((GridLT*) grid[0][0])->getKey()->getPickedUp();
+        }
+        case 3: {
+            return ((GridRT*) grid[2][0])->getKey()->getPickedUp();
+        }
+    }
+    return false;
+}
+
+void attachPlayerToKeys(Room* **grid, Player* player) {
+    std::vector<GameObject*>::iterator it;
+    std::vector<GameObject*> particles;
+    player->getChildrenOfType(Particle::TYPE, &particles);
+    for(it = particles.begin(); it != particles.end(); it++) {
+        Particle* p = (Particle*) *it;
+        ((GridLM*) grid[0][1])->getKey()->getKeyConstraint()->addParticle(p);
+        ((GridLT*) grid[0][0])->getKey()->getKeyConstraint()->addParticle(p);
+        ((GridRT*) grid[2][0])->getKey()->getKeyConstraint()->addParticle(p);
     }
 }
 
