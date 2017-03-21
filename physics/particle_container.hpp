@@ -1,6 +1,8 @@
-//
-// Created by Brennan on 3/6/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/06/2017
+ * Description: This is the header file for the ParticleContainer class
+ */
 
 #ifndef FINAL_PROJECT_PARTICLE_CONTAINER_HPP
 #define FINAL_PROJECT_PARTICLE_CONTAINER_HPP
@@ -11,8 +13,11 @@
 #include <string>
 #include <vector>
 
+// A recursively designed component that resolves all physics constraints at its level in the GameObject tree.
+// Any physics that happens is inside of a ParticleContainer.
 class ParticleContainer : public GameObject {
 private:
+    // Caching mechanism to decrease amount of recursive calls
     std::vector<SingleConstraint*> cached_global_constraints;
     std::vector<SingleConstraint*> master_cached_global_super_constraints;
 protected:

@@ -13,6 +13,8 @@
 #include <vector>
 #include <algorithm>
 
+// The GameObject class is a recursively defined tree type data structure where each node has a vector of children
+// and one parent.  The top of the tree is defined by the parent pointer being set to nullptr.
 class GameObject : public Typed {
 protected:
     unsigned int obj_id;

@@ -1,6 +1,8 @@
-//
-// Created by Brennan on 3/6/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/17/2017
+ * Description: This is the header file for the ParticleContainer class
+ */
 
 #include "particle_container.hpp"
 #include "../game_object.hpp"
@@ -11,10 +13,12 @@
 
 std::string ParticleContainer::TYPE = "particle_container";
 
+// Default ParticleContainer Constructor
 ParticleContainer::ParticleContainer() : GameObject() {
     addType(ParticleContainer::TYPE);
 }
 
+// ParticleContainer Deconstructor
 ParticleContainer::~ParticleContainer() {
 
     std::vector<Constraint*>::iterator c_it;
@@ -33,10 +37,12 @@ ParticleContainer::~ParticleContainer() {
 
 }
 
+// Add a specific constraint, this will not leave this GameObject
 void ParticleContainer::addSpecificConstraint(Constraint * p) {
     specific_constraints.push_back(p);
 }
 
+// Add a sub global constraint, this will be propagated to all ParticleContainers below current one in the GameObject tree.
 void ParticleContainer::addSubGlobalConstraint(SingleConstraint * p) {
     sub_global_constraints.push_back(p);
     if(parent != nullptr) {
@@ -44,6 +50,7 @@ void ParticleContainer::addSubGlobalConstraint(SingleConstraint * p) {
     }
 }
 
+// Add a super global constraint, this will be have effect over every ParticleContainer in the GameObject tree.
 void ParticleContainer::addSuperGlobalConstraint(SingleConstraint * p) {
     super_global_constraints.push_back(p);
     if(parent != nullptr) {
@@ -53,6 +60,7 @@ void ParticleContainer::addSuperGlobalConstraint(SingleConstraint * p) {
     }
 }
 
+// Retrieve all global constraints for this ParticleContainer
 void ParticleContainer::getGlobalConstraints(std::vector < SingleConstraint * > * vec, bool update_cached, bool supers) {
     if(update_cached) {
         cached_global_constraints.clear();
@@ -76,16 +84,20 @@ void ParticleContainer::getGlobalConstraints(std::vector < SingleConstraint * > 
     }
 }
 
+// Retrieve this ParticleContainer's sub global constraints
 void ParticleContainer::getSubGlobalConstraints(std::vector < SingleConstraint * > * vec) {
     for(unsigned int i = 0; i < sub_global_constraints.size(); i++) {
         vec->push_back(sub_global_constraints[i]);
     }
 }
 
+// Remove a sub global constraints
 void ParticleContainer::removeSubGlobalConstraint(int index) {
     sub_global_constraints.erase(sub_global_constraints.begin() + index, sub_global_constraints.begin() + index + 1);
 }
 
+// Retrieve this ParticleContainer's super global constraints, or in case of the highest ParticleContainer retrieve
+// all of them from the GameObject tree.
 void ParticleContainer::getSuperGlobalConstraints(std::vector < SingleConstraint * > * vec, bool update_cached) {
     if(((Space*) getWorld())->getPhysics()->getId() == this->getId()) {
         // This is the physics element of a Space
@@ -113,12 +125,14 @@ void ParticleContainer::getSuperGlobalConstraints(std::vector < SingleConstraint
     }
 }
 
+// Retrieve this ParticleContainer's specific constraints
 void ParticleContainer::getSpecificConstraints(std::vector < Constraint * > * vec) {
     for(unsigned int i = 0; i < specific_constraints.size(); i++) {
         vec->push_back(specific_constraints[i]);
     }
 }
 
+// Add a specified amount of velocity to all the particles under this ParticleContainer
 void ParticleContainer::addVelocity(double *vel) {
     std::vector<GameObject*> particles;
     getChildrenOfType(Particle::TYPE, &particles);
@@ -129,6 +143,7 @@ void ParticleContainer::addVelocity(double *vel) {
     }
 }
 
+// Handle all the constraints
 void ParticleContainer::handleConstraints(int iter) {
     std::vector<Constraint*>::iterator it;
     for(it = specific_constraints.begin(); it != specific_constraints.end(); it++) {

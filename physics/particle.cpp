@@ -1,12 +1,15 @@
-//
-// Created by Brennan on 3/5/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/05/2017
+ * Description: This is the source file for the Particle class
+ */
 
 #include "particle.hpp"
 #include <string>
 
 std::string Particle::TYPE = "particle";
 
+// Default Particle Constructor
 Particle::Particle() : GameObject() {
     addType(Particle::TYPE);
     mass = 1;
@@ -18,6 +21,7 @@ Particle::Particle() : GameObject() {
     ppos[1] = 0;
 }
 
+// Particle constructor at a position <pos>
 Particle::Particle(double *pos) : GameObject() {
     addType(Particle::TYPE);
     mass = 1;
@@ -33,6 +37,7 @@ Particle::Particle(double *pos) : GameObject() {
     ppos[1] = pos[1];
 }
 
+// Particle constructor at a position <pos> with velocity <vel>
 Particle::Particle(double *pos, double *vel) : GameObject() {
     addType(Particle::TYPE);
     mass = 1;
@@ -53,11 +58,13 @@ Particle::Particle(double *pos, double *vel) : GameObject() {
     }
 }
 
+// Particle Deconstructor
 Particle::~Particle() {
     delete [] pos;
     delete [] ppos;
 }
 
+// Step the Particle
 void Particle::step(double dt) {
 
     if(previous_dt < 0) {
@@ -67,6 +74,7 @@ void Particle::step(double dt) {
     double *n_pos = new double[2];
     double *vel = new double[2];
 
+    // Get velocity from numeric integration
     vel[0] = (pos[0] - ppos[0]) / previous_dt;
     vel[1] = (pos[1] - ppos[1]) / previous_dt;
 
@@ -91,6 +99,7 @@ void Particle::step(double dt) {
 
 }
 
+// Empty render function
 void Particle::render(Screen* screen) {
 
 }

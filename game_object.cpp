@@ -13,28 +13,33 @@
 unsigned int GameObject::n_obj_id = 0;
 std::string GameObject::TYPE = "game_object";
 
+// GameObject Constructor
 GameObject::GameObject() : Typed(GameObject::TYPE) {
     obj_id = n_obj_id++;
 }
 
+// GameObject Copy Constructor
 GameObject::GameObject(const GameObject &obj) : Typed(GameObject::TYPE) {
     types.push_back(GameObject::TYPE);
     children = obj.children;
     obj_id = n_obj_id++;
 }
 
+// GameObject deconstructor
 GameObject::~GameObject() {
     for(std::vector<GameObject*>::iterator it = children.begin(); it != children.end(); it++) {
         delete (*it);
     }
 }
 
+// Protected function called whenever a newChild is added to GameObject or under GameObject in GameObject tree
 void GameObject::newChild(GameObject *child) {
     if(parent != nullptr) {
         parent->newChild(child);
     }
 }
 
+// Retrieve index of child based off of child id
 unsigned int GameObject::getChildIndex(unsigned int c_obj_id) {
 
     std::vector<GameObject*>::iterator it;
@@ -48,6 +53,7 @@ unsigned int GameObject::getChildIndex(unsigned int c_obj_id) {
 
 }
 
+// Retrieve child
 GameObject* GameObject::getChild(unsigned int c_obj_id) {
 
     try {
@@ -59,12 +65,14 @@ GameObject* GameObject::getChild(unsigned int c_obj_id) {
 
 }
 
+// Remove child from GameObject children
 void GameObject::removeChild(GameObject *obj) {
 
     removeChild(obj->getId());
 
 }
 
+// Remove child from GameObject children
 void GameObject::removeChild(unsigned int c_obj_id) {
 
     try {
@@ -76,6 +84,7 @@ void GameObject::removeChild(unsigned int c_obj_id) {
 
 }
 
+// Retrieve top most GameObject in the GameObject tree
 GameObject* GameObject::getWorld() {
     if(parent != nullptr) {
         return parent->getWorld();
@@ -84,6 +93,7 @@ GameObject* GameObject::getWorld() {
     }
 }
 
+// Retrieve all parents of a specified type
 void GameObject::getParentsOfType(std::string type, std::vector<GameObject*>* vec) {
     if(this->isType(type)) {
         vec->push_back(this);
@@ -93,6 +103,7 @@ void GameObject::getParentsOfType(std::string type, std::vector<GameObject*>* ve
     }
 }
 
+// Retrieve all children of a specified type
 void GameObject::getChildrenOfType(std::string type, std::vector < GameObject * > * vec) {
     if(this->isType(type)) {
         vec->push_back(this);
@@ -105,6 +116,7 @@ void GameObject::getChildrenOfType(std::string type, std::vector < GameObject * 
     }
 }
 
+// Retrieve all immediate children of a specified type
 void GameObject::getImmediateChildrenOfType(std::string type, std::vector < GameObject * > * vec) {
     if(children.size() > 0) {
         std::vector<GameObject*>::iterator it;
@@ -116,6 +128,7 @@ void GameObject::getImmediateChildrenOfType(std::string type, std::vector < Game
     }
 }
 
+// Step all the children along in the simulation
 void GameObject::stepChildren(double dt) {
 
     std::vector<GameObject*>::iterator it;
@@ -125,6 +138,7 @@ void GameObject::stepChildren(double dt) {
 
 }
 
+// Render all the children to the screen
 void GameObject::renderChildren(Screen *screen) {
 
     std::vector<GameObject*>::iterator it;
@@ -134,6 +148,7 @@ void GameObject::renderChildren(Screen *screen) {
 
 }
 
+// Step the GameObject along
 void GameObject::step(double dt) {
 
     if(previous_dt < 0) {

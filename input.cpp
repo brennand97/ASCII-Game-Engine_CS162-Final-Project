@@ -1,16 +1,20 @@
-//
-// Created by Brennan on 3/11/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/11/2017
+ * Description: This is the source file for the Input class
+ */
 
 #include "input.hpp"
 #include "linux_input.hpp"
 #include <algorithm>
 #include <iostream>
 
+// Input Constructor
 Input::Input() {
     stop_trigger = false;
 }
 
+// Input Deconstructor
 Input::~Input() {
     end();
     if(thread != nullptr) {
@@ -18,15 +22,18 @@ Input::~Input() {
     }
 }
 
+// Add a char that is being listened for with a callback to accompany it
 void Input::listenTo(char c, v_d_callback callback) {
     Key c_key(c, callback);
     keys.push_back(c_key);
 }
 
+// Stop listening to the keyboard for input
 void Input::stop() {
     stop_trigger = true;
 }
 
+// Cleanly end the input class
 void Input::end() {
     if(multi_threading && thread->joinable()) {
         thread->join();
@@ -36,6 +43,7 @@ void Input::end() {
     resetTermios();
 }
 
+// Start to listen to the keyboard for input
 bool Input::listen() {
     try {
         thread = new std::thread(&Input::loop, std::ref(*this));
@@ -50,6 +58,7 @@ bool Input::listen() {
     return multi_threading;
 }
 
+// Retrieve input from the keyboard
 void Input::getInput() {
     if(multi_threading || (std::cin.rdbuf() && std::cin.rdbuf()->in_avail() > 0)) {
         char c = getchar();
@@ -67,12 +76,14 @@ void Input::getInput() {
     }
 }
 
+// Loop function for multi-threading
 void Input::loop() {
     while (!stop_trigger && multi_threading) {
         getInput();
     }
 }
 
+// Manually disable multi_threading if desired
 void Input::disable_multi_threading(bool b) {
     multi_threading = !b;
 }

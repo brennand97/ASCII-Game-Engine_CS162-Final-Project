@@ -1,6 +1,8 @@
-//
-// Created by Brennan on 3/5/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/05/2017
+ * Description: This is the header file for the Particle class
+ */
 
 #ifndef FINAL_PROJECT_PHYSICS_PARTICLE_HPP
 #define FINAL_PROJECT_PHYSICS_PARTICLE_HPP
@@ -8,6 +10,7 @@
 #include "../game_object.hpp"
 #include <string>
 
+// Represents a particle that can move around the world with velocity and interact with the environment
 class Particle : public GameObject {
 protected:
     double *ppos;
