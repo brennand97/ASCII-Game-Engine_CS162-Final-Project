@@ -11,6 +11,12 @@
 std::string Wheel::TYPE = "wheel";
 std::string Wheel::WheelConstraint::TYPE = "wheel_constraint";
 
+// Constructor for the Wheel.
+// <pos> defines the center of the wheel
+// <width> defines the axel width between the two wheels
+// <height> defines the width of each of the wheels
+// <angle> defines the starting angle of the wheels
+// <drag_coefficient> defines the drag coefficient for any velocity orthogonal to the wheel
 Wheel::Wheel(double *pos, double width, double height, double angle, double drag_coefficient) : ParticleContainer() {
     addType(Wheel::TYPE);
 
@@ -75,6 +81,7 @@ Wheel::Wheel(double *pos, double width, double height, double angle, double drag
     addChild(r_w_a);
     addChild(r_w_b);
 
+    // Define the line constraint for each of the wheel widths
     wheel_width_constraint = new LineConstraint(height, Constraint::EQUAL);
     wheel_width_constraint->addParticle(l_w_t);
     wheel_width_constraint->addParticle(l_w_b);
@@ -82,6 +89,7 @@ Wheel::Wheel(double *pos, double width, double height, double angle, double drag
     wheel_width_constraint->addParticle(r_w_b);
     addSpecificConstraint(wheel_width_constraint);
 
+    // Define the axel width constraint between the top and bottom particles of each wheel
     axel_width_constraint = new LineConstraint(width, Constraint::EQUAL);
     axel_width_constraint->addParticle(l_w_t);
     axel_width_constraint->addParticle(r_w_t);
@@ -89,6 +97,7 @@ Wheel::Wheel(double *pos, double width, double height, double angle, double drag
     axel_width_constraint->addParticle(r_w_b);
     addSpecificConstraint(axel_width_constraint);
 
+    // Create the attachment constraint for each of the center particles on each wheel
     attachment_constraint = new LineConstraint(height / 2, Constraint::EQUAL);
     attachment_constraint->addParticle(l_w_a);
     attachment_constraint->addParticle(l_w_t);
@@ -100,7 +109,10 @@ Wheel::Wheel(double *pos, double width, double height, double angle, double drag
     attachment_constraint->addParticle(r_w_b);
     addSpecificConstraint(attachment_constraint);
 
+    // Calculate the diagonal as a box (angle zero)
     double diagonal = std::sqrt((width * width) + (height * height));
+
+    // Set both diagonal constraints to the same diagonal value, creates a box
 
     positive_diagonal_constraint = new LineConstraint(diagonal, Constraint::EQUAL);
     positive_diagonal_constraint->addParticle(l_w_b);
@@ -112,6 +124,8 @@ Wheel::Wheel(double *pos, double width, double height, double angle, double drag
     negative_diagonal_constraint->addParticle(r_w_b);
     addSpecificConstraint(negative_diagonal_constraint);
 
+    // Add the wheel constraint to each of the wheel particle pairs
+
     wheelConstraint = new WheelConstraint(this->drag_coefficient);
     wheelConstraint->addParticle(l_w_t);
     wheelConstraint->addParticle(l_w_b);
@@ -119,8 +133,11 @@ Wheel::Wheel(double *pos, double width, double height, double angle, double drag
     wheelConstraint->addParticle(r_w_b);
     addSpecificConstraint(wheelConstraint);
 
+    // Update the wheel to the given starting angle
+
     setAngle(angle);
 
+    // Allow the constraints to adjust the wheel back into position after the angle change
     for(int i = 0; i < 5; i++) {
         ((PairConstraint*) wheel_width_constraint)->fix(i + 1);
         ((PairConstraint*) axel_width_constraint)->fix(i + 1);
@@ -129,12 +146,14 @@ Wheel::Wheel(double *pos, double width, double height, double angle, double drag
         ((PairConstraint*) negative_diagonal_constraint)->fix(i + 1);
     }
 
+    // Remove all the velocity from the angle change
     for(GameObject* go: children) {
         ((Particle*) go)->setPPosition(((Particle*) go)->getPosition());
     }
 
 }
 
+// Set the axel width
 void Wheel::setAxelWidth(double w) {
     axel_width = w;
     axel_width_constraint->setLength(axel_width);
@@ -144,6 +163,7 @@ void Wheel::setAxelWidth(double w) {
     setAngle(angle);
 }
 
+// Set the wheel width
 void Wheel::setWheelWidth(double h) {
     wheel_width = h;
     wheel_width_constraint->setLength(wheel_width);
@@ -154,6 +174,7 @@ void Wheel::setWheelWidth(double h) {
     setAngle(angle);
 }
 
+// Change the angle of the wheels, defined by the lengths of the two diagonals
 void Wheel::setAngle(double angle) {
     const double pi = 3.1415926535897;
 
@@ -179,16 +200,19 @@ void Wheel::setAngle(double angle) {
     last_angle_change = std::chrono::high_resolution_clock::now();
 }
 
+// Update the angle with a change in value rather then an absolute value
 void Wheel::changeAngle(double d_angle) {
     angle += d_angle;
     setAngle(angle);
 }
 
+// Return the current vector of one of the wheels, as they are always parallel they are the same.
 double* Wheel::getWheelVector() {
     return douglas::vector::subtract(((Particle*) children[0])->getPosition(),
                                      ((Particle*) children[1])->getPosition());
 }
 
+// Render the wheel, each of the wheels and then a line connecting their midpoints.
 void Wheel::render(Screen * screen) {
     if(changed) {
         rendered_pixels.clear();
@@ -215,18 +239,22 @@ void Wheel::render(Screen * screen) {
 
 }
 
+// Update the wheels attributes
 void Wheel::step(double dt) {
     ParticleContainer::step(dt);
-    if((std::chrono::high_resolution_clock::now() - last_angle_change).count() / 1000000 > hold_angle_milliseconds) {
+    // If the current angle has been help for a certain amount of time set it back to zero
+    if((std::chrono::high_resolution_clock::now() - last_angle_change).count() / 1000000.0 > hold_angle_milliseconds) {
         setAngle(0);
     }
 }
 
+// Default constructor for the WheelConstraint
 Wheel::WheelConstraint::WheelConstraint(double drag_coefficient) : PairConstraint() {
     addType(WheelConstraint::TYPE);
     this->drag_coefficient = drag_coefficient;
 }
 
+// Method that applies the necessary changes to the two particles provided in accordance with the constraint
 void Wheel::WheelConstraint::fix(int iter, Particle * p1, Particle * p2) {
 
     // Only apply constraint on the first iteration
