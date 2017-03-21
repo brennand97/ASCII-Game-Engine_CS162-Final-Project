@@ -1,6 +1,8 @@
-//
-// Created by Brennan on 3/7/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/07/2017
+ * Description: This is the header file for the BoxConstraint class
+ */
 
 #ifndef FINAL_PROJECT_BOX_CONSTRAINT_HPP
 #define FINAL_PROJECT_BOX_CONSTRAINT_HPP
@@ -8,6 +10,7 @@
 #include "single_constraint.hpp"
 #include <string>
 
+// The BoxConstraint class keeps all particles effected by it inside a box.
 class BoxConstraint : public SingleConstraint {
 protected:
     double x;

@@ -34,13 +34,13 @@ int main (int argc, char** argv) {
     double world_height = 50.0;
 
     // These define the size of the game screen, but not the total space taken up by the game
-    int screen_width = 150;     // Columns in terminal
-    int screen_height = 50;     // Rows of in terminal
+    int screen_width = 150;         // Columns in terminal
+    int screen_height = 50;         // Rows of in terminal
 
-    double time_limit = 300;  // Time limit in seconds (5 min)
-    double win_delay_seconds = 2; // Time delay to win from final room enter (2 sec)
+    double time_limit = 300;        // Time limit in seconds (5 min)
+    double win_delay_seconds = 2;   // Time delay to win from final room enter (2 sec)
 
-    bool win_state = false;   // True means successful
+    bool win_state = false;         // True means successful
 
     std::cout << std::endl << "WARNING:    If your terminal is not around 200x60 (col x row) the graphics will glitch out." << std::endl;
 

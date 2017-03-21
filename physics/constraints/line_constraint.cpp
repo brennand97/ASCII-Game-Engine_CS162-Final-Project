@@ -1,6 +1,8 @@
-//
-// Created by Brennan on 3/6/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/07/2017
+ * Description: This is the source file for the LineConstraint class
+ */
 
 #include "line_constraint.hpp"
 #include <stdexcept>
@@ -8,12 +10,16 @@
 
 std::string LineConstraint::TYPE = "line_constraint";
 
+// LineConstraint constructor
+// <length> is the length at which the particles will be help to the equality
+// <eq> equal, less than, or greater then, defines LineConstraint behavior
 LineConstraint::LineConstraint(double length, Constraint::Equality eq) : PairConstraint() {
     addType(LineConstraint::TYPE);
     this->length = length;
     this->eq = eq;
 }
 
+// Method that holds particle to specified rule
 void LineConstraint::fix(int iter, Particle *p1, Particle *p2) {
     double s_d = Constraint::sqr_dist(p1, p2);
     double delta = length - std::sqrt(s_d);

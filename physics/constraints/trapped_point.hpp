@@ -1,12 +1,15 @@
-//
-// Created by Brennan on 3/18/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/18/2017
+ * Description: This is the header file for the TrappedPoint class
+ */
 
 #ifndef FINAL_PROJECT_TRAPPED_POINT_HPP
 #define FINAL_PROJECT_TRAPPED_POINT_HPP
 
 #include "single_constraint.hpp"
 
+// Defines a constraint where when a specified particle comes within a specified distance it will become fixed to it.
 class TrappedPoint : public SingleConstraint {
     struct particle_toggle {
         unsigned int id;

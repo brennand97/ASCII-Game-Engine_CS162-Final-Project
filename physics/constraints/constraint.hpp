@@ -1,6 +1,8 @@
-//
-// Created by Brennan on 3/5/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/05/2017
+ * Description: This is the header file for the Constraint class
+ */
 
 #ifndef FINAL_PROJECT_CONSTRAINT_HPP
 #define FINAL_PROJECT_CONSTRAINT_HPP
@@ -11,6 +13,7 @@
 #include <string>
 #include <cmath>
 
+// The constraint class represents a rule between or about a set of particles that will be enforced in the simulation.
 class Constraint : public Typed {
 protected:
     std::vector<Particle*> particles;

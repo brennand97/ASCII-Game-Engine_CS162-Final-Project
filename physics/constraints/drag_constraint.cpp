@@ -1,6 +1,8 @@
-//
-// Created by Brennan on 3/6/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/06/2017
+ * Description: This is the source file for the DragConstraint class
+ */
 
 #include "drag_constraint.hpp"
 #include <string>
@@ -8,11 +10,15 @@
 
 std::string DragConstraint::TYPE = "drag_constraint";
 
+// Constructor for DragConstraint
+// <drag> is the coefficient multiplied by the square of the velocity to determine how much the particle will be
+//        slowed down.
 DragConstraint::DragConstraint(double drag) : SingleConstraint() {
     addType(DragConstraint::TYPE);
     this->drag = drag;
 }
 
+// This is the method that applies the speed limitation
 void DragConstraint::fix(int iter, Particle *p) {
     if(iter > 1) {
         return;
