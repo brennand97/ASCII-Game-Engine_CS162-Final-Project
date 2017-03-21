@@ -1,6 +1,8 @@
-//
-// Created by Brennan on 3/11/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/11/2017
+ * Description: This is the header file for linux input functions
+ */
 
 #ifndef FINAL_PROJECT_LINUX_INPUT_HPP
 #define FINAL_PROJECT_LINUX_INPUT_HPP

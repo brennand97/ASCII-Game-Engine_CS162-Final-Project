@@ -1,6 +1,8 @@
-//
-// Created by Brennan on 3/5/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/06/2017
+ * Description: This is the source file for the Space class
+ */
 
 #ifndef FINAL_PROJECT_SPACE_HPP
 #define FINAL_PROJECT_SPACE_HPP
@@ -12,6 +14,7 @@
 #include <string>
 #include <vector>
 
+// This class represents the top to the GameObject tree and has 4 neighbors.
 class Space : public GameObject {
 protected:
     double unit_width;
