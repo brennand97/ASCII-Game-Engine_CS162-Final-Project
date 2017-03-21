@@ -1,6 +1,8 @@
-//
-// Created by Brennan on 3/7/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/07/2017
+ * Description: This file holds the header for the screen class
+ */
 
 #ifndef FINAL_PROJECT_SCREEN_HPP
 #define FINAL_PROJECT_SCREEN_HPP
@@ -10,9 +12,12 @@
 #include <string>
 #include "pixel.hpp"
 
+// Screen abstracts the pixel and frame calculations as well as the printing to the screen.
+// It handles it correctly with and arbitrary integer width and height.
 class Screen {
 protected:
 
+    // To hold the necessary values for a robust line printing system on the right edge of the screen
     struct sideline {
         std::string s;
         int n;
@@ -34,18 +39,7 @@ protected:
     void moveCursorVertically(int j);
     void moveCursorHorizontally(int i);
 
-    int signum(int a, bool zero = true) {
-        if (a > 0) {
-            return 1;
-        } else if (a < 0) {
-            return -1;
-        } else if (zero) {
-            return 0;
-        } else {
-            return 1;
-        }
-    };
-
+    // Fast absolute value for line algorithm
     double fabs(double d) {
         if ( d < 0 ) {
             return -d;
@@ -54,6 +48,7 @@ protected:
         }
     }
 
+    // Fast absolute value for line algorithm
     int fabs(int d) {
         if ( d < 0 ) {
             return -d;
