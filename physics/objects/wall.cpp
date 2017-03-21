@@ -1,6 +1,8 @@
-//
-// Created by Brennan on 3/16/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/17/2017
+ * Description: This is the source file for the Wall class
+ */
 
 #include "wall.hpp"
 #include "../../personal_utilities/vec_func.hpp"
@@ -11,6 +13,9 @@
 std::string Wall::TYPE = "wall";
 std::string Wall::WallConstraint::TYPE = "wall_constraint";
 
+// Wall constructor
+// <top> is the position of the top of the wall
+// <bottom> is the position of the bottom of the wall
 Wall::Wall(double *top, double *bottom) : ParticleContainer() {
     this->top = douglas::vector::copy(top);
     this->bottom = douglas::vector::copy(bottom);
@@ -19,11 +24,13 @@ Wall::Wall(double *top, double *bottom) : ParticleContainer() {
     addSuperGlobalConstraint(wallConstraint);
 }
 
+// Deconstructor
 Wall::~Wall() {
     delete [] top;
     delete [] bottom;
 }
 
+// Renders the wall
 void Wall::render(Screen *screen) {
     if(changed) {
         rendered_pixels.clear();
@@ -41,11 +48,13 @@ void Wall::render(Screen *screen) {
     screen->addToFrame(rendered_pixels);
 }
 
+// WallConstraint Constructor
 Wall::WallConstraint::WallConstraint(Wall *wall) : SingleConstraint() {
     addType(WallConstraint::TYPE);
     this->wall = wall;
 }
 
+// Keeps moving particles from crossing through the wall
 void Wall::WallConstraint::fix(int iter, Particle *p) {
     if(isExcluded(p))
         return;
@@ -58,6 +67,8 @@ void Wall::WallConstraint::fix(int iter, Particle *p) {
     try {
         intersect = douglas::vector::intersection(wall->top, wall->bottom,
                                                            p->getPosition(), ppos);
+
+        // Fun vector math
 
         double * wall_vec = douglas::vector::subtract(wall->top, wall->bottom);
         double * orth_wall_vec = douglas::vector::vector(-1 * wall_vec[1], wall_vec[0]);

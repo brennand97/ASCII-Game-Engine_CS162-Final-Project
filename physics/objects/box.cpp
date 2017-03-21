@@ -1,6 +1,8 @@
-//
-// Created by Brennan on 3/6/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/06/2017
+ * Description: This is the source file for the Box class
+ */
 
 #include "box.hpp"
 #include "../particle.hpp"
@@ -11,6 +13,10 @@
 
 std::string Box::TYPE = "box";
 
+// Box constructor
+// <pos> bottom left point at which the box will be initiated
+// <width> width of the box
+// <height> height of the box
 Box::Box(double *pos, double width, double height) : ConvexPolygon(true, 1) {
     addType(Box::TYPE);
 
@@ -67,52 +73,7 @@ Box::Box(double *pos, double width, double height) : ConvexPolygon(true, 1) {
     addSuperGlobalConstraint(mmc_right);
     addSuperGlobalConstraint(mmc_top);
     addSuperGlobalConstraint(mmc_left);
-
-//    width_constraint = new LineConstraint(width, Constraint::Equality::EQUAL);
-//    width_constraint->addParticle(p1);
-//    width_constraint->addParticle(p2);
-//    width_constraint->addParticle(p3);
-//    width_constraint->addParticle(p4);
-//
-//    height_constraint = new LineConstraint(height, Constraint::Equality::EQUAL);
-//    height_constraint->addParticle(p1);
-//    height_constraint->addParticle(p4);
-//    height_constraint->addParticle(p2);
-//    height_constraint->addParticle(p3);
-//
-//    double diag = std::sqrt((width*width) + (height*height));
-//    diagonal_constraint = new LineConstraint(diag, Constraint::Equality::EQUAL);
-//    diagonal_constraint->addParticle(p1);
-//    diagonal_constraint->addParticle(p3);
-//    diagonal_constraint->addParticle(p2);
-//    diagonal_constraint->addParticle(p4);
-//
-//    specific_constraints.push_back(width_constraint);
-//    specific_constraints.push_back(height_constraint);
-//    specific_constraints.push_back(diagonal_constraint);
 }
 
+// Default Box deconstructor
 Box::~Box() {}
-
-//void Box::render(Screen* screen) {
-//
-//    Space* world = (Space*) getWorld();
-//
-//    double * pos1 = world->convertToPixels((Particle*) children[0], screen);
-//    double * pos2 = world->convertToPixels((Particle*) children[1], screen);
-//    double * pos3 = world->convertToPixels((Particle*) children[2], screen);
-//    double * pos4 = world->convertToPixels((Particle*) children[3], screen);
-//
-//    std::vector<Pixel> box;
-//    screen->line(pos1, pos2, draw_char, &box);
-//    screen->line(pos2, pos3, draw_char, &box);
-//    screen->line(pos3, pos4, draw_char, &box);
-//    screen->line(pos4, pos1, draw_char, &box);
-//    screen->addToFrame(box);
-//
-//    delete [] pos1;
-//    delete [] pos2;
-//    delete [] pos3;
-//    delete [] pos4;
-//
-//}

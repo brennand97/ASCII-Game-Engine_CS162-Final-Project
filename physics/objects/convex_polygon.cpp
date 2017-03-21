@@ -1,6 +1,8 @@
-//
-// Created by Brennan on 3/14/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/14/2017
+ * Description: This is the source file for the ConvexPolygon class
+ */
 
 #include "convex_polygon.hpp"
 #include "../../space.hpp"
@@ -8,6 +10,9 @@
 
 std::string ConvexPolygon::TYPE = "convex_polygon";
 
+// ConvexPolygon protected constructor, for use in derived classes
+// <solid> if particles are allowed to interact with the polygon
+// <rigid> double from 0 to 1 that determines how much a particle is pushed out of the polygon
 ConvexPolygon::ConvexPolygon(bool solid, double rigid) {
     addType(ConvexPolygon::TYPE);
     this->solid = solid;
@@ -16,6 +21,10 @@ ConvexPolygon::ConvexPolygon(bool solid, double rigid) {
     addSuperGlobalConstraint(solid_constraint);
 }
 
+// ConvexPolygon constructor
+// <vertices> vector of Particle pointers that will make up the polygon
+// <solid> if particles are allowed to interact with the polygon
+// <rigid> double from 0 to 1 that determines how much a particle is pushed out of the polygon
 ConvexPolygon::ConvexPolygon(std::vector<Particle*> vertices, bool solid, double rigid) : ParticleContainer() {
     addType(ConvexPolygon::TYPE);
     for(unsigned int i = 0; i < vertices.size(); i++) {
@@ -32,6 +41,7 @@ ConvexPolygon::ConvexPolygon(std::vector<Particle*> vertices, bool solid, double
     setConstraints();
 }
 
+// Sets LineConstraints between every particle as it is in its current state
 void ConvexPolygon::setConstraints() {
     for(int i = 0; i < num_vertices; i++) {
         for(int j = i + 1; j < num_vertices; j++) {
@@ -49,6 +59,7 @@ void ConvexPolygon::setConstraints() {
     }
 }
 
+// Render the polygon to the screen
 void ConvexPolygon::render(Screen *screen) {
     Space* world = (Space*) getWorld();
     double * p_pos = world->convertToPixels(vertices[0]->getPosition(), screen);
@@ -69,10 +80,13 @@ void ConvexPolygon::render(Screen *screen) {
     delete [] pos;
 }
 
+// ConvexPolygonConstraint constructor
+// <polygon> the ConvexPolygon that it is making solid
 ConvexPolygon::ConvexPolygonConstraint::ConvexPolygonConstraint(ConvexPolygon *polygon) {
     this->polygon = polygon;
 }
 
+// Method to make the ConvexPolygon solid
 void ConvexPolygon::ConvexPolygonConstraint::fix(int iter, Particle *p) {
 
     // THIS IS NOT CURRENTLY WORKING AND WAS A BAD IDEA MATHEMATICALLY

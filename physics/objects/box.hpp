@@ -1,6 +1,8 @@
-//
-// Created by Brennan on 3/6/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/06/2017
+ * Description: This is the header file for the Box class
+ */
 
 #ifndef FINAL_PROJECT_BOX_HPP
 #define FINAL_PROJECT_BOX_HPP
@@ -10,13 +12,11 @@
 #include "../objects/movable_wall.hpp"
 #include <string>
 
+// Makes a rectangle that can be pushed around.
 class Box : public ConvexPolygon {
 private:
     double width;
     double height;
-//    LineConstraint* width_constraint;
-//    LineConstraint* height_constraint;
-//    LineConstraint* diagonal_constraint;
     MovableWall::MovableWallConstraint* mmc_left;
     MovableWall::MovableWallConstraint* mmc_top;
     MovableWall::MovableWallConstraint* mmc_right;
@@ -29,11 +29,8 @@ public:
     ~Box();
 
     double getWidth() { return width; }
-    //void setWidth(double w) { this->width = w; }
     double getHeight() { return height; }
-    //void setHeight(double h) { this->height = h; }
 
-    //void render(Screen*);
 };
 
 #endif //FINAL_PROJECT_BOX_HPP

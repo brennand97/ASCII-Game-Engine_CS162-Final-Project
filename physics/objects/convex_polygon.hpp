@@ -1,6 +1,8 @@
-//
-// Created by Brennan on 3/14/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/14/2017
+ * Description: This is the header file for the ConvexPolygon class
+ */
 
 #ifndef FINAL_PROJECT_CONVEX_POLYGON_HPP
 #define FINAL_PROJECT_CONVEX_POLYGON_HPP
@@ -10,6 +12,7 @@
 #include "../constraints/single_constraint.hpp"
 #include "../constraints/line_constraint.hpp"
 
+// ConvexPolygon is a generalization of all Convex Polygons
 class ConvexPolygon : public ParticleContainer {
 
 public:

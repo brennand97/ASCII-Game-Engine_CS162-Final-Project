@@ -1,6 +1,8 @@
-//
-// Created by Brennan on 3/17/2017.
-//
+/**
+ * Author:      Brennan Douglas
+ * Date:        03/17/2017
+ * Description: This is the source file for the MovableWall class
+ */
 
 #include "movable_wall.hpp"
 #include "../../space.hpp"
@@ -9,6 +11,10 @@
 std::string MovableWall::TYPE = "movable_wall";
 std::string MovableWall::MovableWallConstraint::TYPE = "movable_wall_constraint";
 
+// MovableWall private Constructor
+// <p1> particle that defines the top of the wall
+// <p2> particle that defines the bottom of the wall
+// <wall_moves> defines if the wall can be pushed by particles
 MovableWall::MovableWall(Particle *p1, Particle *p2, bool wall_moves) : ParticleContainer() {
     addType(MovableWall::TYPE);
     this->p1 = p1;
@@ -16,6 +22,10 @@ MovableWall::MovableWall(Particle *p1, Particle *p2, bool wall_moves) : Particle
     this->wall_moves = wall_moves;
 }
 
+// MovableWall private Constructor
+// <pos1> position that defines the top of the wall
+// <pos2> position that defines the bottom of the wall
+// <wall_moves> defines if the wall can be pushed by particles
 MovableWall::MovableWall(double *pos1, double *pos2, bool wall_moves) : ParticleContainer() {
     addType(MovableWall::TYPE);
     this->wall_moves = wall_moves;
@@ -33,6 +43,7 @@ MovableWall::MovableWall(double *pos1, double *pos2, bool wall_moves) : Particle
     addSuperGlobalConstraint(movableWallConstraint);
 }
 
+// Renders the MovableWall
 void MovableWall::render(Screen *screen) {
 
     Space* world = (Space*) getWorld();
@@ -51,23 +62,30 @@ void MovableWall::render(Screen *screen) {
 
 }
 
+// MovableWallConstraint Constructor
+// <wall> MovableWall that will be enforced
 MovableWall::MovableWallConstraint::MovableWallConstraint(MovableWall *wall) : SingleConstraint() {
     addType(MovableWall::MovableWallConstraint::TYPE);
     this->wall = wall;
 }
 
+// MovableWallConstraint Secondary (External) Constructor
+// Allows for arbitrary particles p1 and p2 to be treated like a movable wall.
 MovableWall::MovableWallConstraint::MovableWallConstraint(Particle* p1, Particle* p2, bool wall_moves) : SingleConstraint() {
     addType(MovableWallConstraint::TYPE);
     this->wall = new MovableWall(p1, p2, wall_moves);
     this->delete_wall = true;
 }
 
+// Deconstructor, only used if created via External Constructor
 MovableWall::MovableWallConstraint::~MovableWallConstraint() {
     if (delete_wall) {
         delete wall;
     }
 }
 
+// Doesn't allow moving particles to go through wall.
+// Uses douglas::vector::intercept to do this.
 void MovableWall::MovableWallConstraint::fix(int iter, Particle *p) {
     if(isExcluded(p))
         return;
@@ -80,6 +98,8 @@ void MovableWall::MovableWallConstraint::fix(int iter, Particle *p) {
     try {
         intersect = douglas::vector::intersection(wall->p1->getPosition(), wall->p2->getPosition(),
                                                   p->getPosition(), ppos);
+
+        // Fun vector math
 
         double * wall_vec = douglas::vector::subtract(wall->p1->getPosition(), wall->p2->getPosition());
         double * orth_wall_vec = douglas::vector::vector(-1 * wall_vec[1], wall_vec[0]);
