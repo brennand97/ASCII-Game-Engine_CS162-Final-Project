@@ -94,6 +94,9 @@ void GridLT::step(double dt) {
 // Renders the space
 void GridLT::render(Screen *screen) {
 
+    screen->printValue(9, " Info:      Try driving to the key.");
+    screen->printValue(10,"            You should pick it up.");
+
     // Renders all the children
     renderChildren(screen);
 }

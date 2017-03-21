@@ -122,6 +122,10 @@ void GridRT::step(double dt) {
 // Renders the space
 void GridRT::render(Screen *screen) {
 
+    screen->printValue(9, " Info:      Those lines look pushable.");
+    screen->printValue(10,"            Also try driving over the");
+    screen->printValue(11,"            key.");
+
     // Renders all the children
     renderChildren(screen);
 }

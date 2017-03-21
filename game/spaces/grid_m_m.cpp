@@ -205,4 +205,5 @@ bool GridMM::getMarker(int i) {
             return show_marker_3;
         }
     }
+    return false;
 }

@@ -269,6 +269,9 @@ void GridMT::step(double dt) {
 // Renders the space
 void GridMT::render(Screen *screen) {
 
+    screen->printValue(9, " Info:      I believe this pinwheel");
+    screen->printValue(10,"            can be pushed.");
+
     // Renders all the children
     renderChildren(screen);
 }

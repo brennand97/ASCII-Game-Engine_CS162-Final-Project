@@ -132,6 +132,9 @@ void GridRM::step(double dt) {
 // Renders the space
 void GridRM::render(Screen *screen) {
 
+    screen->printValue(9, " Info:      Up or down? Both are");
+    screen->printValue(10,"            important.");
+
     // Renders all the children
     renderChildren(screen);
 }

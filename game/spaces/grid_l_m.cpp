@@ -184,6 +184,10 @@ void GridLM::step(double dt) {
 // Renders the space
 void GridLM::render(Screen *screen) {
 
+    screen->printValue(9, " Info:      It seems that it will have");
+    screen->printValue(10,"            to be pushed from the bottom");
+    screen->printValue(11,"            to attain access to the key.");
+
     // Renders all the children
     renderChildren(screen);
 }

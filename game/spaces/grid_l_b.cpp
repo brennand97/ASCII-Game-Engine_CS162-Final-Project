@@ -95,6 +95,9 @@ void GridLB::step(double dt) {
 // Renders the space
 void GridLB::render(Screen *screen) {
 
+    screen->printValue(9, " Info:      Try pushing the box around,");
+    screen->printValue(10,"            it should spin and move.");
+
     // Renders all the children
     renderChildren(screen);
 }

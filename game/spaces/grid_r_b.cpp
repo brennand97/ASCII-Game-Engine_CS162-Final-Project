@@ -125,6 +125,8 @@ void GridRB::step(double dt) {
 // Renders the space
 void GridRB::render(Screen *screen) {
 
+    screen->printValue(9, " Info:      Around the bend we go.");
+
     // Renders all the children
     renderChildren(screen);
 }

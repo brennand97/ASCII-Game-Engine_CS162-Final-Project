@@ -114,6 +114,8 @@ void GridMB::step(double dt) {
 // Renders the space
 void GridMB::render(Screen *screen) {
 
+    screen->printValue(9, " Info:      Keep going straight.");
+
     // Renders all the children
     renderChildren(screen);
 }
