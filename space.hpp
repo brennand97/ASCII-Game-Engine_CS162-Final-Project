@@ -42,6 +42,8 @@ public:
 
     ParticleContainer* getPhysics() { return physics; }
 
+    void newChild(GameObject* child);
+
     // Handle neighbor getting and setting
     // Indexed starting from the top (0) going clockwise until the left (3)
     Space* getSpace(int index) { return neighbors[index]; }

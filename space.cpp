@@ -40,6 +40,10 @@ void Space::handlePhysics(int t_iter) {
 
 }
 
+void Space::newChild(GameObject *child) {
+    physics->getSuperGlobalConstraints(nullptr, true);
+}
+
 double* Space::convertToPixels(const double x, const double y, Screen* screen) {
     double x_ppu = screen->getWidth() / unit_width;
     double y_ppu = screen->getHeight() / unit_height;

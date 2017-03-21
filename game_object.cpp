@@ -29,6 +29,12 @@ GameObject::~GameObject() {
     }
 }
 
+void GameObject::newChild(GameObject *child) {
+    if(parent != nullptr) {
+        parent->newChild(child);
+    }
+}
+
 unsigned int GameObject::getChildIndex(unsigned int c_obj_id) {
 
     std::vector<GameObject*>::iterator it;

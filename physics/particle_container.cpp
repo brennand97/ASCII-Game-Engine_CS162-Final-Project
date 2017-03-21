@@ -39,28 +39,40 @@ void ParticleContainer::addSpecificConstraint(Constraint * p) {
 
 void ParticleContainer::addSubGlobalConstraint(SingleConstraint * p) {
     sub_global_constraints.push_back(p);
+    if(parent != nullptr) {
+        getGlobalConstraints(nullptr, true, false);
+    }
 }
 
 void ParticleContainer::addSuperGlobalConstraint(SingleConstraint * p) {
     super_global_constraints.push_back(p);
+    if(parent != nullptr) {
+        getGlobalConstraints(nullptr, true, false);
+        Space* world = (Space*) getWorld();
+        world->getPhysics()->getSuperGlobalConstraints(nullptr, true);
+    }
 }
 
-void ParticleContainer::getGlobalConstraints(std::vector < SingleConstraint * > * vec, bool supers) {
-    for(unsigned int i = 0; i < sub_global_constraints.size(); i++) {
-        vec->push_back(sub_global_constraints[i]);
-    }
-    if(supers) {
-        Space* world = (Space*) getWorld();
-        std::vector<GameObject*> allPCs;
-        world->getChildrenOfType(ParticleContainer::TYPE, &allPCs);
-        for(unsigned int i = 0; i < allPCs.size(); i++) {
-            ((ParticleContainer*) allPCs[i])->getSuperGlobalConstraints(vec);
+void ParticleContainer::getGlobalConstraints(std::vector < SingleConstraint * > * vec, bool update_cached, bool supers) {
+    if(update_cached) {
+        cached_global_constraints.clear();
+        for(unsigned int i = 0; i < sub_global_constraints.size(); i++) {
+            cached_global_constraints.push_back(sub_global_constraints[i]);
+        }
+        std::vector<GameObject*> parentPCs;
+        parent->getParentsOfType(ParticleContainer::TYPE, &parentPCs);
+        for(unsigned int i = 0; i < parentPCs.size(); i++) {
+            ((ParticleContainer*) parentPCs[i])->getGlobalConstraints(&cached_global_constraints, false, false);
         }
     }
-    std::vector<GameObject*> parentPCs;
-    parent->getParentsOfType(ParticleContainer::TYPE, &parentPCs);
-    for(unsigned int i = 0; i < parentPCs.size(); i++) {
-        ((ParticleContainer*) parentPCs[i])->getGlobalConstraints(vec, false);
+    if(vec != nullptr) {
+        for(unsigned int i = 0; i < cached_global_constraints.size(); i++) {
+            vec->push_back(cached_global_constraints[i]);
+        }
+        if(supers) {
+            Space* world = (Space*) getWorld();
+            world->getPhysics()->getSuperGlobalConstraints(vec);
+        }
     }
 }
 
@@ -74,9 +86,30 @@ void ParticleContainer::removeSubGlobalConstraint(int index) {
     sub_global_constraints.erase(sub_global_constraints.begin() + index, sub_global_constraints.begin() + index + 1);
 }
 
-void ParticleContainer::getSuperGlobalConstraints(std::vector < SingleConstraint * > * vec) {
-    for(unsigned int i = 0; i < super_global_constraints.size(); i++) {
-        vec->push_back(super_global_constraints[i]);
+void ParticleContainer::getSuperGlobalConstraints(std::vector < SingleConstraint * > * vec, bool update_cached) {
+    if(((Space*) getWorld())->getPhysics()->getId() == this->getId()) {
+        // This is the physics element of a Space
+        if(update_cached) {
+            master_cached_global_super_constraints.clear();
+            std::vector<GameObject*> allPCs;
+            this->getChildrenOfType(ParticleContainer::TYPE, &allPCs);
+            for(unsigned int i = 0; i < allPCs.size(); i++) {
+                if(((ParticleContainer*) allPCs[i])->getId() != this->getId()) {
+                    ((ParticleContainer*) allPCs[i])->getSuperGlobalConstraints(&master_cached_global_super_constraints, false);
+                }
+            }
+        }
+        if(vec != nullptr) {
+            for(unsigned int i = 0; i < master_cached_global_super_constraints.size(); i++) {
+                vec->push_back(master_cached_global_super_constraints[i]);
+            }
+        }
+    } else {
+        if(vec != nullptr) {
+            for(unsigned int i = 0; i < super_global_constraints.size(); i++) {
+                vec->push_back(super_global_constraints[i]);
+            }
+        }
     }
 }
 

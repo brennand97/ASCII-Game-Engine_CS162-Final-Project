@@ -26,6 +26,9 @@ protected:
     unsigned int getChildIndex(unsigned int c_obj_id);
     void stepChildren(double dt);
     void renderChildren(Screen* screen);
+
+    virtual void newChild(GameObject* child);
+
 public:
 
     static unsigned int n_obj_id;
@@ -42,11 +45,11 @@ public:
 
     // GameObject Parent
     GameObject* getParent() { return parent; }
-    void setParent(GameObject * parent) { this->parent = parent; world = getWorld(); }
+    virtual void setParent(GameObject * parent) { this->parent = parent; world = getWorld(); }
 
     // GameObject Children
     std::vector<GameObject*> getChildren() { return children; }
-    void addChild(GameObject* child) { child->setParent(this); children.push_back(child); }
+    virtual void addChild(GameObject* child) { child->setParent(this); children.push_back(child); newChild(child); }
     GameObject* getChild(unsigned int c_obj_id);
     void removeChild(GameObject * obj);
     void removeChild(unsigned int c_obj_id);
